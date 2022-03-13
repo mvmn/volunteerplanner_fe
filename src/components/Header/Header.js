@@ -1,10 +1,32 @@
-import { AppBar, Avatar, Toolbar, Typography } from '@mui/material';
+import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
+import PersonIcon from '@mui/icons-material/Person';
+import { AppBar, Avatar, Paper, Toolbar, Typography } from '@mui/material';
 import { deepPurple } from '@mui/material/colors';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { setLoggedIn, setLoggedOut } from '../../actions/authActions';
+import { setLoggedOut } from '../../actions/authActions';
+import dictionary from '../../dictionary';
 import styles from './Header.module.scss';
+
+const Menu = () => {
+  const dispatch = useDispatch();
+  const handleClick = () => dispatch(setLoggedOut());
+
+  return (
+    <Paper className={styles.menu}>
+      <Link to='/login' onClick={handleClick} className={styles.link}>
+        {dictionary.logOut}
+        <ExitToAppOutlinedIcon />
+      </Link>
+      <Link to='/profile' className={styles.link}>
+        {dictionary.openProfile}
+        <PersonIcon />
+      </Link>
+    </Paper>
+  );
+};
 
 const Dropdown = () => {
   /**
@@ -12,14 +34,15 @@ const Dropdown = () => {
    * - Log out button
    * - Open profile button
    */
-  const dispatch = useDispatch();
-  const handleClick = () => dispatch(setLoggedOut());
+  const [isOpened, setIsOpened] = useState(false);
+  const handleDropdownVisibility = () => setIsOpened(!isOpened);
+
   return (
     <div>
-      <Link to='/sign-in' onClick={handleClick} className={styles.link}>
-        Вийти
-      </Link>
-      <Avatar sx={{ bgcolor: deepPurple[500] }}>OP</Avatar>
+      <Avatar sx={{ bgcolor: deepPurple[500] }} onClick={handleDropdownVisibility}>
+        OP
+      </Avatar>
+      {isOpened && <Menu />}
     </div>
   );
 };
@@ -29,17 +52,13 @@ const ActionLinks = () => {
    * Move Link to shared component
    */
 
-  const dispatch = useDispatch();
-
-  const handleClick = () => dispatch(setLoggedIn());
-
   return (
-    <div>
+    <div className={styles.actions}>
       <Link to='/sign-up' className={styles.link}>
-        Зареєструватися
-      </Link>
-      <Link to='/sign-in' onClick={handleClick} className={styles.link}>
-        Залогуватися
+        {dictionary.signIn}
+      </Link>{' '}
+      <Link to='/login' className={styles.link}>
+        {dictionary.logIn}
       </Link>
     </div>
   );
@@ -53,7 +72,7 @@ export const Header = () => {
       <Toolbar className={styles.toolbar}>
         <Typography variant='h6' noWrap component='div'>
           <Link to='/' className={styles.link}>
-            Менеджер задач
+            {dictionary.taskMeneger}
           </Link>
         </Typography>
         {isAuthorized ? <Dropdown /> : <ActionLinks />}

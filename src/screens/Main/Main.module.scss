@@ -1,4 +1,7 @@
+@import '../../styles/colors.scss';
+
 .link {
+  display: flex;
   text-decoration: none;
-  color: #333333;
+  color: $theme-text-color;
 }

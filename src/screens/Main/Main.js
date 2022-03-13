@@ -1,18 +1,13 @@
 import { Box, Drawer, List, ListItem, Toolbar } from '@mui/material';
 import { useSelector } from 'react-redux';
-import { Link, Route, Routes } from 'react-router-dom';
+import { Link, Navigate, Route, Routes } from 'react-router-dom';
 
 import { TasksList } from '../../components/TasksList';
+import { NAVIGATION_ITEMS } from '../../constants/navigation';
 import { routes } from '../../navigation/routes';
 import styles from './Main.module.scss';
 
 const drawerWidth = 250;
-
-const NAVIGATION_ITEMS = [
-  { link: 'users', title: 'Користувачі' },
-  { link: 'create-task', title: 'Створити завдання' },
-  { link: 'create-category', title: 'Створити категорію' }
-];
 
 const LeftPanel = () => {
   return (
@@ -31,7 +26,7 @@ const LeftPanel = () => {
             return (
               <ListItem button key={item.link}>
                 <Link to={item.link} className={styles.link}>
-                  {item.title}
+                  {item.icon}&nbsp; {item.title}
                 </Link>
               </ListItem>
             );
@@ -40,6 +35,14 @@ const LeftPanel = () => {
       </Box>
     </Drawer>
   );
+};
+
+const ProtectedRoute = ({ isAuthorized, children }) => {
+  if (!isAuthorized) {
+    return <Navigate to='/' replace />;
+  }
+
+  return children;
 };
 
 export function Main() {
@@ -51,14 +54,21 @@ export function Main() {
       <Box component='main' sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
         <Routes>
-          <Route path='/' element={<TasksList />} />
+          <Route path='/' element={isAuthorized ? <TasksList /> : <div>please, log in</div>} />
           {routes.map(item => {
             return (
               <Route
                 key={item.link}
                 path={item.link}
-                element={<item.component />}
-                appProps={{ isAuthorized }}
+                element={
+                  item.isAuthorized ? (
+                    <ProtectedRoute isAuthorized={isAuthorized}>
+                      <item.component />
+                    </ProtectedRoute>
+                  ) : (
+                    <item.component />
+                  )
+                }
               />
             );
           })}

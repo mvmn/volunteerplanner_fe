@@ -1,6 +1,30 @@
+@import '../../styles/colors.scss';
+
 .link {
   color: white;
+  display: flex;
   text-decoration: none;
+  margin: 0.5rem 0;
+}
+
+.menu {
+  position: absolute;
+  background-color: white;
+  padding: 1rem;
+  right: 0;
+  border-radius: 3px;
+
+  .link {
+    color: $theme-text-color;
+  }
+}
+
+.actions {
+  display: flex;
+
+  a {
+    margin: 0 0.5rem;
+  }
 }
 
 .toolbar {
