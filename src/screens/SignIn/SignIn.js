@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { setLoggedIn } from '../../actions/authActions';
+import { setLoggedIn } from '../../actions/userActions';
 import dictionry from '../../dictionary';
 import styles from './SignIn.module.scss';
 
@@ -13,7 +13,7 @@ export const SignIn = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const hendleClick = () => {
+  const handleClick = () => {
     // TODO: send phoneNumber $ phoneNumber
 
     dispatch(setLoggedIn());
@@ -43,7 +43,7 @@ export const SignIn = () => {
         margin='normal'
         onChange={e => setPassword(e.target.value)}
       />
-      <Button disabled={!phoneNumber || !password} variant='outlined' onClick={hendleClick}>
+      <Button disabled={!phoneNumber || !password} variant='outlined' onClick={handleClick}>
         {dictionry.send}
       </Button>
     </div>

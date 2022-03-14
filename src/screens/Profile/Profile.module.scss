@@ -1,0 +1,35 @@
+.container {
+  background-color: rgb(231, 235, 240);
+  padding: 1rem;
+  margin-top: 100px;
+
+  .title {
+    margin: 1rem;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .editRow {
+    display: flex;
+    padding: 1rem;
+  }
+
+  .editTitleRow {
+    width: 30%;
+    padding: 0.5rem 1rem 0;
+    text-align: start;
+  }
+
+  .tableContainer {
+    margin-bottom: 1rem;
+
+    .rowTitle {
+      font-weight: bold;
+      width: 25%;
+    }
+  }
+}

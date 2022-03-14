@@ -15,7 +15,10 @@ const dictionary = {
   fullname: 'Прізвище та ім’я',
   email: 'Електронна адреса',
   city: 'Населений пункт',
-  region: 'Район'
+  region: 'Район',
+  profile: 'Мої дані',
+  edit: 'Редагувати',
+  save: 'Зберегти'
 };
 
 export default dictionary;

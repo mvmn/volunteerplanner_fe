@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { setLoggedIn } from '../../actions/authActions';
+import { setLoggedIn } from '../../actions/userActions';
 import dictionry from '../../dictionary';
 import styles from './SignUp.module.scss';
 

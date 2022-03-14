@@ -2,25 +2,45 @@ import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
 import PersonIcon from '@mui/icons-material/Person';
 import { AppBar, Avatar, Paper, Toolbar, Typography } from '@mui/material';
 import { deepPurple } from '@mui/material/colors';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { setLoggedOut } from '../../actions/authActions';
+import { setLoggedOut } from '../../actions/userActions';
 import dictionary from '../../dictionary';
 import styles from './Header.module.scss';
 
-const Menu = () => {
+const Menu = ({ setIsOpened }) => {
   const dispatch = useDispatch();
-  const handleClick = () => dispatch(setLoggedOut());
+  const handleClick = () => {
+    setIsOpened(false);
+    dispatch(setLoggedOut());
+  };
+
+  const wrapperRef = useRef(null);
+  useOutsideClickListener(wrapperRef);
+
+  function useOutsideClickListener(ref) {
+    useEffect(() => {
+      function handleClickOutside(event) {
+        if (ref.current && !ref.current.contains(event.target)) {
+          setIsOpened(false);
+        }
+      }
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, [ref]);
+  }
 
   return (
-    <Paper className={styles.menu}>
+    <Paper ref={wrapperRef} className={styles.menu}>
       <Link to='/login' onClick={handleClick} className={styles.link}>
         {dictionary.logOut}
         <ExitToAppOutlinedIcon />
       </Link>
-      <Link to='/profile' className={styles.link}>
+      <Link to='/profile' onClick={() => setIsOpened(false)} className={styles.link}>
         {dictionary.openProfile}
         <PersonIcon />
       </Link>
@@ -42,7 +62,7 @@ const Dropdown = () => {
       <Avatar sx={{ bgcolor: deepPurple[500] }} onClick={handleDropdownVisibility}>
         OP
       </Avatar>
-      {isOpened && <Menu />}
+      {isOpened && <Menu setIsOpened={setIsOpened} />}
     </div>
   );
 };
