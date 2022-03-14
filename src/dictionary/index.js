@@ -10,7 +10,12 @@ const dictionary = {
   openProfile: 'Мій профіль',
   phoneNumber: 'Номер телефону',
   password: 'Пароль',
-  send: 'Відправити'
+  send: 'Відправити',
+  nickname: 'Логін',
+  fullname: 'Прізвище та ім’я',
+  email: 'Електронна адреса',
+  city: 'Населений пункт',
+  region: 'Район'
 };
 
 export default dictionary;

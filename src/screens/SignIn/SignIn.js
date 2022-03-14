@@ -12,8 +12,9 @@ export const SignIn = () => {
   const [password, setPassword] = useState();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const hendleClick = () => {
-    // send phoneNumber $ phoneNumber
+    // TODO: send phoneNumber $ phoneNumber
 
     dispatch(setLoggedIn());
     navigate('/');
@@ -24,6 +25,7 @@ export const SignIn = () => {
     <div className={styles.container}>
       <TextField
         value={phoneNumber}
+        required
         type='tel'
         classes={{ root: styles.root }}
         label={dictionry.phoneNumber}
@@ -33,6 +35,7 @@ export const SignIn = () => {
       />
       <TextField
         value={password}
+        required
         classes={{ root: styles.root }}
         label={dictionry.password}
         type='password'
@@ -40,7 +43,7 @@ export const SignIn = () => {
         margin='normal'
         onChange={e => setPassword(e.target.value)}
       />
-      <Button disabled={!phoneNumber && !password} variant='outlined' onClick={hendleClick}>
+      <Button disabled={!phoneNumber || !password} variant='outlined' onClick={hendleClick}>
         {dictionry.send}
       </Button>
     </div>
