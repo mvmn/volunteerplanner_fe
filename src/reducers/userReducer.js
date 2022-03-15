@@ -1,7 +1,7 @@
 import { SET_LOGGED_IN, SET_LOGGED_OUT, SET_USER } from '../constants/userConstants';
 import data from '../mocks/user.json';
 
-const initState = { ...data.user, isAuthorized: false };
+const initState = data.user;
 
 export const userReducer = function (state = initState, action) {
   switch (action.type) {

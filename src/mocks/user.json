@@ -5,6 +5,7 @@
     "fullname": "Джон Доу",
     "email": "example@gmail.com",
     "region": "Львівська обл",
-    "city": "Львів"
+    "city": "Львів",
+    "isAuthorized": true
   }
 }

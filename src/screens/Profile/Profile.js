@@ -6,15 +6,15 @@ import {
   TableCell,
   TableContainer,
   TableRow,
-  TextField,
-  Typography
+  TextField
 } from '@mui/material';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { setUser } from '../../actions/userActions';
+import { Title } from '../../components/Title';
+import { ROW_TO_DISPLAY } from '../../constants/uiConfigConstans';
 import dictionary from '../../dictionary';
-import dictionry from '../../dictionary';
 import styles from './Profile.module.scss';
 
 const DisplayData = () => {
@@ -23,11 +23,11 @@ const DisplayData = () => {
     <TableContainer className={styles.tableContainer} component={Paper}>
       <Table sx={{ minWidth: 650 }}>
         <TableBody>
-          {Object.entries(user).map(([key, value]) => {
+          {ROW_TO_DISPLAY.map(rowName => {
             return (
-              <TableRow key={key}>
-                <TableCell className={styles.rowTitle}>{dictionry[key]}:</TableCell>
-                <TableCell>{value}</TableCell>
+              <TableRow key={user[rowName]}>
+                <TableCell className={styles.rowTitle}>{dictionary[rowName]}:</TableCell>
+                <TableCell>{user[rowName]}</TableCell>
               </TableRow>
             );
           })}
@@ -56,7 +56,7 @@ const EditData = props => {
   return (
     <Paper className={styles.tableContainer}>
       <div className={styles.editRow}>
-        <div className={styles.editTitleRow}>{dictionry.phoneNumber}:</div>
+        <div className={styles.editTitleRow}>{dictionary.phoneNumber}:</div>
         <TextField
           size='small'
           value={phoneNumber}
@@ -64,23 +64,23 @@ const EditData = props => {
         />
       </div>
       <div className={styles.editRow}>
-        <div className={styles.editTitleRow}>{dictionry.nickname}:</div>
+        <div className={styles.editTitleRow}>{dictionary.nickname}:</div>
         <TextField size='small' value={nickname} onChange={e => setNickname(e.target.value)} />
       </div>
       <div className={styles.editRow}>
-        <div className={styles.editTitleRow}>{dictionry.fullname}:</div>
+        <div className={styles.editTitleRow}>{dictionary.fullname}:</div>
         <TextField size='small' value={fullname} onChange={e => setFullname(e.target.value)} />
       </div>
       <div className={styles.editRow}>
-        <div className={styles.editTitleRow}>{dictionry.email}:</div>
+        <div className={styles.editTitleRow}>{dictionary.email}:</div>
         <TextField size='small' value={email} onChange={e => setEmail(e.target.value)} />
       </div>
       <div className={styles.editRow}>
-        <div className={styles.editTitleRow}>{dictionry.city}:</div>
+        <div className={styles.editTitleRow}>{dictionary.city}:</div>
         <TextField size='small' value={city} onChange={e => setCity(e.target.value)} />
       </div>
       <div className={styles.editRow}>
-        <div className={styles.editTitleRow}>{dictionry.region}:</div>
+        <div className={styles.editTitleRow}>{dictionary.region}:</div>
         <TextField size='small' value={region} onChange={e => setRegion(e.target.value)} />
       </div>
     </Paper>
@@ -119,12 +119,10 @@ export const Profile = () => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <Typography variant='h4' className={styles.title}>
-          {dictionry.profile}
-        </Typography>
+        <Title text={dictionary.profile} />
 
         <Button variant='outlined' onClick={handleEditClick}>
-          {isEditing ? dictionary.save : dictionry.edit}
+          {isEditing ? dictionary.save : dictionary.edit}
         </Button>
       </div>
 
@@ -135,7 +133,7 @@ export const Profile = () => {
           nickname={editedNickname}
           setNickname={setNickname}
           fullname={editedFullname}
-          mail={editedEmail}
+          email={editedEmail}
           setEmail={setEmail}
           setFullname={setFullname}
           city={editedCity}

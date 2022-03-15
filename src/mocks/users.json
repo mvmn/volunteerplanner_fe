@@ -1,0 +1,147 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "phoneNumber": "+380980495814",
+      "nickname": "petro",
+      "fullname": "Петро Іваненко",
+      "email": "example@gmail.com",
+      "region": "Львівська обл",
+      "city": "Львів",
+      "active": true,
+      "verified": true
+    },
+    {
+      "id": 2,
+      "phoneNumber": "+380980495715",
+      "nickname": "mike",
+      "fullname": "Майкл Щур",
+      "email": "mike@gmail.com",
+      "region": "Київська обл",
+      "city": "Київ",
+      "active": true,
+      "verified": true
+    },
+    {
+      "id": 3,
+      "phoneNumber": "+380980495813",
+      "nickname": "Ivan",
+      "fullname": "Іван Петренко",
+      "email": "ivan@gmail.com",
+      "region": "Закарпатська обл",
+      "city": "Мукачеве",
+      "active": true,
+      "verified": true
+    },
+    {
+      "id": 4,
+      "phoneNumber": "+380979581444",
+      "nickname": "Ivan 2",
+      "fullname": "Іван Іаваненко",
+      "email": "ivan1983@gmail.com",
+      "region": "Волинська обл",
+      "city": "Луцьк",
+      "active": true,
+      "verified": true
+    },
+    {
+      "id": 5,
+      "phoneNumber": "+380980496814",
+      "nickname": "Olena",
+      "fullname": "Olena",
+      "email": "olena@gmail.com",
+      "region": "Львівська обл",
+      "city": "Львів",
+      "active": true,
+      "verified": true
+    },
+    {
+      "id": 6,
+      "phoneNumber": "+380980595814",
+      "nickname": "Ivanna",
+      "fullname": "Ivanna Ivanova",
+      "email": "ivanna@gmail.com",
+      "region": "Вінницька обл",
+      "city": "Вінниця",
+      "active": true,
+      "verified": true
+    },
+    {
+      "id": 7,
+      "phoneNumber": "+380980695814",
+      "nickname": "Iryna",
+      "fullname": "Ірина Пертренко",
+      "email": "iryna@gmail.com",
+      "region": "Вінницька обл",
+      "city": "Вінниця",
+      "active": true,
+      "verified": true
+    },
+    {
+      "id": 8,
+      "phoneNumber": "+380980795814",
+      "nickname": "Volodymyr",
+      "fullname": "Volodymyr",
+      "email": "volodymyr@gmail.com",
+      "region": "Тернопільська обл",
+      "city": "Тернопіль",
+      "active": true,
+      "verified": true
+    },
+    {
+      "id": 9,
+      "phoneNumber": "+380980895814",
+      "nickname": "denys",
+      "fullname": "denys denysenko",
+      "email": "denysenko@gmail.com",
+      "region": "Івано-Франківська обл",
+      "city": "Долина",
+      "active": true,
+      "verified": true
+    },
+    {
+      "id": 10,
+      "phoneNumber": "+380980995814",
+      "nickname": "ihor",
+      "fullname": "Ihor Ivanchenko",
+      "email": "ihor@gmail.com",
+      "region": "Рівненська обл",
+      "city": "Рівне",
+      "active": true,
+      "verified": true
+    },
+    {
+      "id": 11,
+      "phoneNumber": "+380981495814",
+      "nickname": "Artem",
+      "fullname": "Artem",
+      "email": "art@gmail.com",
+      "region": "Житомирська обл",
+      "city": "Житомир",
+      "active": true,
+      "verified": true
+    },
+    {
+      "id": 12,
+      "phoneNumber": "+380982495814",
+      "nickname": "vitalii",
+      "fullname": "vitalii",
+      "email": "vita@gmail.com",
+      "region": "Сумська обл",
+      "city": "Суми",
+      "active": false,
+      "verified": false
+    },
+    {
+      "id": 13,
+      "phoneNumber": "+380983495814",
+      "nickname": "vita",
+      "fullname": "Віта Віта",
+      "email": "vita123@gmail.com",
+      "region": "Харківська обл",
+      "city": "Харків",
+      "active": false,
+      "verified": true
+    }
+  ]
+}

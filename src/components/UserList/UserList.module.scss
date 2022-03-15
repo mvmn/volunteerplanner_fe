@@ -1,1 +1,21 @@
+.container {
+  background-color: rgb(231, 235, 240);
+  padding: 1rem;
+  text-align: start;
+}
 
+.dataGrid {
+  background-color: white;
+}
+
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400;
+  background-color: gray;
+  border: 2px solid #000;
+  box-shadow: 24;
+  padding: 4;
+}

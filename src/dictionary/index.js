@@ -18,7 +18,12 @@ const dictionary = {
   region: 'Район',
   profile: 'Мої дані',
   edit: 'Редагувати',
-  save: 'Зберегти'
+  save: 'Зберегти',
+  active: 'Активний',
+  inactive: 'Не активний',
+  verified: 'Підтверджено',
+  notVerified: 'Не підтверджено',
+  user: 'Користувач'
 };
 
 export default dictionary;
