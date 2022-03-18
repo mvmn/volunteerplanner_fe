@@ -1,40 +1,16 @@
-import {
-  Button,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
-  TextField
-} from '@mui/material';
+import { Button, Paper, TextField } from '@mui/material';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { setUser } from '../../actions/userActions';
 import { Title } from '../../components/Title';
-import { ROW_TO_DISPLAY } from '../../constants/uiConfigConstans';
+import { UserInformation } from '../../components/UserInformation';
 import dictionary from '../../dictionary';
 import styles from './Profile.module.scss';
 
 const DisplayData = () => {
   const user = useSelector(state => state.user);
-  return (
-    <TableContainer className={styles.tableContainer} component={Paper}>
-      <Table sx={{ minWidth: 650 }}>
-        <TableBody>
-          {ROW_TO_DISPLAY.map(rowName => {
-            return (
-              <TableRow key={user[rowName]}>
-                <TableCell className={styles.rowTitle}>{dictionary[rowName]}:</TableCell>
-                <TableCell>{user[rowName]}</TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
+  return <UserInformation user={user} />;
 };
 
 const EditData = props => {

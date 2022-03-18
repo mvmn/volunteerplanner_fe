@@ -23,7 +23,9 @@ const dictionary = {
   inactive: 'Не активний',
   verified: 'Підтверджено',
   notVerified: 'Не підтверджено',
-  user: 'Користувач'
+  user: 'Користувач',
+  verify: 'Підтвердити',
+  activate: 'Активувати'
 };
 
 export default dictionary;
