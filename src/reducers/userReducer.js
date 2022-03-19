@@ -1,4 +1,4 @@
-import { SET_LOGGED_IN, SET_LOGGED_OUT, SET_USER } from '../constants/userConstants';
+import { SET_LOGGED_IN, SET_LOGGED_OUT, SET_USER } from '../constants/user';
 import data from '../mocks/user.json';
 
 const initState = data.user;

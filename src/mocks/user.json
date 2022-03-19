@@ -6,6 +6,7 @@
     "email": "example@gmail.com",
     "region": "Львівська обл",
     "city": "Львів",
-    "isAuthorized": true
+    "isAuthorized": true,
+    "role": "operator"
   }
 }

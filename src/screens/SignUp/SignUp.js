@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { setLoggedIn } from '../../actions/userActions';
-import dictionry from '../../dictionary';
+import { setLoggedIn } from '../../actions/user';
+import dictionary from '../../dictionary';
 import styles from './SignUp.module.scss';
 
 export const SignUp = () => {
@@ -34,20 +34,20 @@ export const SignUp = () => {
   return (
     <div className={styles.container}>
       <TextField
+        classes={{ root: styles.root }}
         value={phoneNumber}
         type='tel'
         required
-        classes={{ root: styles.root }}
-        label={dictionry.phoneNumber}
+        label={dictionary.phoneNumber}
         size='small'
         margin='normal'
         onChange={e => setPhoneNumber(e.target.value)}
       />
       <TextField
+        classes={{ root: styles.root }}
         value={nickname}
         required
-        classes={{ root: styles.root }}
-        label={dictionry.nickname}
+        label={dictionary.nickname}
         size='small'
         margin='normal'
         onChange={e => setNickname(e.target.value)}
@@ -55,7 +55,7 @@ export const SignUp = () => {
       <TextField
         value={fullname}
         classes={{ root: styles.root }}
-        label={dictionry.fullname}
+        label={dictionary.fullname}
         size='small'
         margin='normal'
         onChange={e => setFullname(e.target.value)}
@@ -63,7 +63,7 @@ export const SignUp = () => {
       <TextField
         value={email}
         classes={{ root: styles.root }}
-        label={dictionry.email}
+        label={dictionary.email}
         size='small'
         type='email'
         margin='normal'
@@ -71,9 +71,9 @@ export const SignUp = () => {
       />
       <TextField
         required
-        value={password}
         classes={{ root: styles.root }}
-        label={dictionry.password}
+        value={password}
+        label={dictionary.password}
         type='password'
         size='small'
         margin='normal'
@@ -84,9 +84,9 @@ export const SignUp = () => {
       </div>
       <TextField
         required
-        value={region}
         classes={{ root: styles.root }}
-        label={dictionry.region}
+        value={region}
+        label={dictionary.region}
         type='password'
         size='small'
         margin='normal'
@@ -96,14 +96,14 @@ export const SignUp = () => {
         required
         value={city}
         classes={{ root: styles.root }}
-        label={dictionry.city}
+        label={dictionary.city}
         type='password'
         size='small'
         margin='normal'
         onChange={e => setCity(e.target.value)}
       />
       <Button disabled={isDisabled()} variant='outlined' onClick={hendleClick}>
-        {dictionry.send}
+        {dictionary.send}
       </Button>
     </div>
   );

@@ -1,9 +1,11 @@
+@import '../../styles/colors.scss';
+
 .footer {
   width: 100%;
   padding: 1rem;
   text-align: center;
   position: fixed;
   bottom: 0;
-  border-top: 1px solid gray;
+  border-top: 1px solid $light-grey;
   background-color: white;
 }

@@ -1,6 +1,6 @@
 import { Paper, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
 
-import { ROW_TO_DISPLAY } from '../../constants/uiConfigConstans';
+import { ROW_TO_DISPLAY } from '../../constants/uiConfig';
 import dictionary from '../../dictionary';
 import styles from './UserInformation.module.scss';
 

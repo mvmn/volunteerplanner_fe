@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { setLoggedOut } from '../../actions/userActions';
+import { setLoggedOut } from '../../actions/user';
 import dictionary from '../../dictionary';
 import styles from './Header.module.scss';
 
@@ -49,18 +49,15 @@ const Menu = ({ setIsOpened }) => {
 };
 
 const Dropdown = () => {
-  /**
-   * Add dropdown on Avatar hover; it should include:
-   * - Log out button
-   * - Open profile button
-   */
   const [isOpened, setIsOpened] = useState(false);
   const handleDropdownVisibility = () => setIsOpened(!isOpened);
+  const user = useSelector(state => state.user);
 
   return (
     <div>
       <Avatar sx={{ bgcolor: deepPurple[500] }} onClick={handleDropdownVisibility}>
-        OP
+        {/** TODO: make avatar creation more general */ user.nickname.charAt(0).toUpperCase()}
+        {user.nickname.charAt(1)}
       </Avatar>
       {isOpened && <Menu setIsOpened={setIsOpened} />}
     </div>

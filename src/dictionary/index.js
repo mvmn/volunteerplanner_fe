@@ -1,8 +1,7 @@
 const dictionary = {
   users: 'Користувачі',
-  tasks: 'Завдання',
+  tasks: 'Задачі',
   createTask: 'Створити завдання',
-  createCategory: 'Створити категорію',
   logIn: 'Ввійти',
   logOut: 'Вийти',
   taskMeneger: 'Менеджер задач',
@@ -25,7 +24,25 @@ const dictionary = {
   notVerified: 'Не підтверджено',
   user: 'Користувач',
   verify: 'Підтвердити',
-  activate: 'Активувати'
+  activate: 'Активувати',
+  customer: 'Замовник',
+  quantity: 'Кількість',
+  product_measure: 'Кількість (кг/л/штуки)',
+  priority: 'Приорітет',
+  deadline_date: 'Кінцевий термін',
+  note: 'Додаткова інформація',
+  status: 'Статус',
+  new: 'Нові',
+  completed: 'Завершені',
+  rejected: 'Відхилені',
+  high: 'Високий',
+  medium: 'Середній',
+  low: 'Низьский',
+  collectionAddress: 'Адреса збору',
+  shippingAddress: 'Адреса доставки',
+  category: 'Категорія',
+  subcategory: 'Підкатегорія',
+  productName: 'Назва продукту'
 };
 
 export default dictionary;

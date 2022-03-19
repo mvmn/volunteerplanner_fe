@@ -2,9 +2,9 @@ import { Box, Drawer, List, ListItem, Toolbar } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { Link, Navigate, Route, Routes } from 'react-router-dom';
 
-import { TasksList } from '../../components/TasksList';
 import { NAVIGATION_ITEMS } from '../../constants/navigation';
 import { routes } from '../../navigation/routes';
+import { TasksList } from '../../screens/TasksList';
 import styles from './Main.module.scss';
 
 const drawerWidth = 250;

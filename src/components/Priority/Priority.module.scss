@@ -1,29 +1,22 @@
 @import '../../styles/colors.scss';
 
-.status {
+.priority {
   border-radius: 13px;
   padding: 2px 5px;
   border: 1px solid;
 }
 
-.green,
-.verified {
+.low {
   border-color: $green;
   background-color: $light-green;
 }
 
-.yellow,
-.new {
+.medium {
   border-color: $yellow;
   background-color: $light-yellow;
 }
 
-.completed {
-  border-color: $grey;
-  background-color: $light-grey;
-}
-
-.rejected {
+.high {
   border-color: $red;
   background-color: $light-red;
 }

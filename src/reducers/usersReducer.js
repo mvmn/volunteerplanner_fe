@@ -1,4 +1,4 @@
-import { SET_USERS } from '../constants/usersConstants';
+import { SET_USERS } from '../constants/users';
 import data from '../mocks/users.json';
 
 const initState = data.users;

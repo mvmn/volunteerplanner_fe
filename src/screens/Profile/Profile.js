@@ -2,7 +2,7 @@ import { Button, Paper, TextField } from '@mui/material';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { setUser } from '../../actions/userActions';
+import { setUser } from '../../actions/user';
 import { Title } from '../../components/Title';
 import { UserInformation } from '../../components/UserInformation';
 import dictionary from '../../dictionary';

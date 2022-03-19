@@ -1,0 +1,15 @@
+@import '../../styles/colors.scss';
+
+.container {
+  text-align: start;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+
+    svg {
+      cursor: pointer;
+      font-size: 48px;
+    }
+  }
+}

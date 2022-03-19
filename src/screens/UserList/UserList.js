@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 
 import { Modal } from '../../components/Modal';
 import { Title } from '../../components/Title';
-import { MAX_USER_PER_PAGE, columns } from '../../constants/uiConfigConstans';
+import { MAX_USER_PER_PAGE, usersColumns } from '../../constants/uiConfig';
 import dictionary from '../../dictionary';
 import styles from './UserList.module.scss';
 
@@ -45,7 +45,7 @@ export const UserList = () => {
         onRowClick={e => handleRowClick(e)}
         rowsPerPageOptions={[MAX_USER_PER_PAGE]}
         rows={users}
-        columns={columns}
+        columns={usersColumns}
       />
     </div>
   );
