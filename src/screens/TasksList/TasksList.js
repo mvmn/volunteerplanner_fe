@@ -1,9 +1,11 @@
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { Box, Tab, Tabs, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import { useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
+import { Categories } from '../../components/Categories';
 import { Title } from '../../components/Title';
 import { MAX_TASKS_PER_PAGE, ROLES, TASK_STATUSES, tasksColumns } from '../../constants/uiConfig';
 import dictionary from '../../dictionary';
@@ -34,6 +36,10 @@ const OperatorTasksListView = () => {
   const handleRowClick = () => {};
 
   const [value, setValue] = useState(1);
+
+  const { selectedCategory, selectedSubCategory } = useContext(CategoriesContext);
+
+  console.log(selectedCategory, selectedSubCategory);
 
   const handleChange = (_, newValue) => {
     setValue(newValue);
@@ -67,7 +73,12 @@ const OperatorTasksListView = () => {
 };
 
 const VolunteerTasksListView = () => {
-  const tasks = useSelector(state => state.tasks.new);
+  const tasks = useSelector(state => state.tasks.verified);
+
+  const { selectedCategory, selectedSubCategory } = useContext(CategoriesContext);
+
+  console.log(selectedCategory, selectedSubCategory);
+
   const handleRowClick = () => {};
 
   return (
@@ -77,22 +88,47 @@ const VolunteerTasksListView = () => {
       onRowClick={e => handleRowClick(e)}
       rowsPerPageOptions={[MAX_TASKS_PER_PAGE]}
       rows={tasks}
-      columns={tasksColumns}
+      columns={tasksColumns.filter(item => item.field !== 'customer')}
     />
   );
 };
 
+export const CategoriesContext = createContext();
+
 export const TasksList = () => {
   const user = useSelector(state => state.user);
+  const navigate = useNavigate();
+
+  const [selectedCategory, setSelectedCategory] = useState();
+  const [selectedSubCategory, setSelectedSubCategory] = useState();
+
+  const handleClick = () => {
+    navigate('/create-task');
+  };
 
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         <Title text={dictionary.tasks} />
-        {user.role === ROLES.operator && <AddCircleOutlineIcon />}
+        {user.role === ROLES.operator && (
+          <div className={styles.icon} onClick={handleClick}>
+            <AddCircleOutlineIcon />
+          </div>
+        )}
       </div>
 
-      {user.role === ROLES.operator ? <OperatorTasksListView /> : <VolunteerTasksListView />}
+      <CategoriesContext.Provider
+        value={{
+          selectedCategory,
+          setSelectedCategory,
+          selectedSubCategory,
+          setSelectedSubCategory
+        }}
+      >
+        <Categories />
+
+        {user.role === ROLES.operator ? <OperatorTasksListView /> : <VolunteerTasksListView />}
+      </CategoriesContext.Provider>
     </div>
   );
 };

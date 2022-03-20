@@ -1,0 +1,13 @@
+{
+  "categories": {
+    "medicine": ["pills", "bandage", "plait"],
+    "clothesAndShoes": ["clothes", "shoes"],
+    "protection": ["vest", "helmet"],
+    "transport": ["car", "bus"],
+    "foodAndDrinks": ["food", "drinks", "meat", "milk"],
+    "hygiene": ["soap", "paste", "shampoo"],
+    "tourism": ["karemat", "flashlight", "sleepingBag"],
+    "equipment": ["laptop", "smartphone", "kettle"],
+    "money": []
+  }
+}

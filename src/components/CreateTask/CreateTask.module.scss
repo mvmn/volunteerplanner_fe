@@ -2,8 +2,18 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: auto;
-  height: 100vh;
+  flex-wrap: wrap;
+
+  .group {
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .root {
+      width: 50%;
+    }
+  }
 
   .root {
     width: 50%;
