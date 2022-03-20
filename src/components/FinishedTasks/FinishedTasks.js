@@ -30,7 +30,6 @@ export const FinishedTasks = () => {
         </TableHead>
         <TableBody>
           {tasks.map((task, i) => {
-            console.log(task);
             return (
               <TableRow key={task.id + i}>
                 {CELLS.map(cell => (

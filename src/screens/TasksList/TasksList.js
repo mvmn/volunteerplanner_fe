@@ -31,9 +31,8 @@ function TabPanel(props) {
   );
 }
 
-const OperatorTasksListView = () => {
+const OperatorTasksListView = ({ handleRowClick }) => {
   const tasks = useSelector(state => state.tasks);
-  const handleRowClick = () => {};
 
   const [value, setValue] = useState(1);
 
@@ -72,14 +71,12 @@ const OperatorTasksListView = () => {
   );
 };
 
-const VolunteerTasksListView = () => {
+const VolunteerTasksListView = ({ handleRowClick }) => {
   const tasks = useSelector(state => state.tasks.verified);
 
   const { selectedCategory, selectedSubCategory } = useContext(CategoriesContext);
 
   console.log(selectedCategory, selectedSubCategory);
-
-  const handleRowClick = () => {};
 
   return (
     <DataGrid
@@ -106,6 +103,11 @@ export const TasksList = () => {
     navigate('/create-task');
   };
 
+  const handleRowClick = row => {
+    const { id } = row;
+    navigate(`/create-subtask/${id}`);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -127,7 +129,11 @@ export const TasksList = () => {
       >
         <Categories />
 
-        {user.role === ROLES.operator ? <OperatorTasksListView /> : <VolunteerTasksListView />}
+        {user.role === ROLES.operator ? (
+          <OperatorTasksListView handleRowClick={handleRowClick} />
+        ) : (
+          <VolunteerTasksListView handleRowClick={handleRowClick} />
+        )}
       </CategoriesContext.Provider>
     </div>
   );

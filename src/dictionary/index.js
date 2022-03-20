@@ -75,7 +75,8 @@ const dictionary = {
   smartphone: 'Смартфони',
   kettle: 'Електричні чайники',
   allCategories: 'Всі категорії',
-  myFinishedTasks: 'Мої закриті задачі'
+  myFinishedTasks: 'Мої закриті задачі',
+  needTransportation: 'Потрібна допомога з транспортуванням'
 };
 
 export default dictionary;
