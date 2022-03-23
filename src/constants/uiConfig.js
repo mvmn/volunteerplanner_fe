@@ -44,10 +44,27 @@ export const usersColumns = [
   }
 ];
 
+const products = {
+  1: 'Бронежелет',
+  2: 'Крупи',
+  3: 'Зубна паста',
+  4: 'Гель для душу',
+  5: 'Питна вода',
+  6: 'Каремати'
+};
+
 export const tasksColumns = [
   { field: 'customer', headerName: dictionary.customer, flex: 1 },
   { field: 'quantity_left', headerName: dictionary.quantity, flex: 1 },
   { field: 'product_measure', headerName: dictionary.product_measure, flex: 1 },
+  {
+    field: 'product_id',
+    headerName: dictionary.productName,
+    renderCell: ({ row }) => {
+      return <>{products[row.product_id]}</>;
+    },
+    flex: 1
+  },
   {
     field: 'priority',
     headerName: dictionary.priority,

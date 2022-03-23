@@ -200,7 +200,7 @@ export const CreateTask = () => {
       />
 
       <Button disabled={isDisabled()} variant='outlined' onClick={hendleClick}>
-        {dictionary.send}
+        {dictionary.save}
       </Button>
     </div>
   );

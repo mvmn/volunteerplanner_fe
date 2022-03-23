@@ -7,6 +7,15 @@
   margin: 0.5rem 0;
 }
 
+.routes {
+  display: flex;
+  align-items: center;
+}
+
+.list {
+  display: flex;
+}
+
 .menu {
   position: absolute;
   background-color: white;
@@ -16,14 +25,6 @@
 
   .link {
     color: $theme-text-color;
-  }
-}
-
-.actions {
-  display: flex;
-
-  a {
-    margin: 0 0.5rem;
   }
 }
 

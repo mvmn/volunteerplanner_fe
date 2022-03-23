@@ -1,4 +1,5 @@
 const dictionary = {
+  save: 'Зберегти',
   users: 'Користувачі',
   tasks: 'Задачі',
   createTask: 'Створити завдання',
@@ -17,7 +18,6 @@ const dictionary = {
   region: 'Район',
   profile: 'Мої дані',
   edit: 'Редагувати',
-  save: 'Зберегти',
   active: 'Активний',
   inactive: 'Не активний',
   verified: 'Підтверджено',

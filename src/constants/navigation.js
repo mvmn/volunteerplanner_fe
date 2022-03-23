@@ -10,5 +10,6 @@ export const NAVIGATION_ITEMS = [
 ];
 
 export const OPERATOR_NAVIGATION_ITEMS = [
+  { link: 'tasks', title: dictionary.tasks, icon: <AssignmentOutlinedIcon /> },
   { link: 'users', title: dictionary.users, icon: <GroupOutlinedIcon /> }
 ];

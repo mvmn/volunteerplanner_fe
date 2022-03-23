@@ -1,12 +1,14 @@
 import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
 import PersonIcon from '@mui/icons-material/Person';
-import { AppBar, Avatar, Paper, Toolbar, Typography } from '@mui/material';
+import { AppBar, Avatar, List, ListItem, Paper, Toolbar, Typography } from '@mui/material';
 import { deepPurple } from '@mui/material/colors';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { setLoggedOut } from '../../actions/user';
+import { NAVIGATION_ITEMS, OPERATOR_NAVIGATION_ITEMS } from '../../constants/navigation';
+import { ROLES } from '../../constants/uiConfig';
 import dictionary from '../../dictionary';
 import styles from './Header.module.scss';
 
@@ -70,28 +72,47 @@ const ActionLinks = () => {
    */
 
   return (
-    <div className={styles.actions}>
+    <List className={styles.list}>
       <Link to='/sign-up' className={styles.link}>
-        {dictionary.signIn}
+        <ListItem button>{dictionary.signIn}</ListItem>
       </Link>{' '}
       <Link to='/login' className={styles.link}>
-        {dictionary.logIn}
+        <ListItem button>{dictionary.logIn}</ListItem>
       </Link>
-    </div>
+    </List>
   );
 };
 
 export const Header = () => {
   const isAuthorized = useSelector(state => state.user.isAuthorized);
 
+  const currentRole = useSelector(state => state.user.role);
+
+  const navigation = currentRole === ROLES.operator ? OPERATOR_NAVIGATION_ITEMS : NAVIGATION_ITEMS;
+
   return (
     <AppBar position='fixed' sx={{ zIndex: theme => theme.zIndex.drawer + 1 }}>
       <Toolbar className={styles.toolbar}>
-        <Typography variant='h6' noWrap component='div'>
-          <Link to='/' className={styles.link}>
-            {dictionary.taskMeneger}
-          </Link>
-        </Typography>
+        {isAuthorized && (
+          <List className={styles.list}>
+            <Link to='/' className={styles.link}>
+              <ListItem button>
+                <Typography variant='h6' noWrap component='div'>
+                  {dictionary.taskMeneger}
+                </Typography>
+              </ListItem>
+            </Link>
+            {navigation.map(item => {
+              return (
+                <Link key={item.link} to={item.link} className={styles.link}>
+                  <ListItem button>
+                    {item.icon}&nbsp; {item.title}
+                  </ListItem>
+                </Link>
+              );
+            })}
+          </List>
+        )}
         {isAuthorized ? <Dropdown /> : <ActionLinks />}
       </Toolbar>
     </AppBar>

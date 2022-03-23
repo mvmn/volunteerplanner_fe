@@ -1,4 +1,5 @@
 import {
+  Button,
   Checkbox,
   FormControlLabel,
   FormGroup,
@@ -16,6 +17,15 @@ import { useParams } from 'react-router-dom';
 import dictionary from '../../dictionary';
 import styles from './CreateSubtask.module.scss';
 
+const products = {
+  1: 'Бронежелет',
+  2: 'Крупи',
+  3: 'Зубна паста',
+  4: 'Гель для душу',
+  5: 'Питна вода',
+  6: 'Каремати'
+};
+
 export function CreateSubtask() {
   const params = useParams();
   const tasks = useSelector(state => state.tasks.verified);
@@ -24,7 +34,7 @@ export function CreateSubtask() {
   const task = tasks.find(item => item.id === params.taskId);
 
   return (
-    <>
+    <div className={styles.container}>
       <TableContainer>
         <Table classes={{ root: styles.root }} sx={{ minWidth: 650 }}>
           <TableBody>
@@ -34,7 +44,7 @@ export function CreateSubtask() {
             </TableRow>
             <TableRow>
               <TableCell className={styles.rowTitle}>{dictionary.productName}:</TableCell>
-              <TableCell>{task.product_id}</TableCell>
+              <TableCell>{products[task.product_id]}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell className={styles.rowTitle}>{dictionary.quantity}:</TableCell>
@@ -62,6 +72,9 @@ export function CreateSubtask() {
           <FormControlLabel control={<Checkbox />} label={dictionary.needTransportation} />
         </FormGroup>
       </div>
-    </>
+      <Button className={styles.button} variant='outlined'>
+        {dictionary.save}
+      </Button>
+    </div>
   );
 }
