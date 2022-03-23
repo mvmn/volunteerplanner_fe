@@ -77,7 +77,9 @@ const dictionary = {
   kettle: 'Електричні чайники',
   allCategories: 'Всі категорії',
   myTasks: 'Мої задачі',
-  needTransportation: 'Потрібна допомога з транспортуванням'
+  needTransportation: 'Потрібна допомога з транспортуванням',
+  expandAll: 'Відкрити всі',
+  collapseAll: 'Закрити всі'
 };
 
 export default dictionary;

@@ -18,4 +18,12 @@
       font-size: 48px;
     }
   }
+
+  .body {
+    display: flex;
+
+    .tabsContainer {
+      flex: 2;
+    }
+  }
 }

@@ -1,0 +1,11 @@
+.container {
+  text-align: start;
+
+  .body {
+    display: flex;
+
+    .tabsContainer {
+      flex: 2;
+    }
+  }
+}

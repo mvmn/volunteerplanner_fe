@@ -1,74 +1,80 @@
-import clsx from 'clsx';
-import { useContext, useEffect } from 'react';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { TreeItem, TreeView } from '@mui/lab';
+import { Button } from '@mui/material';
+import { useContext, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import dictionary from '../../dictionary';
-import { CategoriesContext } from '../../screens/TasksList';
+import { CategoriesContext } from '../../screens/Main';
 import styles from './Categories.module.scss';
 
 export const Categories = () => {
-  const defaultCategory = 'allCategories';
   const categories = useSelector(state => state.categories);
+  const handleToggle = (_, nodeIds) => {
+    setExpanded([nodeIds[0]]);
+  };
+  const [expanded, setExpanded] = useState([]);
 
-  const { setSelectedSubCategory, setSelectedCategory, selectedCategory, selectedSubCategory } =
+  const SUBCATEGORIES_MAP = {};
+  const CATEGORIES_MAP = Object.entries(categories).reduce(
+    (map, [category, subcategory], index) => {
+      map[index.toString()] = category;
+      subcategory.forEach((item, i) => {
+        SUBCATEGORIES_MAP[i.toString() + index.toString()] = item;
+      });
+
+      return map;
+    },
+    {}
+  );
+
+  const handleSelection = (_, id) => {
+    SUBCATEGORIES_MAP[id] && setSelectedSubCategory(SUBCATEGORIES_MAP[id]);
+    CATEGORIES_MAP[id] && setSelectedCategory(CATEGORIES_MAP[id]);
+  };
+
+  const { setSelectedSubCategory, setSelectedCategory, selectedCategory } =
     useContext(CategoriesContext);
 
   useEffect(() => {
-    if (!selectedCategory) setSelectedCategory(defaultCategory);
-  }, [selectedCategory, setSelectedCategory]);
-
-  const handleAllCategoriesClick = () => {
     setSelectedSubCategory();
-    setSelectedCategory(defaultCategory);
+  }, [selectedCategory, setSelectedSubCategory]);
+
+  const handleCollapseClick = () => {
+    setExpanded([]);
+    setSelectedSubCategory();
+    setSelectedCategory();
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.categories}>
-        <div
-          className={clsx(
-            styles.category,
-            defaultCategory === selectedCategory && styles.selectedCategory
-          )}
-          key={defaultCategory}
-          onClick={handleAllCategoriesClick}
-        >
-          {dictionary[defaultCategory]}
-        </div>
-        {Object.keys(categories).map(item => {
+    <div>
+      <Button onClick={handleCollapseClick}>{dictionary.collapseAll}</Button>
+      <TreeView
+        className={styles.treeView}
+        defaultCollapseIcon={<ExpandMoreIcon />}
+        defaultExpandIcon={<ChevronRightIcon />}
+        expanded={expanded}
+        onNodeToggle={handleToggle}
+        onNodeSelect={handleSelection}
+        sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
+      >
+        {Object.entries(categories).map(([category, subcategory], index) => {
           return (
-            <div
-              className={clsx(
-                styles.category,
-                item === selectedCategory && styles.selectedCategory
-              )}
-              key={item}
-              onClick={() => setSelectedCategory(item)}
-            >
-              {dictionary[item]}
-            </div>
+            <TreeItem nodeId={index.toString()} key={category} label={dictionary[category]}>
+              {subcategory.map((item, i) => {
+                return (
+                  <TreeItem
+                    nodeId={i.toString() + index.toString()}
+                    key={item}
+                    label={dictionary[item]}
+                  />
+                );
+              })}
+            </TreeItem>
           );
         })}
-      </div>
-
-      {categories[selectedCategory] && categories[selectedCategory].length ? (
-        <div className={styles.subCategories}>
-          {categories[selectedCategory].map(item => {
-            return (
-              <div
-                className={clsx(
-                  styles.subCategory,
-                  item === selectedSubCategory && styles.selectedSubCategory
-                )}
-                key={item}
-                onClick={() => setSelectedSubCategory(item)}
-              >
-                {dictionary[item]}
-              </div>
-            );
-          })}
-        </div>
-      ) : null}
+      </TreeView>
     </div>
   );
 };

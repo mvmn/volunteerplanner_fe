@@ -1,7 +1,7 @@
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { Box, Tab, Tabs, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import { createContext, useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,6 +9,7 @@ import { Categories } from '../../components/Categories';
 import { Title } from '../../components/Title';
 import { MAX_TASKS_PER_PAGE, ROLES, TASK_STATUSES, tasksColumns } from '../../constants/uiConfig';
 import dictionary from '../../dictionary';
+import { CategoriesContext } from '../Main';
 import styles from './TasksList.module.scss';
 
 export function TabPanel(props) {
@@ -45,7 +46,7 @@ const OperatorTasksListView = ({ handleRowClick }) => {
   };
 
   return (
-    <>
+    <div className={styles.tabsContainer}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange}>
           {Object.keys(TASK_STATUSES).map(item => (
@@ -67,7 +68,7 @@ const OperatorTasksListView = ({ handleRowClick }) => {
           </TabPanel>
         );
       })}
-    </>
+    </div>
   );
 };
 
@@ -79,25 +80,22 @@ const VolunteerTasksListView = ({ handleRowClick }) => {
   console.log(selectedCategory, selectedSubCategory);
 
   return (
-    <DataGrid
-      style={{ height: 600 }}
-      pageSize={MAX_TASKS_PER_PAGE}
-      onRowClick={e => handleRowClick(e)}
-      rowsPerPageOptions={[MAX_TASKS_PER_PAGE]}
-      rows={tasks}
-      columns={tasksColumns.filter(item => item.field !== 'customer')}
-    />
+    <div className={styles.tabsContainer}>
+      <DataGrid
+        style={{ height: 600 }}
+        pageSize={MAX_TASKS_PER_PAGE}
+        onRowClick={e => handleRowClick(e)}
+        rowsPerPageOptions={[MAX_TASKS_PER_PAGE]}
+        rows={tasks}
+        columns={tasksColumns.filter(item => item.field !== 'customer')}
+      />
+    </div>
   );
 };
-
-export const CategoriesContext = createContext();
 
 export const TasksList = () => {
   const user = useSelector(state => state.user);
   const navigate = useNavigate();
-
-  const [selectedCategory, setSelectedCategory] = useState();
-  const [selectedSubCategory, setSelectedSubCategory] = useState();
 
   const handleClick = () => {
     navigate('/create-task');
@@ -119,14 +117,7 @@ export const TasksList = () => {
         )}
       </div>
 
-      <CategoriesContext.Provider
-        value={{
-          selectedCategory,
-          setSelectedCategory,
-          selectedSubCategory,
-          setSelectedSubCategory
-        }}
-      >
+      <div className={styles.body}>
         <Categories />
 
         {user.role === ROLES.operator ? (
@@ -134,7 +125,7 @@ export const TasksList = () => {
         ) : (
           <VolunteerTasksListView handleRowClick={handleRowClick} />
         )}
-      </CategoriesContext.Provider>
+      </div>
     </div>
   );
 };

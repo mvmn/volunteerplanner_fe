@@ -1,37 +1,4 @@
-@import '../../styles/colors.scss';
-
-.container {
-  margin: 1rem 0;
-
-  .categories {
-    display: flex;
-    justify-content: space-between;
-    border-top: 1px solid $grey;
-    border-bottom: 1px solid $grey;
-
-    .category {
-      cursor: pointer;
-      padding: 1rem;
-    }
-
-    .selectedCategory {
-      background-color: $light-grey;
-    }
-  }
-
-  .subCategories {
-    display: flex;
-    justify-content: center;
-    border-bottom: 1px solid $grey;
-    background-color: $light-grey;
-
-    .subCategory {
-      cursor: pointer;
-      padding: 1rem;
-    }
-
-    .selectedSubCategory {
-      background-color: $mui-grey-200;
-    }
-  }
+.treeView {
+  min-width: 250px;
+  height: auto;
 }
