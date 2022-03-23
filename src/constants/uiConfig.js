@@ -11,6 +11,12 @@ export const TASK_STATUSES = {
   rejected: 3
 };
 
+export const SUBTASK_STATUSES = {
+  inProgress: 0,
+  completed: 1,
+  rejected: 2
+};
+
 export const ROLES = {
   operator: 'operator',
   volunteer: 'volunteer'

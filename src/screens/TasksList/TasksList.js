@@ -11,7 +11,7 @@ import { MAX_TASKS_PER_PAGE, ROLES, TASK_STATUSES, tasksColumns } from '../../co
 import dictionary from '../../dictionary';
 import styles from './TasksList.module.scss';
 
-function TabPanel(props) {
+export function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
   return (

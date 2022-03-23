@@ -6,7 +6,7 @@ import dictionary from '../dictionary';
 
 export const NAVIGATION_ITEMS = [
   { link: 'tasks', title: dictionary.tasks, icon: <AssignmentOutlinedIcon /> },
-  { link: 'finished-tasks', title: dictionary.myFinishedTasks, icon: <DoneAllIcon /> }
+  { link: 'my-tasks', title: dictionary.myTasks, icon: <DoneAllIcon /> }
 ];
 
 export const OPERATOR_NAVIGATION_ITEMS = [

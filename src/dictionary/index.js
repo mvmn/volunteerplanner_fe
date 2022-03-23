@@ -16,6 +16,7 @@ const dictionary = {
   email: 'Електронна адреса',
   city: 'Населений пункт',
   region: 'Район',
+  inProgress: 'В роботі',
   profile: 'Мої дані',
   edit: 'Редагувати',
   active: 'Активний',
@@ -75,7 +76,7 @@ const dictionary = {
   smartphone: 'Смартфони',
   kettle: 'Електричні чайники',
   allCategories: 'Всі категорії',
-  myFinishedTasks: 'Мої закриті задачі',
+  myTasks: 'Мої задачі',
   needTransportation: 'Потрібна допомога з транспортуванням'
 };
 
