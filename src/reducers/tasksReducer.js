@@ -3,10 +3,10 @@ import { TASK_STATUSES } from '../constants/uiConfig';
 import data from '../mocks/tasks.json';
 
 const initState = {
-  new: data.tasks.filter(item => item.status_id === TASK_STATUSES.new),
-  verified: data.tasks.filter(item => item.status_id === TASK_STATUSES.verified),
-  completed: data.tasks.filter(item => item.status_id === TASK_STATUSES.completed),
-  rejected: data.tasks.filter(item => item.status_id === TASK_STATUSES.rejected)
+  new: data.tasks.filter(item => item.status === TASK_STATUSES.new),
+  verified: data.tasks.filter(item => item.status === TASK_STATUSES.verified),
+  completed: data.tasks.filter(item => item.status === TASK_STATUSES.completed),
+  rejected: data.tasks.filter(item => item.status === TASK_STATUSES.rejected)
 };
 
 export const tasksReducer = function (state = initState, action) {

@@ -17,16 +17,12 @@ const EditData = props => {
   const {
     phoneNumber,
     setPhoneNumber,
-    nickname,
-    setNickname,
-    fullname,
-    setFullname,
+    userName,
+    setUserName,
+    fullName,
+    setFullName,
     email,
-    setEmail,
-    city,
-    setCity,
-    region,
-    setRegion
+    setEmail
   } = props;
 
   return (
@@ -40,24 +36,16 @@ const EditData = props => {
         />
       </div>
       <div className={styles.editRow}>
-        <div className={styles.editTitleRow}>{dictionary.nickname}:</div>
-        <TextField size='small' value={nickname} onChange={e => setNickname(e.target.value)} />
+        <div className={styles.editTitleRow}>{dictionary.userName}:</div>
+        <TextField size='small' value={userName} onChange={e => setUserName(e.target.value)} />
       </div>
       <div className={styles.editRow}>
         <div className={styles.editTitleRow}>{dictionary.fullname}:</div>
-        <TextField size='small' value={fullname} onChange={e => setFullname(e.target.value)} />
+        <TextField size='small' value={fullName} onChange={e => setFullName(e.target.value)} />
       </div>
       <div className={styles.editRow}>
         <div className={styles.editTitleRow}>{dictionary.email}:</div>
         <TextField size='small' value={email} onChange={e => setEmail(e.target.value)} />
-      </div>
-      <div className={styles.editRow}>
-        <div className={styles.editTitleRow}>{dictionary.city}:</div>
-        <TextField size='small' value={city} onChange={e => setCity(e.target.value)} />
-      </div>
-      <div className={styles.editRow}>
-        <div className={styles.editTitleRow}>{dictionary.region}:</div>
-        <TextField size='small' value={region} onChange={e => setRegion(e.target.value)} />
       </div>
     </Paper>
   );
@@ -68,24 +56,20 @@ export const Profile = () => {
   const dispatch = useDispatch();
 
   const user = useSelector(state => state.user);
-  const { phoneNumber, nickname, fullname, email, city, region } = user;
+  const { phoneNumber, userName, fullname, email } = user;
   const [editedPhoneNumber, setPhoneNumber] = useState(phoneNumber);
-  const [editedNickname, setNickname] = useState(nickname);
-  const [editedFullname, setFullname] = useState(fullname);
+  const [editedUserName, setUserName] = useState(userName);
+  const [editedFullName, setFullName] = useState(fullname);
   const [editedEmail, setEmail] = useState(email);
-  const [editedCity, setCity] = useState(city);
-  const [editedRegion, setRegion] = useState(region);
 
   const handleEditClick = () => {
     if (isEditing) {
       dispatch(
         setUser({
           phoneNumber: editedPhoneNumber,
-          nickname: editedNickname,
-          fullname: editedFullname,
-          email: editedEmail,
-          city: editedCity,
-          region: editedRegion
+          userName: editedUserName,
+          fullName: editedFullName,
+          email: editedEmail
         })
       );
     }
@@ -106,16 +90,12 @@ export const Profile = () => {
         <EditData
           phoneNumber={editedPhoneNumber}
           setPhoneNumber={setPhoneNumber}
-          nickname={editedNickname}
-          setNickname={setNickname}
-          fullname={editedFullname}
+          userName={editedUserName}
+          setNickname={setUserName}
+          fullName={editedFullName}
           email={editedEmail}
           setEmail={setEmail}
-          setFullname={setFullname}
-          city={editedCity}
-          setCity={setCity}
-          region={editedRegion}
-          setRegion={setRegion}
+          setFullName={setFullName}
         />
       ) : (
         <DisplayData />

@@ -53,7 +53,7 @@ export const VolunteerTasks = () => {
                   onRowClick={e => handleRowClick(e)}
                   rowsPerPageOptions={[MAX_TASKS_PER_PAGE]}
                   rows={tasksByStatus}
-                  columns={tasksColumns.filter(item => item.field !== 'customer')}
+                  columns={tasksColumns}
                 />
               </TabPanel>
             );

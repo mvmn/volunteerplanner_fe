@@ -87,7 +87,7 @@ const VolunteerTasksListView = ({ handleRowClick }) => {
         onRowClick={e => handleRowClick(e)}
         rowsPerPageOptions={[MAX_TASKS_PER_PAGE]}
         rows={tasks}
-        columns={tasksColumns.filter(item => item.field !== 'customer')}
+        columns={tasksColumns}
       />
     </div>
   );

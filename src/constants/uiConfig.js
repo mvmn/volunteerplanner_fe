@@ -5,10 +5,10 @@ export const MAX_USER_PER_PAGE = 10;
 export const MAX_TASKS_PER_PAGE = 5;
 
 export const TASK_STATUSES = {
-  new: 0,
-  verified: 1,
-  completed: 2,
-  rejected: 3
+  new: 'NEW',
+  verified: 'VERIFIED',
+  completed: 'COMPLETED',
+  rejected: 'REJECTED'
 };
 
 export const SUBTASK_STATUSES = {
@@ -23,10 +23,10 @@ export const ROLES = {
 };
 
 export const STATUS_NAME = {
-  0: 'new',
-  1: 'verified',
-  2: 'completed',
-  3: 'rejected'
+  NEW: 'new',
+  VERIFIED: 'verified',
+  COMPLETED: 'completed',
+  REJECTED: 'rejected'
 };
 
 const products = {
@@ -39,14 +39,13 @@ const products = {
 };
 
 export const tasksColumns = [
-  { field: 'customer', headerName: dictionary.customer, flex: 1 },
-  { field: 'quantity_left', headerName: dictionary.quantity, flex: 1 },
-  { field: 'product_measure', headerName: dictionary.product_measure, flex: 1 },
+  { field: 'quantityLeft', headerName: dictionary.quantity, flex: 1 },
+  { field: 'productMeasure', headerName: dictionary.productMeasure, flex: 1 },
   {
-    field: 'product_id',
+    field: 'productId',
     headerName: dictionary.productName,
     renderCell: ({ row }) => {
-      return <>{products[row.product_id]}</>;
+      return <>{products[row.productId]}</>;
     },
     flex: 1
   },
@@ -58,14 +57,14 @@ export const tasksColumns = [
     },
     flex: 1
   },
-  { field: 'deadline_date', headerName: dictionary.deadline_date, flex: 1 },
+  { field: 'deadlineDate', headerName: dictionary.deadlineDate, flex: 1 },
   { field: 'note', headerName: dictionary.note, flex: 1 },
   {
-    field: 'status_id',
+    field: 'status',
     headerName: dictionary.status,
-    renderCell: ({ row }) => <Status status={row.status_id} />,
+    renderCell: ({ row }) => <Status status={row.status} />,
     flex: 1
   }
 ];
 
-export const ROW_TO_DISPLAY = ['phoneNumber', 'nickname', 'fullname', 'email', 'region', 'city'];
+export const ROW_TO_DISPLAY = ['phoneNumber', 'userName', 'fullName', 'email'];

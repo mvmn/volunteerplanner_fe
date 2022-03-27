@@ -1,12 +1,18 @@
 {
   "user": {
+    "id": 0,
     "phoneNumber": "+380980495814",
-    "nickname": "jon",
-    "fullname": "Джон Доу",
+    "userName": "jon",
+    "fullName": "Джон Доу",
     "email": "example@gmail.com",
-    "region": "Львівська обл",
-    "city": "Львів",
     "isAuthorized": true,
-    "role": "operator"
+    "role": "operator",
+    "phoneNumberVerified": true,
+    "userVerified": true,
+    "userVerifiedByUserId": 0,
+    "userVerifiedAt": "2022-03-27T11:12:10.386Z",
+    "locked": true,
+    "lockedByUserId": 0,
+    "lockedAt": "2022-03-27T11:12:10.386Z"
   }
 }

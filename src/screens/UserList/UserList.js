@@ -3,6 +3,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
+import { LockedStatus } from '../../components/LockedStatus';
 import { Modal } from '../../components/Modal';
 import { Status } from '../../components/Status';
 import { Title } from '../../components/Title';
@@ -10,9 +11,9 @@ import { MAX_USER_PER_PAGE } from '../../constants/uiConfig';
 import dictionary from '../../dictionary';
 import styles from './UserList.module.scss';
 
-const Test = params => {
+const UserName = ({ params }) => {
   const users = useSelector(state => state.users);
-  const user = users.find(user => user.id === params.params.id);
+  const user = users.find(user => user.id === params.id);
   return <>{user.fullName}</>;
 };
 
@@ -23,14 +24,14 @@ export const usersColumns = [
   {
     field: 'phoneNumberVerified',
     headerName: dictionary.phoneNumberVerified,
-    renderCell: ({ row }) => <Status status={row.phoneNumberVerified} />,
+    renderCell: ({ row }) => <LockedStatus status={row.phoneNumberVerified} />,
     flex: 2
   },
   { field: 'role', headerName: dictionary.role, flex: 2 },
   {
     field: 'userVerifiedByUserId',
     headerName: dictionary.userVerifiedByUserId,
-    renderCell: params => <Test params={params} />,
+    renderCell: params => <UserName params={params} />,
     flex: 2
   },
   {
