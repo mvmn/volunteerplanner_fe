@@ -3,20 +3,69 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useContext, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { MAX_TASKS_PER_PAGE, SUBTASK_STATUSES, tasksColumns } from '../../constants/uiConfig';
+import { MAX_TASKS_PER_PAGE, SUBTASK_STATUSES, products } from '../../constants/uiConfig';
 import dictionary from '../../dictionary';
 import { CategoriesContext } from '../../screens/Main';
 import { TabPanel } from '../../screens/TasksList';
 import { Categories } from '../Categories';
+import { Priority } from '../Priority';
+import { Status } from '../Status';
 import { Title } from '../Title';
 import styles from './VolunteerTasks.module.scss';
 
+export const tasksColumns = [
+  { field: 'quantityLeft', headerName: dictionary.quantity, flex: 1 },
+  { field: 'productMeasure', headerName: dictionary.productMeasure, flex: 1 },
+  {
+    field: 'productId',
+    headerName: dictionary.productName,
+    renderCell: ({ row }) => {
+      return <>{products[row.productId]}</>;
+    },
+    flex: 1
+  },
+  {
+    field: 'priority',
+    headerName: dictionary.priority,
+    renderCell: ({ row }) => {
+      return <Priority priority={row.priority} />;
+    },
+    flex: 1
+  },
+  { field: 'deadlineDate', headerName: dictionary.deadlineDate, flex: 1 },
+  { field: 'note', headerName: dictionary.note, flex: 1 },
+  {
+    field: 'status',
+    headerName: dictionary.status,
+    renderCell: ({ row }) => <Status status={row.status} />,
+    flex: 1
+  }
+];
+
 export const VolunteerTasks = () => {
-  /**
-   * The tasks are displaied for the testing.
-   * They have to be replaced with subtasks
-   */
   const tasks = useSelector(state => state.tasks);
+  const subTasks = useSelector(state => state.subTasks);
+
+  const TASKS_MAP = Object.entries(tasks).reduce((acc, [key, values]) => {
+    values.forEach(item => {
+      acc[item.id] = item;
+    });
+    return acc;
+  }, {});
+
+  const rows = Object.entries(subTasks).reduce((acc, [key, value]) => {
+    console.log(key, value);
+    acc[key] = value.map(item => {
+      return {
+        ...TASKS_MAP[item.taskId],
+        quantity: item.quantity,
+        status: item.status,
+        note: item.note
+      };
+    });
+
+    return acc;
+  }, {});
 
   const [value, setValue] = useState(0);
 
@@ -44,7 +93,7 @@ export const VolunteerTasks = () => {
               ))}
             </Tabs>
           </Box>
-          {Object.entries(tasks).map(([key, tasksByStatus], i) => {
+          {Object.entries(rows).map(([key, subTasksByStatus], i) => {
             return (
               <TabPanel key={key} value={value} index={i}>
                 <DataGrid
@@ -52,7 +101,7 @@ export const VolunteerTasks = () => {
                   pageSize={MAX_TASKS_PER_PAGE}
                   onRowClick={e => handleRowClick(e)}
                   rowsPerPageOptions={[MAX_TASKS_PER_PAGE]}
-                  rows={tasksByStatus}
+                  rows={subTasksByStatus}
                   columns={tasksColumns}
                 />
               </TabPanel>

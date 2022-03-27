@@ -12,9 +12,9 @@ export const TASK_STATUSES = {
 };
 
 export const SUBTASK_STATUSES = {
-  inProgress: 0,
-  completed: 1,
-  rejected: 2
+  completed: 'COMPLETED',
+  inProgress: 'IN_PROGRESS',
+  rejected: 'REJECTED'
 };
 
 export const ROLES = {
@@ -26,10 +26,11 @@ export const STATUS_NAME = {
   NEW: 'new',
   VERIFIED: 'verified',
   COMPLETED: 'completed',
+  IN_PROGRESS: 'inProgress',
   REJECTED: 'rejected'
 };
 
-const products = {
+export const products = {
   1: 'Бронежелет',
   2: 'Крупи',
   3: 'Зубна паста',

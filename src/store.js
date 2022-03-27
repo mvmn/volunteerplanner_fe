@@ -1,6 +1,7 @@
 import { combineReducers, createStore } from 'redux';
 
 import { categoriesReducer } from './reducers/categories';
+import { subTasksReducer } from './reducers/subTasksReducer';
 import { tasksReducer } from './reducers/tasksReducer';
 import { userReducer } from './reducers/userReducer';
 import { usersReducer } from './reducers/usersReducer';
@@ -10,6 +11,7 @@ export const store = createStore(
     user: userReducer,
     tasks: tasksReducer,
     users: usersReducer,
-    categories: categoriesReducer
+    categories: categoriesReducer,
+    subTasks: subTasksReducer
   })
 );

@@ -24,7 +24,7 @@ export const usersColumns = [
   {
     field: 'phoneNumberVerified',
     headerName: dictionary.phoneNumberVerified,
-    renderCell: ({ row }) => <LockedStatus status={row.phoneNumberVerified} />,
+    renderCell: ({ row }) => <Status status={row.phoneNumberVerified} />,
     flex: 2
   },
   { field: 'role', headerName: dictionary.role, flex: 2 },
@@ -37,7 +37,7 @@ export const usersColumns = [
   {
     field: 'locked',
     headerName: dictionary.locked,
-    renderCell: ({ row }) => <Status status={row.locked} />,
+    renderCell: ({ row }) => <LockedStatus status={row.locked} />,
     flex: 2
   },
   {
@@ -68,7 +68,7 @@ export const UserList = () => {
       <Modal handleClose={handleModalClose} isModalOpened={isModalOpened} user={selectedUser}>
         {selectedUser && (
           <DialogActions>
-            {!selectedUser.verified ? (
+            {!selectedUser.userVerified ? (
               <Button variant='outlined'>{dictionary.verify}</Button>
             ) : (
               <Button variant='outlined'>

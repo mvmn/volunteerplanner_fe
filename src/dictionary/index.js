@@ -30,6 +30,7 @@ const dictionary = {
   verify: 'Підтвердити',
   unlock: 'Активувати',
   lock: 'Блокувати',
+  unlocked: 'Не заблоковано',
   locked: 'Заблоковано',
   customer: 'Замовник',
   quantity: 'Кількість',

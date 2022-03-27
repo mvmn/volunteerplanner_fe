@@ -1,4 +1,4 @@
-import { Button, TextField, Typography } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -10,17 +10,15 @@ import styles from './SignUp.module.scss';
 export const SignUp = () => {
   const [phoneNumber, setPhoneNumber] = useState();
   const [password, setPassword] = useState();
-  const [nickname, setNickname] = useState();
+  const [userName, setUserName] = useState();
   const [fullName, setFullName] = useState();
   const [email, setEmail] = useState();
-  const [city, setCity] = useState();
-  const [region, setRegion] = useState();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const isDisabled = () => {
-    return !phoneNumber || !nickname || !password;
+    return !phoneNumber || !userName || !password;
   };
 
   const hendleClick = () => {
@@ -28,7 +26,7 @@ export const SignUp = () => {
 
     dispatch(setLoggedIn()); // TODO: replace with navigation to confirmation screen
     navigate('/');
-    console.log(phoneNumber, password, nickname, fullName, email, city, region);
+    console.log(phoneNumber, password, userName, fullName, email);
   };
 
   return (
@@ -45,12 +43,12 @@ export const SignUp = () => {
       />
       <TextField
         classes={{ root: styles.root }}
-        value={nickname}
+        value={userName}
         required
-        label={dictionary.nickname}
+        label={dictionary.userName}
         size='small'
         margin='normal'
-        onChange={e => setNickname(e.target.value)}
+        onChange={e => setUserName(e.target.value)}
       />
       <TextField
         value={fullName}
@@ -78,29 +76,6 @@ export const SignUp = () => {
         size='small'
         margin='normal'
         onChange={e => setPassword(e.target.value)}
-      />
-      <div className={styles.adressLabel}>
-        <Typography variant='body1'>Adress:</Typography>
-      </div>
-      <TextField
-        required
-        classes={{ root: styles.root }}
-        value={region}
-        label={dictionary.region}
-        type='password'
-        size='small'
-        margin='normal'
-        onChange={e => setRegion(e.target.value)}
-      />
-      <TextField
-        required
-        value={city}
-        classes={{ root: styles.root }}
-        label={dictionary.city}
-        type='password'
-        size='small'
-        margin='normal'
-        onChange={e => setCity(e.target.value)}
       />
       <Button disabled={isDisabled()} variant='outlined' onClick={hendleClick}>
         {dictionary.send}
