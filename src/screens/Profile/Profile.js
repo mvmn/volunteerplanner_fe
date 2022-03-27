@@ -40,7 +40,7 @@ const EditData = props => {
         <TextField size='small' value={userName} onChange={e => setUserName(e.target.value)} />
       </div>
       <div className={styles.editRow}>
-        <div className={styles.editTitleRow}>{dictionary.fullname}:</div>
+        <div className={styles.editTitleRow}>{dictionary.fullName}:</div>
         <TextField size='small' value={fullName} onChange={e => setFullName(e.target.value)} />
       </div>
       <div className={styles.editRow}>
@@ -56,10 +56,10 @@ export const Profile = () => {
   const dispatch = useDispatch();
 
   const user = useSelector(state => state.user);
-  const { phoneNumber, userName, fullname, email } = user;
+  const { phoneNumber, userName, fullName, email } = user;
   const [editedPhoneNumber, setPhoneNumber] = useState(phoneNumber);
   const [editedUserName, setUserName] = useState(userName);
-  const [editedFullName, setFullName] = useState(fullname);
+  const [editedFullName, setFullName] = useState(fullName);
   const [editedEmail, setEmail] = useState(email);
 
   const handleEditClick = () => {

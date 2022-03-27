@@ -11,7 +11,7 @@ export const SignUp = () => {
   const [phoneNumber, setPhoneNumber] = useState();
   const [password, setPassword] = useState();
   const [nickname, setNickname] = useState();
-  const [fullname, setFullname] = useState();
+  const [fullName, setFullName] = useState();
   const [email, setEmail] = useState();
   const [city, setCity] = useState();
   const [region, setRegion] = useState();
@@ -28,7 +28,7 @@ export const SignUp = () => {
 
     dispatch(setLoggedIn()); // TODO: replace with navigation to confirmation screen
     navigate('/');
-    console.log(phoneNumber, password, nickname, fullname, email, city, region);
+    console.log(phoneNumber, password, nickname, fullName, email, city, region);
   };
 
   return (
@@ -53,12 +53,12 @@ export const SignUp = () => {
         onChange={e => setNickname(e.target.value)}
       />
       <TextField
-        value={fullname}
+        value={fullName}
         classes={{ root: styles.root }}
-        label={dictionary.fullname}
+        label={dictionary.fullName}
         size='small'
         margin='normal'
-        onChange={e => setFullname(e.target.value)}
+        onChange={e => setFullName(e.target.value)}
       />
       <TextField
         value={email}
