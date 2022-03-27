@@ -29,27 +29,6 @@ export const STATUS_NAME = {
   3: 'rejected'
 };
 
-export const usersColumns = [
-  { field: 'phoneNumber', headerName: dictionary.phoneNumber, flex: 2 },
-  { field: 'nickname', headerName: dictionary.nickname, flex: 1 },
-  { field: 'fullname', headerName: dictionary.fullname, flex: 2 },
-  { field: 'email', headerName: dictionary.email, flex: 2 },
-  { field: 'region', headerName: dictionary.region, flex: 2 },
-  { field: 'city', headerName: dictionary.city, flex: 1 },
-  {
-    field: 'active',
-    headerName: dictionary.active,
-    renderCell: ({ row }) => <Status status={row.active} />,
-    flex: 2
-  },
-  {
-    field: 'verified',
-    headerName: dictionary.verified,
-    renderCell: ({ row }) => <Status status={row.verified} />,
-    flex: 2
-  }
-];
-
 const products = {
   1: 'Бронежелет',
   2: 'Крупи',

@@ -64,6 +64,7 @@ export const CreateTask = () => {
     <div className={styles.container}>
       <Title text={dictionary.createTask} />
       <Autocomplete
+        freeSolo
         disablePortal
         id='combo-box-demo'
         options={options}
