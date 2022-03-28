@@ -6,6 +6,7 @@ import { useContext, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import dictionary from '../../dictionary';
+import data from '../../mocks/subcategories.json';
 import { CategoriesContext } from '../../screens/Main';
 import styles from './Categories.module.scss';
 
@@ -16,18 +17,17 @@ export const Categories = () => {
   };
   const [expanded, setExpanded] = useState([]);
 
-  const SUBCATEGORIES_MAP = {};
-  const CATEGORIES_MAP = Object.entries(categories).reduce(
-    (map, [category, subcategory], index) => {
-      map[index.toString()] = category;
-      subcategory.forEach((item, i) => {
-        SUBCATEGORIES_MAP[i.toString() + index.toString()] = item;
-      });
+  const SUBCATEGORIES_MAP = Object.entries(data).reduce((acc, [key, value]) => {
+    value.items.forEach(subcategory => {
+      acc[subcategory.id.toString() + key.toString()] = subcategory.name;
+    });
+    return acc;
+  }, {});
 
-      return map;
-    },
-    {}
-  );
+  const CATEGORIES_MAP = categories.reduce((map, category, index) => {
+    map[index.toString()] = category.name;
+    return map;
+  }, {});
 
   const handleSelection = (_, id) => {
     SUBCATEGORIES_MAP[id] && setSelectedSubCategory(SUBCATEGORIES_MAP[id]);
@@ -59,18 +59,16 @@ export const Categories = () => {
         onNodeSelect={handleSelection}
         sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
       >
-        {Object.entries(categories).map(([category, subcategory], index) => {
+        {categories.map((category, index) => {
           return (
-            <TreeItem nodeId={index.toString()} key={category} label={dictionary[category]}>
-              {subcategory.map((item, i) => {
-                return (
-                  <TreeItem
-                    nodeId={i.toString() + index.toString()}
-                    key={item}
-                    label={dictionary[item]}
-                  />
-                );
-              })}
+            <TreeItem nodeId={index.toString()} key={category.id} label={category.name}>
+              {data[category.id]?.items.map((subcategory, i) => (
+                <TreeItem
+                  nodeId={i.toString() + index.toString()}
+                  key={subcategory.name}
+                  label={subcategory.name}
+                />
+              ))}
             </TreeItem>
           );
         })}

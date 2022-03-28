@@ -40,11 +40,11 @@ export function CreateSubtask() {
           <TableBody>
             <TableRow>
               <TableCell className={styles.rowTitle}>{dictionary.deadline_date}:</TableCell>
-              <TableCell>{task.deadline_date}</TableCell>
+              <TableCell>{task.deadlineDate}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell className={styles.rowTitle}>{dictionary.productName}:</TableCell>
-              <TableCell>{products[task.product_id]}</TableCell>
+              <TableCell>{products[task.productId]}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell className={styles.rowTitle}>{dictionary.quantity}:</TableCell>
@@ -52,7 +52,7 @@ export function CreateSubtask() {
             </TableRow>
             <TableRow>
               <TableCell className={styles.rowTitle}>{dictionary.product_measure}:</TableCell>
-              <TableCell>{task.product_measure}</TableCell>
+              <TableCell>{task.productMeasure}</TableCell>
             </TableRow>
           </TableBody>
         </Table>

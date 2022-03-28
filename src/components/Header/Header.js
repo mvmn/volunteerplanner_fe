@@ -58,8 +58,8 @@ const Dropdown = () => {
   return (
     <div>
       <Avatar sx={{ bgcolor: deepPurple[500] }} onClick={handleDropdownVisibility}>
-        {/** TODO: make avatar creation more general */ user.nickname.charAt(0).toUpperCase()}
-        {user.nickname.charAt(1)}
+        {/** TODO: make avatar creation more general */ user.userName.charAt(0).toUpperCase()}
+        {user.userName.charAt(1)}
       </Avatar>
       {isOpened && <Menu setIsOpened={setIsOpened} />}
     </div>

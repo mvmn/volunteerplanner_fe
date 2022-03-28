@@ -1,0 +1,3 @@
+export const SET_COMPLETED = 'SET_COMPLETED';
+export const SET_IN_PROGRESS = 'SET_IN_PROGRESS';
+export const SET_REJECTED = 'SET_REJECTED';

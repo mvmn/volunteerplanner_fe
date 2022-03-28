@@ -10,7 +10,7 @@ export const Modal = props => {
 
   if (!user) return null;
 
-  const title = `${dictionary.user}: ${user.fullname}`;
+  const title = `${dictionary.user}: ${user.fullName}`;
   return (
     <Dialog onClose={handleClose} open={isModalOpened}>
       <DialogTitle sx={{ m: 0, p: 2 }}>

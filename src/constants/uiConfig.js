@@ -5,16 +5,16 @@ export const MAX_USER_PER_PAGE = 10;
 export const MAX_TASKS_PER_PAGE = 5;
 
 export const TASK_STATUSES = {
-  new: 0,
-  verified: 1,
-  completed: 2,
-  rejected: 3
+  new: 'NEW',
+  verified: 'VERIFIED',
+  completed: 'COMPLETED',
+  rejected: 'REJECTED'
 };
 
 export const SUBTASK_STATUSES = {
-  inProgress: 0,
-  completed: 1,
-  rejected: 2
+  completed: 'COMPLETED',
+  inProgress: 'IN_PROGRESS',
+  rejected: 'REJECTED'
 };
 
 export const ROLES = {
@@ -23,34 +23,14 @@ export const ROLES = {
 };
 
 export const STATUS_NAME = {
-  0: 'new',
-  1: 'verified',
-  2: 'completed',
-  3: 'rejected'
+  NEW: 'new',
+  VERIFIED: 'verified',
+  COMPLETED: 'completed',
+  IN_PROGRESS: 'inProgress',
+  REJECTED: 'rejected'
 };
 
-export const usersColumns = [
-  { field: 'phoneNumber', headerName: dictionary.phoneNumber, flex: 2 },
-  { field: 'nickname', headerName: dictionary.nickname, flex: 1 },
-  { field: 'fullname', headerName: dictionary.fullname, flex: 2 },
-  { field: 'email', headerName: dictionary.email, flex: 2 },
-  { field: 'region', headerName: dictionary.region, flex: 2 },
-  { field: 'city', headerName: dictionary.city, flex: 1 },
-  {
-    field: 'active',
-    headerName: dictionary.active,
-    renderCell: ({ row }) => <Status status={row.active} />,
-    flex: 2
-  },
-  {
-    field: 'verified',
-    headerName: dictionary.verified,
-    renderCell: ({ row }) => <Status status={row.verified} />,
-    flex: 2
-  }
-];
-
-const products = {
+export const products = {
   1: 'Бронежелет',
   2: 'Крупи',
   3: 'Зубна паста',
@@ -60,14 +40,13 @@ const products = {
 };
 
 export const tasksColumns = [
-  { field: 'customer', headerName: dictionary.customer, flex: 1 },
-  { field: 'quantity_left', headerName: dictionary.quantity, flex: 1 },
-  { field: 'product_measure', headerName: dictionary.product_measure, flex: 1 },
+  { field: 'quantityLeft', headerName: dictionary.quantity, flex: 1 },
+  { field: 'productMeasure', headerName: dictionary.productMeasure, flex: 1 },
   {
-    field: 'product_id',
+    field: 'productId',
     headerName: dictionary.productName,
     renderCell: ({ row }) => {
-      return <>{products[row.product_id]}</>;
+      return <>{products[row.productId]}</>;
     },
     flex: 1
   },
@@ -79,14 +58,14 @@ export const tasksColumns = [
     },
     flex: 1
   },
-  { field: 'deadline_date', headerName: dictionary.deadline_date, flex: 1 },
+  { field: 'deadlineDate', headerName: dictionary.deadlineDate, flex: 1 },
   { field: 'note', headerName: dictionary.note, flex: 1 },
   {
-    field: 'status_id',
+    field: 'status',
     headerName: dictionary.status,
-    renderCell: ({ row }) => <Status status={row.status_id} />,
+    renderCell: ({ row }) => <Status status={row.status} />,
     flex: 1
   }
 ];
 
-export const ROW_TO_DISPLAY = ['phoneNumber', 'nickname', 'fullname', 'email', 'region', 'city'];
+export const ROW_TO_DISPLAY = ['phoneNumber', 'userName', 'fullName', 'email'];
