@@ -13,7 +13,6 @@ import { Main } from './screens/Main';
 import theme from './styles/theme';
 
 function App() {
-  console.log('render');
   // Test saga start
   const dispatch = useDispatch();
   useEffect(() => {
