@@ -1,4 +1,5 @@
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import DatePicker from '@mui/lab/DatePicker';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
@@ -7,7 +8,9 @@ import { useState } from 'react';
 
 import { Title } from '../../components/Title';
 import dictionary from '../../dictionary';
+import image from '../../styles/iStock-529679954.jpg';
 import styles from './CreateTask.module.scss';
+import { primaryCategory, priorityOptions, subCategoryProduct } from './CreateTaskConfig';
 
 /** for the testing */
 const options = [
@@ -15,17 +18,12 @@ const options = [
   { label: 'Pulp Fiction', id: 2 }
 ];
 
-const priorityOptions = [
-  { label: dictionary.high, id: 0 },
-  { label: dictionary.medium, id: 1 },
-  { label: dictionary.low, id: 3 }
-];
-
 export const CreateTask = () => {
   const [customer, setCustomer] = useState();
   const [collectionAddress, setCollectionAddress] = useState();
   const [shippingAddress, setShippingAddress] = useState();
   const [category, setCategory] = useState();
+  const [subCategory, setSubCategory] = useState();
   const [productName, setProductName] = useState();
   const [quantity, setQuantity] = useState();
   const [productMeasure, setProductMeasure] = useState();
@@ -41,6 +39,7 @@ export const CreateTask = () => {
       !collectionAddress ||
       !shippingAddress ||
       !category ||
+      !subCategory ||
       !productName ||
       !quantity ||
       !productMeasure ||
@@ -60,9 +59,16 @@ export const CreateTask = () => {
     setProducts([...products, products[products.length - 1] + 1]);
   };
 
+  const handleRemoveClick = () => {
+    setProducts(products.slice(0, -1));
+  };
+
   return (
     <div className={styles.container}>
-      <Title text={dictionary.createTask} />
+      <div className={styles.headerContainer}>
+        <img src={image} alt='ukraine_flag' className={styles.ukraineFlag}></img>
+        <Title text={dictionary.createTask} />
+      </div>
       <Autocomplete
         freeSolo
         disablePortal
@@ -102,16 +108,47 @@ export const CreateTask = () => {
       {products.map((item, index) => {
         return (
           <>
-            Product {item}
+            <h2 className={styles.productHeading}>
+              {dictionary.product} {item}
+            </h2>
             <div className={styles.group}>
-              <TextField
-                value={category}
-                required
+              <Autocomplete
+                disablePortal
+                id='combo-box-demo'
+                options={primaryCategory}
                 classes={{ root: styles.root }}
-                label={dictionary.category}
+                required
                 size='small'
                 margin='normal'
-                onChange={e => setCategory(e.target.value)}
+                renderInput={params => (
+                  <TextField
+                    size='small'
+                    margin='normal'
+                    onChange={e => setCategory(e.target.value)}
+                    {...params}
+                    value={category}
+                    label={dictionary.category}
+                  />
+                )}
+              />
+              <Autocomplete
+                disablePortal
+                id='combo-box-demo'
+                options={subCategoryProduct}
+                classes={{ root: styles.root }}
+                required
+                size='small'
+                margin='normal'
+                renderInput={params => (
+                  <TextField
+                    size='small'
+                    margin='normal'
+                    onChange={e => setSubCategory(e.target.value)}
+                    {...params}
+                    value={subCategory}
+                    label={dictionary.subcategory}
+                  />
+                )}
               />
               <TextField
                 value={productName}
@@ -152,8 +189,6 @@ export const CreateTask = () => {
                   />
                 )}
               />
-            </div>
-            <div className={styles.group}>
               <TextField
                 classes={{ root: styles.root }}
                 value={productMeasure}
@@ -163,7 +198,6 @@ export const CreateTask = () => {
                 margin='normal'
                 onChange={e => setProductMeasure(e.target.value)}
               />
-
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
                   label={dictionary.deadline_date}
@@ -182,11 +216,18 @@ export const CreateTask = () => {
                 />
               </LocalizationProvider>
             </div>
-            {index === products.length - 1 && (
-              <div onClick={handleAddClick}>
-                <AddCircleOutlineIcon />
-              </div>
-            )}
+            <div className={styles.actions}>
+              {index === products.length - 1 && (
+                <div className={styles.add} onClick={handleAddClick}>
+                  <AddCircleOutlineIcon />
+                </div>
+              )}
+              {index >= 1 && index === products.length - 1 && (
+                <div className={styles.remove} onClick={handleRemoveClick}>
+                  <RemoveCircleOutlineIcon />
+                </div>
+              )}
+            </div>
           </>
         );
       })}

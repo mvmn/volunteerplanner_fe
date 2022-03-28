@@ -54,7 +54,8 @@ const dictionary = {
   myTasks: 'Мої задачі',
   needTransportation: 'Потрібна допомога з транспортуванням',
   expandAll: 'Відкрити всі',
-  collapseAll: 'Закрити всі'
+  collapseAll: 'Закрити всі',
+  product: 'Продукт'
 };
 
 export default dictionary;
