@@ -15,20 +15,27 @@ export const SignIn = () => {
   const dispatch = useDispatch();
 
   const initialValues = {
-    phoneNumber: '',
+    login: '',
     password: ''
   };
 
+  const phoneRegExp =
+    /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+
   const validationSchema = yup.object().shape({
-    phoneNumber: yup.string().phone('UA', true, 'Телефон має бути валідним'),
+    login: yup.string().when('isLogin', {
+      is: '1',
+      then: yup.string().required(`Лоігн обов'язковий`).min(4, 'Лоігн занадто короткий'),
+      otherwise: yup.string().matches(phoneRegExp, 'Телефон має бути валідним')
+    }),
     password: yup.string().required("Пароль є обов'язковим").min(6, 'Пароль занадто короткий')
   });
 
   const formik = useFormik({
     initialValues,
     validationSchema,
-    async onSubmit({ phoneNumber, password }) {
-      await console.log({ phoneNumber, password });
+    async onSubmit({ login, password }) {
+      await console.log({ login, password });
       dispatch(setLoggedIn());
       navigate('/');
     }
@@ -42,18 +49,25 @@ export const SignIn = () => {
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.field_box}>
           <TextField
-            id='phoneNumber'
-            name='phoneNumber'
-            value={values.phoneNumber}
+            id='login'
+            name='login'
+            value={values.login}
             type='tel'
             classes={{ root: styles.root }}
-            label={dictionry.phoneNumber}
+            label={`Введіть ${dictionry.userName.toLocaleLowerCase()} або ${dictionry.phoneNumber.toLocaleLowerCase()}`}
             size='small'
             margin='normal'
-            onChange={handleChange}
+            onChange={event => {
+              handleChange('login')(event);
+              if (Number(values.login)) {
+                handleChange('isLogin')('0');
+              } else {
+                handleChange('isLogin')('1');
+              }
+            }}
           />
           <div className={styles.errors_box}>
-            <span className={styles.errors}>{errors.phoneNumber}</span>
+            <span className={styles.errors}>{errors.login}</span>
           </div>
         </div>
         <div className={styles.field_box}>
