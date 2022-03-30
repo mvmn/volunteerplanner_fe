@@ -1,9 +1,26 @@
-.container {
+.form {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  .root {
-    width: 25%;
+  button {
+    margin-top: 1rem;
+  }
+
+  .field_box {
+    .root {
+      min-width: 320px;
+    }
+
+    .errors_box {
+      text-align: left;
+      margin-left: 5px;
+
+      .errors {
+        font-size: 14px;
+        color: rgb(230, 7, 7);
+      }
+    }
   }
 }
