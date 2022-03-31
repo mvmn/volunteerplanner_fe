@@ -47,8 +47,7 @@ export const SignUp = () => {
   const formik = useFormik({
     initialValues,
     validationSchema,
-    async onSubmit({ phoneNumber, password, email, userName, fullName }) {
-      await console.log({ phoneNumber, password, email, userName, fullName });
+    async onSubmit() {
       dispatch(setLoggedIn());
       navigate('/');
     }
