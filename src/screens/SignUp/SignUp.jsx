@@ -8,6 +8,7 @@ import * as yup from 'yup';
 
 import { setLoggedIn } from '../../actions/user';
 import dictionry from '../../dictionary';
+import { yupPatterns } from '../../helpers/validation';
 import styles from './SignUp.module.scss';
 
 export const SignUp = () => {
@@ -24,24 +25,12 @@ export const SignUp = () => {
   };
 
   const validationSchema = yup.object().shape({
-    phoneNumber: yup.string().phone('UA', true, 'Телефон має бути валідним'),
-    password: yup
-      .string()
-      .required("Пароль є обов'язковим")
-      .min(6, 'Пароль занадто короткий')
-      .matches(/[a-zA-Z]/, 'Пароль повинен містити латинські букви'),
-    confirmPassWord: yup
-      .string()
-      .oneOf([yup.ref('password'), null], 'Паролі не збігаються')
-      .required('Обовязково пітверідть пароль'),
-    email: yup
-      .string()
-      .email('Емейл повинен бути валідним')
-      .required('Емейл є обовязковим')
-      .min(4, 'Занадто короткий!')
-      .max(30, 'Занадто довгий'),
-    userName: yup.string().required("Ім'я обов'язкове").min(2, "Ім'я занадто коротке"),
-    fullName: yup.string('').required("Поле обо'язкове")
+    phoneNumber: yupPatterns('phoneNumber'),
+    password: yupPatterns('signUpPass'),
+    confirmPassWord: yupPatterns('confirmPassWord'),
+    email: yupPatterns('email'),
+    userName: yupPatterns('userName'),
+    fullName: yupPatterns('fullName')
   });
 
   const formik = useFormik({

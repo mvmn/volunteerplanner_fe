@@ -8,6 +8,7 @@ import * as yup from 'yup';
 
 import { setLoggedIn } from '../../actions/user';
 import dictionry from '../../dictionary';
+import { yupPatterns } from '../../helpers/validation';
 import styles from './SignIn.module.scss';
 
 export const SignIn = () => {
@@ -20,8 +21,8 @@ export const SignIn = () => {
   };
 
   const validationSchema = yup.object().shape({
-    phoneNumber: yup.string().phone('UA', true, 'Телефон має бути валідним'),
-    password: yup.string().required("Пароль є обов'язковим").min(6, 'Пароль занадто короткий')
+    phoneNumber: yupPatterns('phoneNumber'),
+    password: yupPatterns('signInPass')
   });
 
   const formik = useFormik({
