@@ -1,4 +1,3 @@
-import { CreateTask } from '../components/CreateTask';
 import { VolunteerTasks } from '../components/VolunteerTasks';
 import { ROLES } from '../constants/uiConfig';
 import { CreateSubtask } from '../screens/CreateSubtask';
@@ -13,7 +12,6 @@ export const routes = [
   { link: 'tasks', component: TasksList, isAuthorized: true },
   { link: 'my-tasks', component: VolunteerTasks, isAuthorized: true },
   { link: 'create-subtask/:taskId', component: CreateSubtask, isAuthorized: true },
-  { link: 'create-task', component: CreateTask, isAuthorized: true, role: ROLES.operator },
   { link: 'profile', component: Profile, isAuthorized: true },
   { link: 'sign-up', component: SignUp },
   { link: 'login', component: SignIn }
