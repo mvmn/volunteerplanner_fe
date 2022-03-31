@@ -5,6 +5,7 @@ import { Box, Button, Modal } from '@mui/material';
 import dictionary from '../../dictionary';
 import { useModalVisibleHook } from '../../hooks/useModalVisibleHooks';
 import image from '../../styles/iStock-529679954.jpg';
+import { TaskForm } from '../TaskForm';
 import style from './CreateTaskButton.module.scss';
 
 export const CreateTaskButton = () => {
@@ -26,6 +27,7 @@ export const CreateTaskButton = () => {
               <CloseIcon />
             </Button>
           </div>
+          <TaskForm />
         </Box>
       </Modal>
     </div>
