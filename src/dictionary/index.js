@@ -12,6 +12,7 @@ const dictionary = {
   openProfile: 'Мій профіль',
   phoneNumber: 'Номер телефону',
   password: 'Пароль',
+  confirmPassWord: 'Пітвердіть пароль',
   send: 'Відправити',
   userName: 'Логін',
   fullName: 'Прізвище та ім’я',
