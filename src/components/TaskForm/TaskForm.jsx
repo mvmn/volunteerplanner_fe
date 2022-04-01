@@ -9,6 +9,7 @@ import { useState } from 'react';
 import * as yup from 'yup';
 
 import dictionary from '../../dictionary';
+import { yupPatterns } from '../../helpers/validation';
 import { customerOptions, primaryCategory, priorityOptions, subCategoryProduct } from './config';
 import styles from './TaskForm.module.scss';
 
@@ -33,9 +34,16 @@ export const TaskForm = () => {
   };
 
   const validationSchema = yup.object().shape({
-    customer: yup.string().required("Замовник обов'язковий"),
-    collectionAddress: yup.string().required("Адрес збору обов'язковий"),
-    shippingAddress: yup.string().required("Адреса доставки обов'язкова")
+    customer: yupPatterns('customer'),
+    collectionAddress: yupPatterns('collectionAddress'),
+    shippingAddress: yupPatterns('shippingAddress'),
+    category: yupPatterns('category'),
+    subCategory: yupPatterns('subCategory'),
+    productName: yupPatterns('productName'),
+    quantity: yupPatterns('quantity'),
+    priority: yupPatterns('priority'),
+    note: yupPatterns('note'),
+    date: yupPatterns('date')
   });
 
   const formik = useFormik({
