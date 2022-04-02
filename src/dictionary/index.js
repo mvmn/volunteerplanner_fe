@@ -12,6 +12,8 @@ const dictionary = {
   openProfile: 'Мій профіль',
   phoneNumber: 'Номер телефону',
   password: 'Пароль',
+  currentPassword: 'Поточний пароль',
+  newPassword: 'Новий пароль',
   confirmPassWord: 'Пітвердіть пароль',
   send: 'Відправити',
   userName: 'Логін',
@@ -70,6 +72,7 @@ const dictionary = {
   bandage: 'Джгути',
   plait: 'Бинти',
   shoes: 'Взуття',
-  clothes: 'Одяг'
+  clothes: 'Одяг',
+  changePassword: 'Змінити пароль'
 };
 export default dictionary;
