@@ -13,14 +13,14 @@ export const ChangePassword = () => {
 
   const initialValues = {
     currentPassword: '',
-    newPassword: '',
-    confirmPassword: ''
+    password: '',
+    confirmPassWord: ''
   };
 
   const validationSchema = yup.object().shape({
     currentPassword: yupPatterns('signInPass'),
-    newPassword: yupPatterns('signInPass'),
-    confirmPassword: yupPatterns('confirmPassWord')
+    password: yupPatterns('signUpPass'),
+    confirmPassWord: yupPatterns('confirmPassWord')
   });
 
   const formik = useFormik({
@@ -49,14 +49,14 @@ export const ChangePassword = () => {
             onChange={handleChange}
           />
           <div className={styles.errors_box}>
-            <span className={styles.errors}>{errors.oldPassword}</span>
+            <span className={styles.errors}>{errors.currentPassword}</span>
           </div>
         </div>
         <div className={styles.field_box}>
           <TextField
-            id='newPassword'
-            name='newPassword'
-            value={values.newPassword}
+            id='password'
+            name='password'
+            value={values.password}
             classes={{ root: styles.root }}
             label={dictionry.newPassword}
             type='password'
