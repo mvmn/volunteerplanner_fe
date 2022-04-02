@@ -13,6 +13,7 @@ const dictionary = {
   phoneNumber: 'Номер телефону',
   password: 'Пароль',
   confirmPassWord: 'Пітвердіть пароль',
+  forgotPassword: 'Забули пароль?',
   send: 'Відправити',
   userName: 'Логін',
   fullName: 'Прізвище та ім’я',
