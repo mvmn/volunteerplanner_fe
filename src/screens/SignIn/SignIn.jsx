@@ -14,9 +14,6 @@ import styles from './SignIn.module.scss';
 export const SignIn = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const handleClick = () => {
-    dispatch();
-  };
 
   const initialValues = {
     phoneNumber: '',
@@ -76,9 +73,7 @@ export const SignIn = () => {
           </div>
         </div>
         <div className={styles.link}>
-          <Link to='/login' onClick={handleClick}>
-            {dictionary.forgotPassword}
-          </Link>
+          <Link href='/password-reset'>{dictionary.forgotPassword}</Link>
         </div>
         <Button variant='outlined' type='submit'>
           {dictionary.send}
