@@ -27,7 +27,7 @@ export const CreateTaskButton = () => {
               <CloseIcon />
             </Button>
           </div>
-          <TaskForm />
+          <TaskForm onClose={onCloseHandler} />
         </Box>
       </Modal>
     </div>

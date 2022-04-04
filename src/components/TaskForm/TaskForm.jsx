@@ -1,7 +1,9 @@
 import { Autocomplete, Button, TextField } from '@mui/material';
 import { Formik } from 'formik';
+import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
 
+import { setNewTask } from '../../actions/tasks';
 import dictionary from '../../dictionary';
 import { yupPatterns } from '../../helpers/validation';
 import { ProductsFieldArray } from './components/ProductsFieldArray/ProductsFieldArray';
@@ -14,7 +16,9 @@ import {
 } from './config';
 import styles from './TaskForm.module.scss';
 
-export const TaskForm = () => {
+export const TaskForm = ({ onClose }) => {
+  const dispatch = useDispatch();
+
   const initialValues = {
     customer: '',
     collectionAddress: '',
@@ -41,11 +45,10 @@ export const TaskForm = () => {
     note: yupPatterns('note')
   });
 
-  const onSubmitHandler = (values, { setSubmitting }) => {
-    setTimeout(() => {
-      alert(JSON.stringify(values, null, 2));
-      setSubmitting(false);
-    }, 400);
+  const onSubmitHandler = async (values, { setSubmitting }) => {
+    await dispatch(setNewTask(values));
+    setSubmitting(false);
+    onClose();
   };
   return (
     <div>
