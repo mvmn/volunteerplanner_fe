@@ -1,5 +1,11 @@
 import dictionary from '../../dictionary';
 
+export const productMeasureOptions = [
+  { label: 'Кг', id: 0 },
+  { label: 'Літрів', id: 2 },
+  { label: 'Штук', id: 3 }
+];
+
 export const customerOptions = [
   { label: 'The Godfather', id: 1 },
   { label: 'Pulp Fiction', id: 2 }
