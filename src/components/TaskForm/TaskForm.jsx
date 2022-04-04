@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-
 import { Autocomplete, Button, TextField } from '@mui/material';
 import { Formik } from 'formik';
 import * as yup from 'yup';
