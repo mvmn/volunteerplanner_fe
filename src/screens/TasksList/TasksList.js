@@ -15,8 +15,9 @@ import {
   TableRow
 } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
+import clsx from 'clsx';
 import _ from 'lodash';
-import { useContext, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -32,8 +33,12 @@ import dictionary from '../../dictionary';
 import { CategoriesContext } from '../Main';
 import styles from './TasksList.module.scss';
 
+export const TabsContext = createContext();
+
+const VERIFIED_TAB_INDEX = 1;
 function Row(props) {
   const { row, handleRowClick } = props;
+  const { value } = useContext(TabsContext);
   const [open, setOpen] = useState(false);
   const subTasks = useSelector(state => state.subTasks);
   const mapSubTasks = _.groupBy(
@@ -53,51 +58,54 @@ function Row(props) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell component='th' scope='row'>
-          {row.subtaskCount}
-        </TableCell>
-        <TableCell>{row.quantity}</TableCell>
-        <TableCell>{row.productMeasure}</TableCell>
-        <TableCell>{products[row.productId]}</TableCell>
         <TableCell>
           <Priority priority={row.priority} />
         </TableCell>
+        <TableCell scope='row'>{row.subtaskCount}</TableCell>
+        <TableCell>{row.productMeasure}</TableCell>
+        <TableCell>{row.quantity}</TableCell>
+        <TableCell>{products[row.productId]}</TableCell>
         <TableCell>{row.deadlineDate}</TableCell>
-        <TableCell>
-          <Status status={row.status} />
-        </TableCell>
-        <TableCell>{row.note}</TableCell>
+        <TableCell className={styles.noteCell}>{row.note}</TableCell>
       </TableRow>
       <TableRow className={open && styles.opened}>
-        <TableCell className={styles.test} colSpan={12}>
+        <TableCell className={styles.subRow} colSpan={12}>
           <Collapse in={open} timeout='auto' unmountOnExit>
             <Box sx={{ margin: 1 }}>
               <Table className={styles.subTable}>
                 <TableHead>
                   <TableRow>
                     <TableCell />
-                    <TableCell width='21%' colSpan={4}>
+                    <TableCell className={styles.fontBold}>{dictionary.status}</TableCell>
+                    <TableCell className={styles.fontBold} colSpan={4}>
                       {dictionary.quantity}
                     </TableCell>
-                    <TableCell width='27%'>{dictionary.transportRequired}</TableCell>
-                    <TableCell width='31%'>{dictionary.status}</TableCell>
-                    <TableCell>{dictionary.note}</TableCell>
+                    <TableCell className={styles.fontBold}>
+                      {dictionary.transportRequired}
+                    </TableCell>
+                    <TableCell className={clsx(styles.fontBold, styles.noteCell)}>
+                      {dictionary.note}
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {mapSubTasks[row.id]?.map(subTask => (
                     <TableRow key={subTask.date}>
                       <TableCell />
-                      <TableCell colSpan={4} component='th' scope='row'>
+                      <TableCell>
+                        {value === VERIFIED_TAB_INDEX ? (
+                          <ChangeStatus status={subTask.status} />
+                        ) : (
+                          <Status status={subTask.status} />
+                        )}
+                      </TableCell>
+                      <TableCell colSpan={4} scope='row'>
                         {subTask.quantity}
                       </TableCell>
                       <TableCell>
                         {subTask.transportRequired ? dictionary.yes : dictionary.no}
                       </TableCell>
-                      <TableCell styles={{ display: 'flex', flex: 2 }}>
-                        <ChangeStatus status={subTask.status} />
-                      </TableCell>
-                      <TableCell>{subTask.note}</TableCell>
+                      <TableCell className={styles.noteCell}>{subTask.note}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -124,48 +132,51 @@ const OperatorTasksListView = ({ handleRowClick }) => {
   };
 
   return (
-    <div className={styles.tabsContainer}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={value} handleChange={handleChange}></Tabs>
-      </Box>
-      {Object.entries(tasks).map(([key, tasksByStatus], i) => {
-        return (
-          <TabPanel key={key} value={value} index={i}>
-            <TableContainer component={Paper}>
-              <Table aria-label='collapsible table'>
-                <TableHead>
-                  <TableRow>
-                    <TableCell />
-                    <TableCell>{dictionary.subtaskCount}</TableCell>
-                    <TableCell>{dictionary.quantity}</TableCell>
-                    <TableCell>{dictionary.productMeasure}</TableCell>
-                    <TableCell>{dictionary.productName}</TableCell>
-                    <TableCell>{dictionary.priority}</TableCell>
-                    <TableCell>{dictionary.deadlineDate}</TableCell>
-                    <TableCell>{dictionary.status}</TableCell>
-                    <TableCell>{dictionary.note}</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {tasksByStatus?.map(row => (
-                    <Row key={row.id} row={row} handleRowClick={handleRowClick} />
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </TabPanel>
-        );
-      })}
+    <TabsContext.Provider value={{ value }}>
+      <div className={styles.tabsContainer}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs value={value} handleChange={handleChange}></Tabs>
+        </Box>
+        {Object.entries(tasks).map(([key, tasksByStatus], i) => {
+          return (
+            <TabPanel key={key} value={value} index={i}>
+              <TableContainer component={Paper}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell />
+                      <TableCell className={styles.fontBold}>{dictionary.priority}</TableCell>
+                      <TableCell className={styles.fontBold}>{dictionary.subtaskCount}</TableCell>
+                      <TableCell className={styles.fontBold}>{dictionary.productMeasure}</TableCell>
+                      <TableCell className={styles.fontBold}>{dictionary.quantity}</TableCell>
+                      <TableCell className={styles.fontBold}>{dictionary.productName}</TableCell>
+                      <TableCell className={styles.fontBold}>{dictionary.deadlineDate}</TableCell>
+                      <TableCell className={clsx(styles.fontBold, styles.noteCell)}>
+                        {dictionary.note}
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {tasksByStatus?.map(row => (
+                      <Row key={row.id} row={row} handleRowClick={handleRowClick} />
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </TabPanel>
+          );
+        })}
 
-      <TablePagination
-        component='div'
-        count={100}
-        page={0}
-        onPageChange={() => {}}
-        rowsPerPage={10}
-        rowsPerPageOptions={[]}
-      />
-    </div>
+        <TablePagination
+          component='div'
+          count={100}
+          page={0}
+          onPageChange={() => {}}
+          rowsPerPage={10}
+          rowsPerPageOptions={[]}
+        />
+      </div>
+    </TabsContext.Provider>
   );
 };
 

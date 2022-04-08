@@ -11,6 +11,7 @@ const Status = ({ status }) => {
   return <div className={clsx(styles.status, styles[status])}>{dictionary[status]}</div>;
 };
 
+// TODO: check if it could be merged with the task’s status change
 export const ChangeStatus = ({ status }) => {
   const [selectedValue, setSelectedValue] = useState(SUBTASK_NAME[status]);
 
@@ -22,7 +23,11 @@ export const ChangeStatus = ({ status }) => {
   return (
     <Box>
       <FormControl>
-        <Select value={selectedValue} onChange={e => handleChange(e)}>
+        <Select
+          classes={{ select: styles.select }}
+          value={selectedValue}
+          onChange={e => handleChange(e)}
+        >
           {Object.keys(SUBTASK_STATUSES).map((item, i) => (
             <MenuItem key={i + item} value={item}>
               <Status status={item} />

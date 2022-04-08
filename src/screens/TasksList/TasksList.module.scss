@@ -23,6 +23,11 @@
     }
   }
 
+  /* Can be moved to shared styles */
+  .fontBold {
+    font-weight: 800;
+  }
+
   .body {
     display: flex;
 
@@ -34,8 +39,12 @@
       width: 100%;
     }
 
-    .test {
+    .subRow {
       padding: 0;
+    }
+
+    .noteCell {
+      text-align: end;
     }
 
     .opened {
