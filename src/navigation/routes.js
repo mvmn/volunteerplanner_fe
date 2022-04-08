@@ -1,6 +1,7 @@
 import { CreateTask } from '../components/CreateTask';
 import { VolunteerTasks } from '../components/VolunteerTasks';
 import { ROLES } from '../constants/uiConfig';
+import { ChangePassword } from '../screens/ChangePassword';
 import { CreateSubtask } from '../screens/CreateSubtask';
 import { Profile } from '../screens/Profile';
 import { SignIn } from '../screens/SignIn';
@@ -17,5 +18,6 @@ export const routes = [
   { link: 'profile', component: Profile, isAuthorized: true },
   { link: 'open-subtask', component: Profile, isAuthorized: true },
   { link: 'sign-up', component: SignUp },
-  { link: 'login', component: SignIn }
+  { link: 'login', component: SignIn },
+  { link: 'change-password', component: ChangePassword, isAuthorized: true }
 ];

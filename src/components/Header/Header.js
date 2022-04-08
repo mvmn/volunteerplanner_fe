@@ -1,3 +1,4 @@
+import BuildIcon from '@mui/icons-material/Build';
 import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
 import PersonIcon from '@mui/icons-material/Person';
 import { AppBar, Avatar, List, ListItem, Paper, Toolbar, Typography } from '@mui/material';
@@ -39,12 +40,16 @@ const Menu = ({ setIsOpened }) => {
   return (
     <Paper ref={wrapperRef} className={styles.menu}>
       <Link to='/login' onClick={handleClick} className={styles.link}>
-        {dictionary.logOut}
         <ExitToAppOutlinedIcon />
+        {dictionary.logOut}
       </Link>
       <Link to='/profile' onClick={() => setIsOpened(false)} className={styles.link}>
-        {dictionary.openProfile}
         <PersonIcon />
+        {dictionary.openProfile}
+      </Link>
+      <Link to='/change-password' onClick={() => setIsOpened(false)} className={styles.link}>
+        <BuildIcon />
+        {dictionary.changePassword}
       </Link>
     </Paper>
   );
