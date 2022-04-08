@@ -53,7 +53,7 @@ export const UserList = () => {
   const [isModalOpened, setIsModalOpened] = useState(false);
   const [selectedUser, setSelectedUser] = useState();
 
-  const handleRowClick = e => {
+  const handleRowDoubleClick = e => {
     setSelectedUser(e.row);
     setIsModalOpened(true);
   };
@@ -83,7 +83,7 @@ export const UserList = () => {
         className={styles.dataGrid}
         style={{ height: 600 }}
         pageSize={MAX_USER_PER_PAGE}
-        onRowClick={e => handleRowClick(e)}
+        onRowDoubleClick={e => handleRowDoubleClick(e)}
         rowsPerPageOptions={[MAX_USER_PER_PAGE]}
         rows={users}
         columns={usersColumns}

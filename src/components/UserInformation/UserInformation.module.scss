@@ -1,9 +1,10 @@
 .tableContainer {
   margin-bottom: 1rem;
 
-  .rowTitle {
+  .title {
+    display: table-cell;
     font-weight: bold;
-    width: 25%;
+    width: 75%;
   }
 }
 

@@ -1,22 +1,18 @@
 @import '../../styles/colors.scss';
 
 .priority {
-  border-radius: 13px;
-  padding: 2px 5px;
-  border: 1px solid;
+  border-radius: 4px;
+  padding: 4px 12px;
 }
 
 .low {
-  border-color: $green;
-  background-color: $light-green;
+  background-color: $green;
 }
 
 .medium {
-  border-color: $yellow;
-  background-color: $light-yellow;
+  background-color: $yellow;
 }
 
 .high {
-  border-color: $red;
-  background-color: $light-red;
+  background-color: $red;
 }

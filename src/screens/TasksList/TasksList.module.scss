@@ -1,5 +1,9 @@
 @import '../../styles/colors.scss';
 
+.root {
+  color: $theme-text-color;
+}
+
 .container {
   text-align: start;
 
@@ -19,11 +23,32 @@
     }
   }
 
+  /* Can be moved to shared styles */
+  .fontBold {
+    font-weight: 800;
+  }
+
   .body {
     display: flex;
 
     .tabsContainer {
       flex: 2;
+    }
+
+    .subTable {
+      width: 100%;
+    }
+
+    .subRow {
+      padding: 0;
+    }
+
+    .noteCell {
+      text-align: end;
+    }
+
+    .opened {
+      border-left: 5px solid #1976d2;
     }
   }
 }

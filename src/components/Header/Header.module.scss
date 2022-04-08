@@ -1,7 +1,12 @@
 @import '../../styles/colors.scss';
 
+.root {
+  background-color: white;
+  position: fixed;
+}
+
 .link {
-  color: white;
+  color: $theme-text-color;
   display: flex;
   text-decoration: none;
   margin: 0.5rem 0;
@@ -18,7 +23,7 @@
 
 .menu {
   position: absolute;
-  background-color: white;
+  color: $theme-text-color;
   padding: 1rem;
   right: 0;
   border-radius: 3px;

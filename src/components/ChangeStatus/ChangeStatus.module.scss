@@ -1,19 +1,16 @@
 @import '../../styles/colors.scss';
 
+.select {
+  padding: 4px 32px 4px 4px;
+}
+
 .status {
   border-radius: 4px;
-  padding: 4px 12px;
+  padding: 2px 5px;
   width: max-content;
 }
 
-.green,
-.verified {
-  background-color: $green;
-}
-
-.yellow,
-.inProgress,
-.new {
+.inProgress {
   background-color: $yellow;
 }
 

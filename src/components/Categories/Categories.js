@@ -1,11 +1,9 @@
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { TreeItem, TreeView } from '@mui/lab';
-import { Button } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import dictionary from '../../dictionary';
 import data from '../../mocks/subcategories.json';
 import { CategoriesContext } from '../../screens/Main';
 import styles from './Categories.module.scss';
@@ -41,15 +39,8 @@ export const Categories = () => {
     setSelectedSubCategory();
   }, [selectedCategory, setSelectedSubCategory]);
 
-  const handleCollapseClick = () => {
-    setExpanded([]);
-    setSelectedSubCategory();
-    setSelectedCategory();
-  };
-
   return (
     <div>
-      <Button onClick={handleCollapseClick}>{dictionary.collapseAll}</Button>
       <TreeView
         className={styles.treeView}
         defaultCollapseIcon={<ExpandMoreIcon />}
@@ -61,9 +52,17 @@ export const Categories = () => {
       >
         {categories.map((category, index) => {
           return (
-            <TreeItem nodeId={index.toString()} key={category.id} label={category.name}>
+            <TreeItem
+              classes={{ content: styles.content }}
+              className={styles.treeItem}
+              nodeId={index.toString()}
+              key={category.id}
+              label={category.name}
+            >
               {data[category.id]?.items.map((subcategory, i) => (
                 <TreeItem
+                  classes={{ content: styles.content }}
+                  className={styles.treeItem}
                   nodeId={i.toString() + index.toString()}
                   key={subcategory.name}
                   label={subcategory.name}
