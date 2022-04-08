@@ -1,4 +1,4 @@
-import { Button, Paper, TextField } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -26,28 +26,44 @@ const EditData = props => {
   } = props;
 
   return (
-    <Paper className={styles.tableContainer}>
-      <div className={styles.editRow}>
-        <div className={styles.editTitleRow}>{dictionary.phoneNumber}:</div>
+    <>
+      <div className={styles.row}>
+        <div className={styles.title}>{dictionary.phoneNumber}:</div>
         <TextField
+          className={styles.textField}
           size='small'
           value={phoneNumber}
           onChange={e => setPhoneNumber(e.target.value)}
         />
       </div>
-      <div className={styles.editRow}>
-        <div className={styles.editTitleRow}>{dictionary.userName}:</div>
-        <TextField size='small' value={userName} onChange={e => setUserName(e.target.value)} />
+      <div className={styles.row}>
+        <div className={styles.title}>{dictionary.userName}:</div>
+        <TextField
+          className={styles.textField}
+          size='small'
+          value={userName}
+          onChange={e => setUserName(e.target.value)}
+        />
       </div>
-      <div className={styles.editRow}>
-        <div className={styles.editTitleRow}>{dictionary.fullName}:</div>
-        <TextField size='small' value={fullName} onChange={e => setFullName(e.target.value)} />
+      <div className={styles.row}>
+        <div className={styles.title}>{dictionary.fullName}:</div>
+        <TextField
+          className={styles.textField}
+          size='small'
+          value={fullName}
+          onChange={e => setFullName(e.target.value)}
+        />
       </div>
-      <div className={styles.editRow}>
-        <div className={styles.editTitleRow}>{dictionary.email}:</div>
-        <TextField size='small' value={email} onChange={e => setEmail(e.target.value)} />
+      <div className={styles.row}>
+        <div className={styles.title}>{dictionary.email}:</div>
+        <TextField
+          className={styles.textField}
+          size='small'
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+        />
       </div>
-    </Paper>
+    </>
   );
 };
 

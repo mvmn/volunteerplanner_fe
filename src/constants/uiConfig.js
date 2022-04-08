@@ -17,6 +17,12 @@ export const SUBTASK_STATUSES = {
   rejected: 'REJECTED'
 };
 
+export const SUBTASK_NAME = {
+  COMPLETED: 'completed',
+  IN_PROGRESS: 'inProgress',
+  REJECTED: 'rejected'
+};
+
 export const ROLES = {
   operator: 'operator',
   volunteer: 'volunteer'
@@ -40,6 +46,7 @@ export const products = {
 };
 
 export const tasksColumns = [
+  { field: 'subtaskCount', headerName: dictionary.subtaskCount, flex: 1 },
   { field: 'quantityLeft', headerName: dictionary.quantity, flex: 1 },
   { field: 'productMeasure', headerName: dictionary.productMeasure, flex: 1 },
   {

@@ -91,7 +91,7 @@ export const Header = () => {
   const navigation = currentRole === ROLES.operator ? OPERATOR_NAVIGATION_ITEMS : NAVIGATION_ITEMS;
 
   return (
-    <AppBar position='fixed' sx={{ zIndex: theme => theme.zIndex.drawer + 1 }}>
+    <AppBar classes={{ root: styles.root }} sx={{ zIndex: theme => theme.zIndex.drawer + 1 }}>
       <Toolbar className={styles.toolbar}>
         {isAuthorized && (
           <List className={styles.list}>

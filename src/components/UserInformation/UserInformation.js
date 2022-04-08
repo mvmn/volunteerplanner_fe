@@ -12,7 +12,7 @@ export const UserInformation = ({ user }) => {
           {ROW_TO_DISPLAY.map((rowName, i) => {
             return (
               <TableRow key={user[rowName] + i}>
-                <TableCell className={styles.rowTitle}>{dictionary[rowName]}:</TableCell>
+                <TableCell className={styles.title}>{dictionary[rowName]}:</TableCell>
                 <TableCell>{user[rowName]}</TableCell>
               </TableRow>
             );

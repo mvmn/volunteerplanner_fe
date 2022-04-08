@@ -1,5 +1,9 @@
 const dictionary = {
+  yes: 'Так',
+  no: 'Ні',
+  subtaskCount: 'Кількість підзадач',
   role: 'Роль',
+  transportRequired: 'Потрібен транспорт',
   userVerifiedByUserId: 'Ким підтверджено',
   save: 'Зберегти',
   users: 'Користувачі',

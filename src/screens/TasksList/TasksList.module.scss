@@ -1,5 +1,9 @@
 @import '../../styles/colors.scss';
 
+.root {
+  color: $theme-text-color;
+}
+
 .container {
   text-align: start;
 
@@ -24,6 +28,18 @@
 
     .tabsContainer {
       flex: 2;
+    }
+
+    .subTable {
+      width: 100%;
+    }
+
+    .test {
+      padding: 0;
+    }
+
+    .opened {
+      border-left: 5px solid #1976d2;
     }
   }
 }
