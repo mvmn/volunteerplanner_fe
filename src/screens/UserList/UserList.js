@@ -1,4 +1,5 @@
-import { Button, DialogActions } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import { Button, DialogActions, TextField } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -52,6 +53,7 @@ export const UserList = () => {
   const users = useSelector(state => state.users);
   const [isModalOpened, setIsModalOpened] = useState(false);
   const [selectedUser, setSelectedUser] = useState();
+  const [searchedUserQuery, setSearchedUserQuery] = useState('');
 
   const handleRowDoubleClick = e => {
     setSelectedUser(e.row);
@@ -64,7 +66,25 @@ export const UserList = () => {
 
   return (
     <div className={styles.container}>
-      <Title text={dictionary.users} />
+      <div className={styles.field_box}>
+        <Title text={dictionary.users} />
+        <div className={styles.search}>
+          <TextField
+            id='search'
+            name='search'
+            value={searchedUserQuery}
+            type='text'
+            classes={{ root: styles.root }}
+            label={`${dictionary.searchUsers}`}
+            size='small'
+            margin='normal'
+            onChange={e => setSearchedUserQuery(e.target.value)}
+          />
+          <button className={styles.search_action} disabled={searchedUserQuery.length < 1}>
+            <SearchIcon />
+          </button>
+        </div>
+      </div>
       <Modal handleClose={handleModalClose} isModalOpened={isModalOpened} user={selectedUser}>
         {selectedUser && (
           <DialogActions>
