@@ -1,13 +1,13 @@
 import 'yup-phone';
 
-import { Button, Container, TextField } from '@mui/material';
+import { Button, Container, Link, TextField } from '@mui/material';
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 
 import { setLoggedIn } from '../../actions/user';
-import dictionry from '../../dictionary';
+import dictionary from '../../dictionary';
 import { yupPatterns } from '../../helpers/validation';
 import styles from './SignIn.module.scss';
 
@@ -37,8 +37,8 @@ export const SignIn = () => {
   const { handleChange, handleSubmit, values, errors } = formik;
 
   return (
-    <Container>
-      <h2>{dictionry.logIn}</h2>
+    <Container className={styles.container}>
+      <h2>{dictionary.logIn}</h2>
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.field_box}>
           <TextField
@@ -47,7 +47,7 @@ export const SignIn = () => {
             value={values.phoneNumber}
             type='tel'
             classes={{ root: styles.root }}
-            label={`Введіть ${dictionry.userName.toLocaleLowerCase()}`}
+            label={`Введіть ${dictionary.userName.toLocaleLowerCase()}`}
             size='small'
             margin='normal'
             onChange={handleChange}
@@ -62,7 +62,7 @@ export const SignIn = () => {
             name='password'
             value={values.password}
             classes={{ root: styles.root }}
-            label={dictionry.password}
+            label={dictionary.password}
             type='password'
             size='small'
             margin='normal'
@@ -72,8 +72,11 @@ export const SignIn = () => {
             <span className={styles.errors}>{errors.password}</span>
           </div>
         </div>
+        <div className={styles.link}>
+          <Link href='/password-reset'>{dictionary.forgotPassword}</Link>
+        </div>
         <Button variant='outlined' type='submit'>
-          {dictionry.send}
+          {dictionary.send}
         </Button>
       </form>
     </Container>
