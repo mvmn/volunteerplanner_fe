@@ -6,14 +6,14 @@ import styles from './UserInformation.module.scss';
 
 export const UserInformation = ({ user }) => {
   return (
-    <TableContainer className={styles.tableContainer} component={Paper}>
-      <Table classes={{ root: styles.root }} sx={{ minWidth: 650 }}>
+    <TableContainer className={styles.table_container} component={Paper}>
+      <Table style={{ borderBottom: 'none' }}>
         <TableBody>
           {ROW_TO_DISPLAY.map((rowName, i) => {
             return (
               <TableRow key={user[rowName] + i}>
                 <TableCell className={styles.title}>{dictionary[rowName]}:</TableCell>
-                <TableCell>{user[rowName]}</TableCell>
+                <TableCell className={styles.table_cell}>{user[rowName]}</TableCell>
               </TableRow>
             );
           })}
