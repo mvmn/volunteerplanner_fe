@@ -64,7 +64,8 @@ const dictionary = {
   expandAll: 'Відкрити всі',
   collapseAll: 'Закрити всі',
   product: 'Продукт',
-  changePassword: 'Змінити пароль'
+  changePassword: 'Змінити пароль',
+  searchTask: 'Пошук задачі'
 };
 
 export default dictionary;

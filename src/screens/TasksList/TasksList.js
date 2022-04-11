@@ -1,6 +1,7 @@
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import SearchIcon from '@mui/icons-material/Search';
 import {
   Box,
   Collapse,
@@ -12,7 +13,8 @@ import {
   TableContainer,
   TableHead,
   TablePagination,
-  TableRow
+  TableRow,
+  TextField
 } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import clsx from 'clsx';
@@ -122,6 +124,7 @@ const OperatorTasksListView = ({ handleRowClick }) => {
   const tasks = useSelector(state => state.tasks);
 
   const [value, setValue] = useState(1);
+  const [searchedTaskQuery, setSearchedTaskQuery] = useState('');
 
   const { selectedCategory, selectedSubCategory } = useContext(CategoriesContext);
 
@@ -135,7 +138,25 @@ const OperatorTasksListView = ({ handleRowClick }) => {
     <TabsContext.Provider value={{ value }}>
       <div className={styles.tabsContainer}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value={value} handleChange={handleChange}></Tabs>
+          <div className={styles.tabsSearchBox}>
+            <Tabs value={value} handleChange={handleChange}></Tabs>
+            <div className={styles.search}>
+              <TextField
+                id='search'
+                name='search'
+                value={searchedTaskQuery}
+                type='text'
+                classes={{ root: styles.root }}
+                label={dictionary.searchTask}
+                size='small'
+                margin='normal'
+                onChange={e => setSearchedTaskQuery(e.target.value)}
+              />
+              <button className={styles.search_action} disabled={searchedTaskQuery.length < 1}>
+                <SearchIcon />
+              </button>
+            </div>
+          </div>
         </Box>
         {Object.entries(tasks).map(([key, tasksByStatus], i) => {
           return (
