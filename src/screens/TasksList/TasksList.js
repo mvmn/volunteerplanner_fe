@@ -36,7 +36,8 @@ import styles from './TasksList.module.scss';
 export const TabsContext = createContext();
 
 const VERIFIED_TAB_INDEX = 1;
-function Row(props) {
+
+const Row = props => {
   const { row, handleRowClick } = props;
   const { value } = useContext(TabsContext);
   const [open, setOpen] = useState(false);
@@ -116,7 +117,7 @@ function Row(props) {
       </TableRow>
     </>
   );
-}
+};
 
 const OperatorTasksListView = () => {
   const navigate = useNavigate();
