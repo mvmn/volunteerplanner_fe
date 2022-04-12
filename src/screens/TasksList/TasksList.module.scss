@@ -33,6 +33,23 @@
 
     .tabsContainer {
       flex: 2;
+
+      .tabsSearchBox {
+        display: flex;
+        justify-content: space-between;
+
+        .search{
+          position: relative;
+    
+          .search_action {
+            background-color: transparent;
+            border: none;
+            position: absolute;
+            top: 24px;
+            right: 8px;
+          }
+        }
+      }
     }
 
     .subTable {
