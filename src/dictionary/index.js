@@ -27,6 +27,7 @@ const dictionary = {
   region: 'Район',
   inProgress: 'В роботі',
   profile: 'Мої дані',
+  data: 'Дані',
   edit: 'Редагувати',
   active: 'Активний',
   inactive: 'Не активний',
