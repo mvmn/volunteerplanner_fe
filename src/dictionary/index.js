@@ -19,6 +19,7 @@ const dictionary = {
   currentPassword: 'Поточний пароль',
   newPassword: 'Новий пароль',
   confirmPassWord: 'Пітвердіть пароль',
+  forgotPassword: 'Забули пароль?',
   send: 'Відправити',
   userName: 'Логін',
   fullName: 'Прізвище та ім’я',
@@ -64,7 +65,8 @@ const dictionary = {
   collapseAll: 'Закрити всі',
   product: 'Продукт',
   searchUsers: 'Пошук користувачів',
-  changePassword: 'Змінити пароль'
+  changePassword: 'Змінити пароль',
+  searchTask: 'Пошук задачі'
 };
 
 export default dictionary;
