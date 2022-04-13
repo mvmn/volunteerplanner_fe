@@ -126,6 +126,7 @@ const OperatorTasksListView = () => {
 
   const [value, setValue] = useState(1);
   const tasks = useSelector(state => state.tasks);
+  const [searchedTaskQuery, setSearchedTaskQuery] = useState('');
 
   const navigateSubTaskHandler = row => navigate(`/open-subtask/${row.id}`);
 

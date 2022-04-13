@@ -65,6 +65,7 @@ const dictionary = {
   expandAll: 'Відкрити всі',
   collapseAll: 'Закрити всі',
   product: 'Продукт',
+  searchUsers: 'Пошук користувачів',
   changePassword: 'Змінити пароль',
   searchTask: 'Пошук задачі'
 };

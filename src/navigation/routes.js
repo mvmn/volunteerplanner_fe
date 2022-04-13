@@ -2,6 +2,7 @@ import { CreateTask } from '../components/CreateTask';
 import { VolunteerTasks } from '../components/VolunteerTasks';
 import { ROLES } from '../constants/uiConfig';
 import { ChangePassword } from '../screens/ChangePassword';
+import { ForgotPassword } from '../screens/ForgotPassword';
 import { Profile } from '../screens/Profile';
 import { SignIn } from '../screens/SignIn';
 import { SignUp } from '../screens/SignUp';
