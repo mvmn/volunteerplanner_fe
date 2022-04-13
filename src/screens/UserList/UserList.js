@@ -1,5 +1,5 @@
 import SearchIcon from '@mui/icons-material/Search';
-import { Button, DialogActions, TextField } from '@mui/material';
+import { Button, DialogActions, DialogContent, TextField } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -8,8 +8,10 @@ import { LockedStatus } from '../../components/LockedStatus';
 import { Modal } from '../../components/Modal';
 import { Status } from '../../components/Status';
 import { Title } from '../../components/Title';
+import { UserInformation } from '../../components/UserInformation';
 import { MAX_USER_PER_PAGE } from '../../constants/uiConfig';
 import dictionary from '../../dictionary';
+import { useModalVisibleHook } from '../../hooks/useModalVisibleHook';
 import styles from './UserList.module.scss';
 
 const UserName = ({ params }) => {
@@ -50,19 +52,18 @@ export const usersColumns = [
 ];
 
 export const UserList = () => {
+  const { isModalVisible, onCloseHandler, onOpenHandler } = useModalVisibleHook();
+
   const users = useSelector(state => state.users);
-  const [isModalOpened, setIsModalOpened] = useState(false);
   const [selectedUser, setSelectedUser] = useState();
   const [searchedUserQuery, setSearchedUserQuery] = useState('');
 
   const handleRowDoubleClick = e => {
     setSelectedUser(e.row);
-    setIsModalOpened(true);
+    onOpenHandler();
   };
 
-  const handleModalClose = () => {
-    setIsModalOpened(false);
-  };
+  const modalTitle = `${dictionary.user} : ${selectedUser?.fullName}`;
 
   return (
     <div className={styles.container}>
@@ -85,7 +86,10 @@ export const UserList = () => {
           </button>
         </div>
       </div>
-      <Modal handleClose={handleModalClose} isModalOpened={isModalOpened} user={selectedUser}>
+      <Modal open={isModalVisible} onClose={onCloseHandler} title={modalTitle}>
+        <DialogContent dividers>
+          <UserInformation user={selectedUser} />
+        </DialogContent>
         {selectedUser && (
           <DialogActions>
             {!selectedUser.userVerified ? (

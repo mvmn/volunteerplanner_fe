@@ -38,7 +38,8 @@ import styles from './TasksList.module.scss';
 export const TabsContext = createContext();
 
 const VERIFIED_TAB_INDEX = 1;
-function Row(props) {
+
+const Row = props => {
   const { row, handleRowClick } = props;
   const { value } = useContext(TabsContext);
   const [open, setOpen] = useState(false);
@@ -118,16 +119,18 @@ function Row(props) {
       </TableRow>
     </>
   );
-}
+};
 
-const OperatorTasksListView = ({ handleRowClick }) => {
-  const tasks = useSelector(state => state.tasks);
+const OperatorTasksListView = () => {
+  const navigate = useNavigate();
 
   const [value, setValue] = useState(1);
+  const tasks = useSelector(state => state.tasks);
   const [searchedTaskQuery, setSearchedTaskQuery] = useState('');
 
-  const { selectedCategory, selectedSubCategory } = useContext(CategoriesContext);
+  const navigateSubTaskHandler = row => navigate(`/open-subtask/${row.id}`);
 
+  const { selectedCategory, selectedSubCategory } = useContext(CategoriesContext);
   console.log(selectedCategory, selectedSubCategory);
 
   const handleChange = (_, newValue) => {
@@ -179,7 +182,11 @@ const OperatorTasksListView = ({ handleRowClick }) => {
                   </TableHead>
                   <TableBody>
                     {tasksByStatus?.map(row => (
-                      <Row key={row.id} row={row} handleRowClick={handleRowClick} />
+                      <Row
+                        key={row.id}
+                        row={row}
+                        handleRowClick={() => navigateSubTaskHandler(row)}
+                      />
                     ))}
                   </TableBody>
                 </Table>
@@ -201,11 +208,13 @@ const OperatorTasksListView = ({ handleRowClick }) => {
   );
 };
 
-const VolunteerTasksListView = ({ handleRowClick }) => {
+const VolunteerTasksListView = () => {
+  const navigate = useNavigate();
   const tasks = useSelector(state => state.tasks.verified);
 
-  const { selectedCategory, selectedSubCategory } = useContext(CategoriesContext);
+  const navigateSubTaskHandler = e => navigate(`/open-subtask/${e.row.id}`);
 
+  const { selectedCategory, selectedSubCategory } = useContext(CategoriesContext);
   console.log(selectedCategory, selectedSubCategory);
 
   return (
@@ -213,7 +222,7 @@ const VolunteerTasksListView = ({ handleRowClick }) => {
       <DataGrid
         style={{ height: 600 }}
         pageSize={MAX_TASKS_PER_PAGE}
-        onRowClick={e => handleRowClick(e)}
+        onRowClick={e => navigateSubTaskHandler(e)}
         rowsPerPageOptions={[MAX_TASKS_PER_PAGE]}
         rows={tasks}
         columns={tasksColumns}
@@ -230,10 +239,6 @@ export const TasksList = () => {
     navigate('/create-task');
   };
 
-  const handleRowClick = () => {
-    navigate(`/open-subtask`);
-  };
-
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -247,12 +252,7 @@ export const TasksList = () => {
 
       <div className={styles.body}>
         <Categories />
-
-        {user.role === ROLES.operator ? (
-          <OperatorTasksListView handleRowClick={handleRowClick} />
-        ) : (
-          <VolunteerTasksListView handleRowClick={handleRowClick} />
-        )}
+        {user.role === ROLES.operator ? <OperatorTasksListView /> : <VolunteerTasksListView />}
       </div>
     </div>
   );
