@@ -1,3 +1,5 @@
+@import '../../../../styles//colors.scss';
+
 .form {
     .column {
         position: relative;
@@ -13,7 +15,7 @@
     .label {
         padding: 0.5rem 1rem 0;
         margin: 1rem;
-        color: #82888C;
+        color: $grey;
         font-family: "Roboto","Helvetica","Arial",sans-serif;
         font-size: 1rem;
         line-height: 1.5;
@@ -27,6 +29,6 @@
 
     .errors {
         font-size: 14px;
-        color: #1976d2;
+        color: $denim;
     }
 }

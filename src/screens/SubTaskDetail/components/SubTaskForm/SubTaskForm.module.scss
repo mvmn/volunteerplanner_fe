@@ -1,3 +1,5 @@
+@import '../../../../styles/colors.scss';
+
 .form {
     padding: 0.5rem 1rem 0;
     
@@ -35,7 +37,7 @@
   
       .errors {
           font-size: 14px;
-          color: #1976d2;
+          color: $denim;
       }
     }
   }
