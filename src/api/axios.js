@@ -3,7 +3,7 @@ import axios from 'axios';
 import { ACCESS_TOKEN } from '../constants/uiConfig';
 import { ENDPOINT } from '../env-variables';
 
-/** Default confogs:
+/** Default configs:
  * - content-type
  * - URL
  * - token
