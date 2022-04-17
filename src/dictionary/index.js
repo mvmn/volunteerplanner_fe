@@ -29,6 +29,7 @@ const dictionary = {
   region: 'Район',
   inProgress: 'В роботі',
   profile: 'Мої дані',
+  data: 'Дані',
   edit: 'Редагувати',
   active: 'Активний',
   inactive: 'Не активний',
@@ -65,6 +66,7 @@ const dictionary = {
   expandAll: 'Відкрити всі',
   collapseAll: 'Закрити всі',
   product: 'Продукт',
+  searchUsers: 'Пошук користувачів',
   changePassword: 'Змінити пароль',
   searchTask: 'Пошук задачі'
 };

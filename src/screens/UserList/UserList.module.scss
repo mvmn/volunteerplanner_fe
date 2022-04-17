@@ -1,5 +1,26 @@
 .container {
   text-align: start;
+
+  .field_box {
+    display: flex;
+    justify-content: space-between;
+    
+    .root {
+      min-width: 320px;
+    }
+
+    .search{
+      position: relative;
+
+      .search_action {
+        background-color: transparent;
+        border: none;
+        position: absolute;
+        top: 22px;
+        right: 8px;
+      }
+    }
+  }
 }
 
 .dataGrid {

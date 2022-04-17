@@ -30,6 +30,8 @@ const yupPatterns = key => {
         .string()
         .oneOf([yup.ref('password'), null], 'Паролі не збігаються')
         .required('Обовязково пітверідть пароль');
+    case 'note':
+      return yup.string().min(3, 'Поле занадто коротке');
     default:
       return yup.string();
   }

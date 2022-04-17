@@ -1,11 +1,11 @@
-import { Button, TextField } from '@mui/material';
+import { Button } from '@mui/material';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { setUser } from '../../actions/user';
 import { Title } from '../../components/Title';
 import { UserInformation } from '../../components/UserInformation';
 import dictionary from '../../dictionary';
+import { ProfileEditForm } from './components/ProfileEditForm/ProfileEditForm';
 import styles from './Profile.module.scss';
 
 const DisplayData = () => {
@@ -13,105 +13,28 @@ const DisplayData = () => {
   return <UserInformation user={user} />;
 };
 
-const EditData = props => {
-  const {
-    phoneNumber,
-    setPhoneNumber,
-    userName,
-    setUserName,
-    fullName,
-    setFullName,
-    email,
-    setEmail
-  } = props;
-
-  return (
-    <>
-      <div className={styles.row}>
-        <div className={styles.title}>{dictionary.phoneNumber}:</div>
-        <TextField
-          className={styles.textField}
-          size='small'
-          value={phoneNumber}
-          onChange={e => setPhoneNumber(e.target.value)}
-        />
-      </div>
-      <div className={styles.row}>
-        <div className={styles.title}>{dictionary.userName}:</div>
-        <TextField
-          className={styles.textField}
-          size='small'
-          value={userName}
-          onChange={e => setUserName(e.target.value)}
-        />
-      </div>
-      <div className={styles.row}>
-        <div className={styles.title}>{dictionary.displayName}:</div>
-        <TextField
-          className={styles.textField}
-          size='small'
-          value={fullName}
-          onChange={e => setFullName(e.target.value)}
-        />
-      </div>
-      <div className={styles.row}>
-        <div className={styles.title}>{dictionary.email}:</div>
-        <TextField
-          className={styles.textField}
-          size='small'
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-        />
-      </div>
-    </>
-  );
-};
-
 export const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
-  const dispatch = useDispatch();
 
   const user = useSelector(state => state.user);
   const { phoneNumber, userName, fullName, email } = user;
-  const [editedPhoneNumber, setPhoneNumber] = useState(phoneNumber);
-  const [editedUserName, setUserName] = useState(userName);
-  const [editedFullName, setFullName] = useState(fullName);
-  const [editedEmail, setEmail] = useState(email);
 
-  const handleEditClick = () => {
-    if (isEditing) {
-      dispatch(
-        setUser({
-          phoneNumber: editedPhoneNumber,
-          userName: editedUserName,
-          fullName: editedFullName,
-          email: editedEmail
-        })
-      );
-    }
-    setIsEditing(!isEditing);
-  };
+  const handleEditClick = () => setIsEditing(true);
 
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         <Title text={dictionary.profile} />
-
-        <Button variant='outlined' onClick={handleEditClick}>
-          {isEditing ? dictionary.save : dictionary.edit}
-        </Button>
+        {!isEditing && (
+          <Button variant='outlined' size='large' onClick={handleEditClick}>
+            {dictionary.edit}
+          </Button>
+        )}
       </div>
-
       {isEditing ? (
-        <EditData
-          phoneNumber={editedPhoneNumber}
-          setPhoneNumber={setPhoneNumber}
-          userName={editedUserName}
-          setNickname={setUserName}
-          fullName={editedFullName}
-          email={editedEmail}
-          setEmail={setEmail}
-          setFullName={setFullName}
+        <ProfileEditForm
+          initialValues={{ phoneNumber, userName, fullName, email }}
+          setIsEditing={setIsEditing}
         />
       ) : (
         <DisplayData />

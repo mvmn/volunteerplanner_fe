@@ -1,39 +1,24 @@
 import CloseIcon from '@mui/icons-material/Close';
-import { Dialog, DialogContent, DialogTitle } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
+import { Box, Button, Modal as MuiModal } from '@mui/material';
 
-import dictionary from '../../dictionary';
-import { UserInformation } from '../UserInformation';
+import image from '../../styles/iStock-529679954.jpg';
+import styles from './Modal.module.scss';
 
-export const Modal = props => {
-  const { handleClose, isModalOpened, user, children } = props;
-
-  if (!user) return null;
-
-  const title = `${dictionary.user}: ${user.displayName}`;
+export const Modal = ({ open, onClose, children, title }) => {
   return (
-    <Dialog onClose={handleClose} open={isModalOpened}>
-      <DialogTitle sx={{ m: 0, p: 2 }}>
-        {title}
-        {handleClose ? (
-          <IconButton
-            aria-label='close'
-            onClick={handleClose}
-            sx={{
-              position: 'absolute',
-              right: 8,
-              top: 8,
-              color: theme => theme.palette.grey[500]
-            }}
-          >
+    <MuiModal open={open} onClose={onClose}>
+      <Box className={styles.modal_box}>
+        <div className={styles.modal_header}>
+          <div className={styles.modal_header_column}>
+            <img src={image} alt='ua-img' width={30} />
+            <h3 className={styles.title}>{title}</h3>
+          </div>
+          <Button size='small' onClick={onClose}>
             <CloseIcon />
-          </IconButton>
-        ) : null}
-      </DialogTitle>
-      <DialogContent dividers>
-        <UserInformation user={user} />
-      </DialogContent>
-      {children}
-    </Dialog>
+          </Button>
+        </div>
+        {children}
+      </Box>
+    </MuiModal>
   );
 };
