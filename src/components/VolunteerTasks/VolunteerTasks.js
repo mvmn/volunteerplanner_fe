@@ -54,7 +54,6 @@ export const VolunteerTasks = () => {
   }, {});
 
   const rows = Object.entries(subTasks).reduce((acc, [key, value]) => {
-    console.log(key, value);
     acc[key] = value.map(item => {
       return {
         ...TASKS_MAP[item.taskId],

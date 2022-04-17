@@ -1,7 +1,9 @@
-import { all, fork } from 'redux-saga/effects';
+import { spawn } from 'redux-saga/effects';
 
-import * as testSaga from '../sagas/testSaga';
+import * as authSaga from '../sagas/authSaga';
+import * as usersSaga from './usersSaga';
 
 export function* rootSagas() {
-  yield all([...Object.values(testSaga)].map(fork));
+  yield spawn(...Object.values(usersSaga));
+  yield spawn(...Object.values(authSaga));
 }

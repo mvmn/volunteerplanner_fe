@@ -4,31 +4,31 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { StyledEngineProvider, ThemeProvider } from '@mui/material/styles';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
 
-import { testSagaStart } from './actions/testSagaAction';
+import { setLoggedIn } from '../src/actions/user';
 import { Footer } from './components/Footer';
 import { Header } from './components/Header';
 import { Main } from './screens/Main';
 import theme from './styles/theme';
 
-function App() {
+function App({ children }) {
   // Test saga start
   const dispatch = useDispatch();
+
   useEffect(() => {
-    dispatch(testSagaStart());
-  }, []);
-  // Test saga end
+    if (localStorage.getItem('accessToken')) {
+      dispatch(setLoggedIn());
+    }
+  }, [dispatch]);
+
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
         <div className='App'>
-          <BrowserRouter>
-            <CssBaseline />
-            <Header />
-            <Main />
-            <Footer />
-          </BrowserRouter>
+          <CssBaseline />
+          <Header />
+          <Main>{children}</Main>
+          <Footer />
         </div>
       </ThemeProvider>
     </StyledEngineProvider>

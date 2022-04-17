@@ -21,7 +21,7 @@ import clsx from 'clsx';
 import _ from 'lodash';
 import { createContext, useContext, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import { Categories } from '../../components/Categories';
 import { ChangeStatus } from '../../components/ChangeStatus';
@@ -51,9 +51,9 @@ function Row(props) {
   return (
     <>
       <TableRow
-        className={open && styles.opened}
+        className={open ? styles.opened : ''}
         sx={{ '& > *': { borderBottom: 'unset' } }}
-        onDoubleClick={handleRowClick}
+        onDoubleClick={() => handleRowClick(row.id)}
       >
         <TableCell>
           <IconButton aria-label='expand row' size='small' onClick={() => setOpen(!open)}>
@@ -70,7 +70,7 @@ function Row(props) {
         <TableCell>{row.deadlineDate}</TableCell>
         <TableCell className={styles.noteCell}>{row.note}</TableCell>
       </TableRow>
-      <TableRow className={open && styles.opened}>
+      <TableRow className={open ? styles.opened : ''}>
         <TableCell className={styles.subRow} colSpan={12}>
           <Collapse in={open} timeout='auto' unmountOnExit>
             <Box sx={{ margin: 1 }}>
@@ -92,7 +92,7 @@ function Row(props) {
                 </TableHead>
                 <TableBody>
                   {mapSubTasks[row.id]?.map(subTask => (
-                    <TableRow key={subTask.date}>
+                    <TableRow key={subTask.id}>
                       <TableCell />
                       <TableCell>
                         {value === VERIFIED_TAB_INDEX ? (
@@ -224,14 +224,15 @@ const VolunteerTasksListView = ({ handleRowClick }) => {
 
 export const TasksList = () => {
   const user = useSelector(state => state.user);
-  const navigate = useNavigate();
+
+  let history = useHistory();
 
   const handleClick = () => {
-    navigate('/create-task');
+    history.push('/create-task');
   };
 
-  const handleRowClick = () => {
-    navigate(`/open-subtask`);
+  const handleRowClick = id => {
+    history.push(`/create-subtask/${id}`);
   };
 
   return (

@@ -3,16 +3,14 @@ import 'yup-phone';
 import { Button, Container, Link, TextField } from '@mui/material';
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 
-import { setLoggedIn } from '../../actions/user';
+import { signIn } from '../../actions/user';
 import dictionary from '../../dictionary';
 import { yupPatterns } from '../../helpers/validation';
 import styles from './SignIn.module.scss';
 
 export const SignIn = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const initialValues = {
@@ -21,7 +19,6 @@ export const SignIn = () => {
   };
 
   const validationSchema = yup.object().shape({
-    phoneNumber: yupPatterns('phoneNumber'),
     password: yupPatterns('signInPass')
   });
 
@@ -29,8 +26,7 @@ export const SignIn = () => {
     initialValues,
     validationSchema,
     async onSubmit() {
-      dispatch(setLoggedIn());
-      navigate('/');
+      dispatch(signIn(values));
     }
   });
 

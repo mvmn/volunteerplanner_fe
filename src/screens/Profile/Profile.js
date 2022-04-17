@@ -46,7 +46,7 @@ const EditData = props => {
         />
       </div>
       <div className={styles.row}>
-        <div className={styles.title}>{dictionary.fullName}:</div>
+        <div className={styles.title}>{dictionary.displayName}:</div>
         <TextField
           className={styles.textField}
           size='small'

@@ -1,8 +1,9 @@
 import { Button, DialogActions } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { getUsers } from '../../actions/users';
 import { LockedStatus } from '../../components/LockedStatus';
 import { Modal } from '../../components/Modal';
 import { Status } from '../../components/Status';
@@ -12,15 +13,14 @@ import dictionary from '../../dictionary';
 import styles from './UserList.module.scss';
 
 const UserName = ({ params }) => {
-  const users = useSelector(state => state.users);
+  const users = useSelector(state => state.users.all);
   const user = users.find(user => user.id === params.id);
-  return <>{user.fullName}</>;
+  return <>{user.displayName}</>;
 };
 
 export const usersColumns = [
   { field: 'phoneNumber', headerName: dictionary.phoneNumber, flex: 2 },
-  { field: 'userName', headerName: dictionary.userName, flex: 1 },
-  { field: 'fullName', headerName: dictionary.fullName, flex: 2 },
+  { field: 'displayName', headerName: dictionary.displayName, flex: 1 },
   {
     field: 'phoneNumberVerified',
     headerName: dictionary.phoneNumberVerified,
@@ -49,7 +49,7 @@ export const usersColumns = [
 ];
 
 export const UserList = () => {
-  const users = useSelector(state => state.users);
+  const users = useSelector(state => state.users.all);
   const [isModalOpened, setIsModalOpened] = useState(false);
   const [selectedUser, setSelectedUser] = useState();
 
@@ -61,6 +61,11 @@ export const UserList = () => {
   const handleModalClose = () => {
     setIsModalOpened(false);
   };
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getUsers());
+  }, [dispatch]);
 
   return (
     <div className={styles.container}>

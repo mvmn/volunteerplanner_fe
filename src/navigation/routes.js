@@ -17,7 +17,6 @@ export const routes = [
   { link: 'create-subtask/:taskId', component: CreateSubtask, isAuthorized: true },
   { link: 'create-task', component: CreateTask, isAuthorized: true, role: ROLES.operator },
   { link: 'profile', component: Profile, isAuthorized: true },
-  { link: 'open-subtask', component: Profile, isAuthorized: true },
   { link: 'sign-up', component: SignUp },
   { link: 'login', component: SignIn },
   { link: 'change-password', component: ChangePassword, isAuthorized: true },
