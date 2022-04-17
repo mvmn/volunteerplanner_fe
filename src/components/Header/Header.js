@@ -121,7 +121,7 @@ export const Header = () => {
             </NavLink>
             {navigation.map(item => {
               return (
-                <NavLink key={item.link} to={item.link} exact={true} className={styles.link}>
+                <NavLink key={item.link} to={`/${item.link}`} exact={true} className={styles.link}>
                   <ListItem button>
                     {item.icon}&nbsp; {item.title}
                   </ListItem>
