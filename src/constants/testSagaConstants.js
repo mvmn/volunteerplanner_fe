@@ -1,2 +1,0 @@
-export const TEST_SAGA_START = 'TEST_SAGA_START';
-export const TEST_SAGA_SUCCESS = 'TEST_SAGA_SUCCESS';

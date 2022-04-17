@@ -4,7 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider, useSelector } from 'react-redux';
 import { Router } from 'react-router';
-import { Link, Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 
 import App from './App';
 import { routes } from './navigation/routes';
@@ -13,10 +13,11 @@ import { history, store } from './store';
 
 const ProtectedRoute = ({ role, children }) => {
   const isAuthorized = useSelector(state => state.user.isAuthorized);
+
   const currentRole = useSelector(state => state.user.role);
 
   if (!isAuthorized || (role && currentRole !== role)) {
-    return <Link to='/' replace />;
+    return <Redirect to='/' replace />;
   }
 
   return children;

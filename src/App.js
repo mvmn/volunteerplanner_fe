@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { setLoggedIn } from '../src/actions/user';
 import { Footer } from './components/Footer';
 import { Header } from './components/Header';
+import { ACCESS_TOKEN } from './constants/uiConfig';
 import { Main } from './screens/Main';
 import theme from './styles/theme';
 
@@ -16,7 +17,7 @@ function App({ children }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (localStorage.getItem('accessToken')) {
+    if (sessionStorage.getItem(ACCESS_TOKEN)) {
       dispatch(setLoggedIn());
     }
   }, [dispatch]);

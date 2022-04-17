@@ -1,6 +1,13 @@
 import axios from 'axios';
 
+import { ACCESS_TOKEN } from '../constants/uiConfig';
 import { ENDPOINT } from '../env-variables';
+
+/** Default confogs:
+ * - content-type
+ * - URL
+ * - token
+ */
 
 const defaultOptions = {
   baseURL: ENDPOINT,
@@ -9,12 +16,10 @@ const defaultOptions = {
   }
 };
 
-// Create instance
 const instance = axios.create(defaultOptions);
 
-// Set the AUTH token for any request
 instance.interceptors.request.use(function (config) {
-  const token = localStorage.getItem('accessToken');
+  const token = sessionStorage.getItem(ACCESS_TOKEN);
   config.headers.Authorization = token ? `Bearer ${token}` : '';
   return config;
 });
