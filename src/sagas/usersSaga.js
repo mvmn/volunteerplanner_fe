@@ -16,6 +16,6 @@ function* usersSaga() {
   }
 }
 
-export default function* getAllTasks() {
+export default function* getAllUsers() {
   yield takeLatest(GET_USERS, usersSaga);
 }

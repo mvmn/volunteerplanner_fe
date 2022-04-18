@@ -1,3 +1,5 @@
+import { createAction } from 'redux-actions';
+
 import {
   SET_LOGGED_IN,
   SET_LOGGED_OUT,
@@ -6,8 +8,8 @@ import {
   SIGN_IN
 } from '../constants/user';
 
-export const setLoggedIn = () => ({ type: SET_LOGGED_IN });
-export const signIn = payload => ({ type: SIGN_IN, payload });
-export const setLoggedOut = () => ({ type: SET_LOGGED_OUT });
-export const setUser = payload => ({ type: SET_USER, payload });
-export const setNewPassword = () => ({ type: SET_NEW_PASSWORD });
+export const setLoggedIn = createAction(SET_LOGGED_IN);
+export const signIn = createAction(SIGN_IN);
+export const setLoggedOut = createAction(SET_LOGGED_OUT);
+export const setUser = createAction(SET_USER);
+export const setNewPassword = createAction(SET_NEW_PASSWORD);
