@@ -1,3 +1,9 @@
+@import '../../styles/colors.scss';
+
+.root {
+  color: $theme-text-color;
+}
+
 .container {
   text-align: start;
 

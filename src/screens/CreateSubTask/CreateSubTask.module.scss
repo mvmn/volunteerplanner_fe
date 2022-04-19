@@ -1,0 +1,48 @@
+@import '../.././styles//colors.scss';
+
+.container {
+  min-height: 70vh;
+  margin-top: 1rem;
+  padding: 1.5rem;
+  box-shadow: $shadow;
+  border-radius: 8px;
+
+  .title {
+    margin: 1rem;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.table_container {
+  box-shadow: none;
+
+  .title {
+    padding: 0.5rem 1rem 0;
+    margin: 1rem;
+    color: $grey;
+    font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+    font-size: 1rem;
+    line-height: 1.5;
+
+    // as table cell
+    display: table-cell;
+    width: 76%;
+  }
+
+  .table_cell {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    color: $theme-text-color;
+  }
+
+  .table_cell,
+  .title {
+    border: none;
+  }
+}

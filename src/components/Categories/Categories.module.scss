@@ -1,4 +1,15 @@
+@import '../../styles/colors.scss';
+
 .treeView {
   min-width: 250px;
   height: auto;
+  color: $theme-text-color;
+
+  .treeItem {
+    margin: 1rem;
+  }
+
+  .content {
+    padding: 0.5rem;
+  }
 }

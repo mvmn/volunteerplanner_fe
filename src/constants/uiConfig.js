@@ -1,8 +1,10 @@
 import { Priority } from '../components/Priority';
 import { Status } from '../components/Status';
 import dictionary from '../dictionary';
+
 export const MAX_USER_PER_PAGE = 10;
 export const MAX_TASKS_PER_PAGE = 5;
+export const ACCESS_TOKEN = 'accessToken';
 
 export const TASK_STATUSES = {
   new: 'NEW',
@@ -15,6 +17,12 @@ export const SUBTASK_STATUSES = {
   completed: 'COMPLETED',
   inProgress: 'IN_PROGRESS',
   rejected: 'REJECTED'
+};
+
+export const SUBTASK_NAME = {
+  COMPLETED: 'completed',
+  IN_PROGRESS: 'inProgress',
+  REJECTED: 'rejected'
 };
 
 export const ROLES = {
@@ -40,6 +48,7 @@ export const products = {
 };
 
 export const tasksColumns = [
+  { field: 'subtaskCount', headerName: dictionary.subtaskCount, flex: 1 },
   { field: 'quantityLeft', headerName: dictionary.quantity, flex: 1 },
   { field: 'productMeasure', headerName: dictionary.productMeasure, flex: 1 },
   {

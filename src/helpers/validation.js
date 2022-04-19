@@ -4,10 +4,8 @@ import * as yup from 'yup';
 
 const yupPatterns = key => {
   switch (key) {
-    case 'userName':
+    case 'displayName':
       return yup.string().required("Ім'я обов'язкове").min(2, "Ім'я занадто коротке");
-    case 'fullName':
-      return yup.string('').required("Поле обо'язкове");
     case 'email':
       return yup
         .string()
@@ -48,10 +46,10 @@ const yupPatterns = key => {
       return yup.number().required("Кількість обов'язкова").min(1, 'Додайте хоча б одну одиницю');
     case 'priority':
       return yup.string().required("Пріорітет обов'язковий");
-    case 'note':
-      return yup.string().min(10, `Мінімальна кілікість символів: ${10}`);
     case 'date':
       return yup.string().required('Укажіть дату');
+    case 'note':
+      return yup.string().min(3, 'Поле занадто коротке');
     default:
       return yup.string();
   }

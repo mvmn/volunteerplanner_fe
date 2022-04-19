@@ -12,7 +12,6 @@ const UserStatus = ({ status }) => {
 
 const TaskStatus = ({ status }) => {
   const color = STATUS_NAME[status];
-  console.log(color);
   const text = dictionary[STATUS_NAME[status]];
   return <div className={clsx(styles.status, styles[color])}>{text}</div>;
 };

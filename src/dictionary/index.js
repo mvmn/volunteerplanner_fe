@@ -1,5 +1,10 @@
 const dictionary = {
+  displayName: 'Ім’я',
+  yes: 'Так',
+  no: 'Ні',
+  subtaskCount: 'Кількість підзадач',
   role: 'Роль',
+  transportRequired: 'Потрібен транспорт',
   userVerifiedByUserId: 'Ким підтверджено',
   save: 'Зберегти',
   users: 'Користувачі',
@@ -15,6 +20,7 @@ const dictionary = {
   currentPassword: 'Поточний пароль',
   newPassword: 'Новий пароль',
   confirmPassWord: 'Пітвердіть пароль',
+  forgotPassword: 'Забули пароль?',
   send: 'Відправити',
   userName: 'Логін',
   fullName: 'Прізвище та ім’я',
@@ -23,6 +29,7 @@ const dictionary = {
   region: 'Район',
   inProgress: 'В роботі',
   profile: 'Мої дані',
+  data: 'Дані',
   edit: 'Редагувати',
   active: 'Активний',
   inactive: 'Не активний',
@@ -73,6 +80,8 @@ const dictionary = {
   plait: 'Бинти',
   shoes: 'Взуття',
   clothes: 'Одяг',
-  changePassword: 'Змінити пароль'
+  searchUsers: 'Пошук користувачів',
+  changePassword: 'Змінити пароль',
+  searchTask: 'Пошук задачі'
 };
 export default dictionary;

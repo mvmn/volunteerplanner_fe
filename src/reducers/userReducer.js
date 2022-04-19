@@ -1,8 +1,8 @@
 import { SET_LOGGED_IN, SET_LOGGED_OUT, SET_USER } from '../constants/user';
 import data from '../mocks/user.json';
 
-//const initState = data.user;
-const initState = { ...data.user, role: 'operator' };
+const initState = data.user;
+//const initState = { ...data.user, role: 'volunteer' };
 
 export const userReducer = function (state = initState, action) {
   switch (action.type) {

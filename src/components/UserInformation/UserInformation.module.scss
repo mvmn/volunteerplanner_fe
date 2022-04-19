@@ -1,12 +1,30 @@
-.tableContainer {
-  margin-bottom: 1rem;
+.table_container {
+  box-shadow: none;
+  
+  .title {
+    padding: 0.5rem 1rem 0;
+    margin: 1rem;
+    color: #82888C;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    font-size: 1rem;
+    line-height: 1.5;
 
-  .rowTitle {
-    font-weight: bold;
-    width: 25%;
+    // as table cell
+    display: table-cell;
+    width: 75%;
   }
+
+  .table_cell {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    color: #202020;
+  }
+
+  .table_cell,
+  .title {
+    border: none;
+  }
+
 }
 
-.root {
-  min-width: 550px;
-}

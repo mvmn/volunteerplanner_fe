@@ -6,10 +6,10 @@ import { useSelector } from 'react-redux';
 import { MAX_TASKS_PER_PAGE, SUBTASK_STATUSES, products } from '../../constants/uiConfig';
 import dictionary from '../../dictionary';
 import { CategoriesContext } from '../../screens/Main';
-import { TabPanel } from '../../screens/TasksList';
 import { Categories } from '../Categories';
 import { Priority } from '../Priority';
 import { Status } from '../Status';
+import { TabPanel } from '../TabPanel';
 import { Title } from '../Title';
 import styles from './VolunteerTasks.module.scss';
 
@@ -54,7 +54,6 @@ export const VolunteerTasks = () => {
   }, {});
 
   const rows = Object.entries(subTasks).reduce((acc, [key, value]) => {
-    console.log(key, value);
     acc[key] = value.map(item => {
       return {
         ...TASKS_MAP[item.taskId],
@@ -87,9 +86,13 @@ export const VolunteerTasks = () => {
 
         <div className={styles.tabsContainer}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <Tabs value={value} onChange={handleChange}>
+            <Tabs classes={{ selected: styles.root }} value={value} onChange={handleChange}>
               {Object.keys(SUBTASK_STATUSES).map(item => (
-                <Tab key={item} label={dictionary[item]} />
+                <Tab
+                  classes={{ root: styles.root, selected: styles.root }}
+                  key={item}
+                  label={dictionary[item]}
+                />
               ))}
             </Tabs>
           </Box>

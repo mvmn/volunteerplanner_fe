@@ -1,26 +1,29 @@
-import { Button, DialogActions } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import { Button, DialogActions, DialogContent, TextField } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { getUsers } from '../../actions/users';
 import { LockedStatus } from '../../components/LockedStatus';
 import { Modal } from '../../components/Modal';
 import { Status } from '../../components/Status';
 import { Title } from '../../components/Title';
+import { UserInformation } from '../../components/UserInformation';
 import { MAX_USER_PER_PAGE } from '../../constants/uiConfig';
 import dictionary from '../../dictionary';
+import { useModalVisibleHook } from '../../hooks/useModalVisibleHook';
 import styles from './UserList.module.scss';
 
 const UserName = ({ params }) => {
-  const users = useSelector(state => state.users);
+  const users = useSelector(state => state.users.all);
   const user = users.find(user => user.id === params.id);
-  return <>{user.fullName}</>;
+  return <>{user.displayName}</>;
 };
 
 export const usersColumns = [
   { field: 'phoneNumber', headerName: dictionary.phoneNumber, flex: 2 },
-  { field: 'userName', headerName: dictionary.userName, flex: 1 },
-  { field: 'fullName', headerName: dictionary.fullName, flex: 2 },
+  { field: 'displayName', headerName: dictionary.displayName, flex: 1 },
   {
     field: 'phoneNumberVerified',
     headerName: dictionary.phoneNumberVerified,
@@ -49,23 +52,49 @@ export const usersColumns = [
 ];
 
 export const UserList = () => {
-  const users = useSelector(state => state.users);
-  const [isModalOpened, setIsModalOpened] = useState(false);
+  const users = useSelector(state => state.users.all);
+  const { isModalVisible, onCloseHandler, onOpenHandler } = useModalVisibleHook();
+
   const [selectedUser, setSelectedUser] = useState();
+  const [searchedUserQuery, setSearchedUserQuery] = useState('');
 
-  const handleRowClick = e => {
+  const handleRowDoubleClick = e => {
     setSelectedUser(e.row);
-    setIsModalOpened(true);
+    onOpenHandler();
   };
 
-  const handleModalClose = () => {
-    setIsModalOpened(false);
-  };
+  const modalTitle = `${dictionary.user} : ${selectedUser?.fullName}`;
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getUsers());
+  }, [dispatch]);
 
   return (
     <div className={styles.container}>
-      <Title text={dictionary.users} />
-      <Modal handleClose={handleModalClose} isModalOpened={isModalOpened} user={selectedUser}>
+      <div className={styles.field_box}>
+        <Title text={dictionary.users} />
+        <div className={styles.search}>
+          <TextField
+            id='search'
+            name='search'
+            value={searchedUserQuery}
+            type='text'
+            classes={{ root: styles.root }}
+            label={`${dictionary.searchUsers}`}
+            size='small'
+            margin='normal'
+            onChange={e => setSearchedUserQuery(e.target.value)}
+          />
+          <button className={styles.search_action} disabled={searchedUserQuery.length < 1}>
+            <SearchIcon />
+          </button>
+        </div>
+      </div>
+      <Modal open={isModalVisible} onClose={onCloseHandler} title={modalTitle}>
+        <DialogContent dividers>
+          <UserInformation user={selectedUser} />
+        </DialogContent>
         {selectedUser && (
           <DialogActions>
             {!selectedUser.userVerified ? (
@@ -83,7 +112,7 @@ export const UserList = () => {
         className={styles.dataGrid}
         style={{ height: 600 }}
         pageSize={MAX_USER_PER_PAGE}
-        onRowClick={e => handleRowClick(e)}
+        onRowDoubleClick={e => handleRowDoubleClick(e)}
         rowsPerPageOptions={[MAX_USER_PER_PAGE]}
         rows={users}
         columns={usersColumns}

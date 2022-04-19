@@ -1,7 +1,11 @@
+@import '../.././styles//colors.scss';
+
 .container {
-  background-color: rgb(231, 235, 240);
-  padding: 1rem;
-  margin-top: 100px;
+  height: 73vh;
+  margin-top: 1rem;
+  padding: 1.5rem;
+  box-shadow: $shadow;
+  border-radius: 8px;
 
   .title {
     margin: 1rem;
@@ -11,16 +15,5 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-
-  .editRow {
-    display: flex;
-    padding: 1rem;
-  }
-
-  .editTitleRow {
-    width: 30%;
-    padding: 0.5rem 1rem 0;
-    text-align: start;
   }
 }
