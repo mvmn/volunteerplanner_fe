@@ -2,8 +2,7 @@
   "user": {
     "id": 0,
     "phoneNumber": "+380980495814",
-    "userName": "jon",
-    "fullName": "Джон Доу",
+    "displayName": "Джон Доу",
     "email": "example@gmail.com",
     "isAuthorized": true,
     "role": "operator",

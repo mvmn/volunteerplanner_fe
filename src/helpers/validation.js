@@ -4,10 +4,8 @@ import * as yup from 'yup';
 
 const yupPatterns = key => {
   switch (key) {
-    case 'userName':
+    case 'displayName':
       return yup.string().required("Ім'я обов'язкове").min(2, "Ім'я занадто коротке");
-    case 'fullName':
-      return yup.string('').required("Поле обо'язкове");
     case 'email':
       return yup
         .string()

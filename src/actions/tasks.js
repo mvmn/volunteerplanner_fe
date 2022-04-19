@@ -1,6 +1,9 @@
-import { SET_COMPLETED, SET_NEW, SET_REJECTED, SET_VERIFIED } from '../constants/tasks';
+import { createAction } from 'redux-actions';
 
-export const setCompleted = payload => ({ type: SET_COMPLETED, payload });
-export const setNew = payload => ({ type: SET_NEW, payload });
-export const setUser = payload => ({ type: SET_REJECTED, payload });
-export const setVerified = payload => ({ type: SET_VERIFIED, payload });
+import { GET_ALL, SET_COMPLETED, SET_NEW, SET_REJECTED, SET_VERIFIED } from '../constants/tasks';
+
+export const getTasks = createAction(GET_ALL);
+export const setCompleted = createAction(SET_COMPLETED);
+export const setNew = createAction(SET_NEW);
+export const setRejected = createAction(SET_REJECTED);
+export const setVerified = createAction(SET_VERIFIED);

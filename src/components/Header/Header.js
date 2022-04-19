@@ -5,7 +5,7 @@ import { AppBar, Avatar, List, ListItem, Paper, Toolbar, Typography } from '@mui
 import { deepPurple } from '@mui/material/colors';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { NavLink, useRouteMatch } from 'react-router-dom';
 
 import { setLoggedOut } from '../../actions/user';
 import { NAVIGATION_ITEMS, OPERATOR_NAVIGATION_ITEMS } from '../../constants/navigation';
@@ -39,18 +39,28 @@ const Menu = ({ setIsOpened }) => {
 
   return (
     <Paper ref={wrapperRef} className={styles.menu}>
-      <Link to='/login' onClick={handleClick} className={styles.link}>
+      <NavLink exact={true} to='/login' onClick={handleClick} className={styles.link}>
         <ExitToAppOutlinedIcon />
         {dictionary.logOut}
-      </Link>
-      <Link to='/profile' onClick={() => setIsOpened(false)} className={styles.link}>
+      </NavLink>
+      <NavLink
+        exact={true}
+        to='/profile'
+        onClick={() => setIsOpened(false)}
+        className={styles.link}
+      >
         <PersonIcon />
         {dictionary.openProfile}
-      </Link>
-      <Link to='/change-password' onClick={() => setIsOpened(false)} className={styles.link}>
+      </NavLink>
+      <NavLink
+        exact={true}
+        to='/change-password'
+        onClick={() => setIsOpened(false)}
+        className={styles.link}
+      >
         <BuildIcon />
         {dictionary.changePassword}
-      </Link>
+      </NavLink>
     </Paper>
   );
 };
@@ -63,8 +73,8 @@ const Dropdown = () => {
   return (
     <div>
       <Avatar sx={{ bgcolor: deepPurple[500] }} onClick={handleDropdownVisibility}>
-        {/** TODO: make avatar creation more general */ user.userName.charAt(0).toUpperCase()}
-        {user.userName.charAt(1)}
+        {/** TODO: make avatar creation more general */ user.displayName.charAt(0).toUpperCase()}
+        {user.displayName.charAt(1)}
       </Avatar>
       {isOpened && <Menu setIsOpened={setIsOpened} />}
     </div>
@@ -76,14 +86,16 @@ const ActionLinks = () => {
    * Move Link to shared component
    */
 
+  let match = useRouteMatch();
+
   return (
     <List className={styles.list}>
-      <Link to='/sign-up' className={styles.link}>
+      <NavLink to={`${match.path}sign-up`} className={styles.link} exact={true}>
         <ListItem button>{dictionary.signIn}</ListItem>
-      </Link>{' '}
-      <Link to='/login' className={styles.link}>
+      </NavLink>{' '}
+      <NavLink to={`${match.path}login`} className={styles.link} exact={true}>
         <ListItem button>{dictionary.logIn}</ListItem>
-      </Link>
+      </NavLink>
     </List>
   );
 };
@@ -100,20 +112,20 @@ export const Header = () => {
       <Toolbar className={styles.toolbar}>
         {isAuthorized && (
           <List className={styles.list}>
-            <Link to='/' className={styles.link}>
+            <NavLink to='/' className={styles.link} exact={true}>
               <ListItem button>
                 <Typography variant='h6' noWrap component='div'>
                   {dictionary.taskMeneger}
                 </Typography>
               </ListItem>
-            </Link>
+            </NavLink>
             {navigation.map(item => {
               return (
-                <Link key={item.link} to={item.link} className={styles.link}>
+                <NavLink key={item.link} to={`/${item.link}`} exact={true} className={styles.link}>
                   <ListItem button>
                     {item.icon}&nbsp; {item.title}
                   </ListItem>
-                </Link>
+                </NavLink>
               );
             })}
           </List>

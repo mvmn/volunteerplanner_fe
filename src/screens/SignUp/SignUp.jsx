@@ -3,7 +3,6 @@ import 'yup-phone';
 import { Button, Container, TextField } from '@mui/material';
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 
 import { setLoggedIn } from '../../actions/user';
@@ -12,7 +11,6 @@ import { yupPatterns } from '../../helpers/validation';
 import styles from './SignUp.module.scss';
 
 export const SignUp = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const initialValues = {
@@ -21,7 +19,7 @@ export const SignUp = () => {
     confirmPassWord: '',
     email: '',
     userName: '',
-    fullName: ''
+    displayName: ''
   };
 
   const validationSchema = yup.object().shape({
@@ -29,8 +27,7 @@ export const SignUp = () => {
     password: yupPatterns('signUpPass'),
     confirmPassWord: yupPatterns('confirmPassWord'),
     email: yupPatterns('email'),
-    userName: yupPatterns('userName'),
-    fullName: yupPatterns('fullName')
+    displayName: yupPatterns('displayName')
   });
 
   const formik = useFormik({
@@ -38,7 +35,6 @@ export const SignUp = () => {
     validationSchema,
     async onSubmit() {
       dispatch(setLoggedIn());
-      navigate('/');
     }
   });
 
@@ -50,34 +46,18 @@ export const SignUp = () => {
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.field_box}>
           <TextField
-            id='userName'
-            name='userName'
-            value={values.userName}
-            type='text'
+            id='displayName'
+            name='displayName'
+            value={values.displayName}
             classes={{ root: styles.root }}
-            label={dictionry.userName}
-            size='small'
-            margin='normal'
-            onChange={handleChange}
-          />
-          <div className={styles.errors_box}>
-            <span className={styles.errors}>{errors.userName}</span>
-          </div>
-        </div>
-        <div className={styles.field_box}>
-          <TextField
-            id='fullName'
-            name='fullName'
-            value={values.fullName}
-            classes={{ root: styles.root }}
-            label={dictionry.fullName}
+            label={dictionry.displayName}
             type='text'
             size='small'
             margin='normal'
             onChange={handleChange}
           />
           <div className={styles.errors_box}>
-            <span className={styles.errors}>{errors.fullName}</span>
+            <span className={styles.errors}>{errors.displayName}</span>
           </div>
         </div>
         <div className={styles.field_box}>

@@ -1,4 +1,5 @@
 const dictionary = {
+  displayName: 'Ім’я',
   yes: 'Так',
   no: 'Ні',
   subtaskCount: 'Кількість підзадач',

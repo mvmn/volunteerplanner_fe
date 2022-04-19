@@ -1,9 +1,10 @@
 import SearchIcon from '@mui/icons-material/Search';
 import { Button, DialogActions, DialogContent, TextField } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { getUsers } from '../../actions/users';
 import { LockedStatus } from '../../components/LockedStatus';
 import { Modal } from '../../components/Modal';
 import { Status } from '../../components/Status';
@@ -15,15 +16,14 @@ import { useModalVisibleHook } from '../../hooks/useModalVisibleHook';
 import styles from './UserList.module.scss';
 
 const UserName = ({ params }) => {
-  const users = useSelector(state => state.users);
+  const users = useSelector(state => state.users.all);
   const user = users.find(user => user.id === params.id);
-  return <>{user.fullName}</>;
+  return <>{user.displayName}</>;
 };
 
 export const usersColumns = [
   { field: 'phoneNumber', headerName: dictionary.phoneNumber, flex: 2 },
-  { field: 'userName', headerName: dictionary.userName, flex: 1 },
-  { field: 'fullName', headerName: dictionary.fullName, flex: 2 },
+  { field: 'displayName', headerName: dictionary.displayName, flex: 1 },
   {
     field: 'phoneNumberVerified',
     headerName: dictionary.phoneNumberVerified,
@@ -52,9 +52,9 @@ export const usersColumns = [
 ];
 
 export const UserList = () => {
+  const users = useSelector(state => state.users.all);
   const { isModalVisible, onCloseHandler, onOpenHandler } = useModalVisibleHook();
 
-  const users = useSelector(state => state.users);
   const [selectedUser, setSelectedUser] = useState();
   const [searchedUserQuery, setSearchedUserQuery] = useState('');
 
@@ -64,6 +64,11 @@ export const UserList = () => {
   };
 
   const modalTitle = `${dictionary.user} : ${selectedUser?.fullName}`;
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getUsers());
+  }, [dispatch]);
 
   return (
     <div className={styles.container}>

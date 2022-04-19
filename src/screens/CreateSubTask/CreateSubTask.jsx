@@ -5,11 +5,11 @@ import { useParams } from 'react-router-dom';
 import { Title } from '../../components/Title';
 import dictionary from '../../dictionary';
 import { SubTaskForm } from './components/SubTaskForm';
-import styles from './SubTaskDetail.module.scss';
+import styles from './CreateSubTask.module.scss';
 
 const ROW_TO_DISPLAY = ['deadlineDate', 'customer', 'productMeasure', 'priority', 'subtaskCount'];
 
-export const SubTaskDetail = () => {
+export const CreateSubTask = () => {
   const params = useParams();
   const tasks = useSelector(state => state.tasks.verified);
 
