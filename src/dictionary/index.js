@@ -66,9 +66,22 @@ const dictionary = {
   expandAll: 'Відкрити всі',
   collapseAll: 'Закрити всі',
   product: 'Продукт',
+  medicine: 'Медицина',
+  clothesAndShoes: 'Взуття і одяг',
+  protection: 'Амуніція',
+  transport: 'Транспорт',
+  foodAndDrinks: 'Їжа та напої',
+  hygiene: 'Засоби гігієни',
+  tourism: 'Туристичне спорядження',
+  equipment: 'Техніка',
+  money: 'Гроші',
+  pills: 'Таблетки',
+  bandage: 'Джгути',
+  plait: 'Бинти',
+  shoes: 'Взуття',
+  clothes: 'Одяг',
   searchUsers: 'Пошук користувачів',
   changePassword: 'Змінити пароль',
   searchTask: 'Пошук задачі'
 };
-
 export default dictionary;

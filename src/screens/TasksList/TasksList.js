@@ -1,4 +1,3 @@
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import SearchIcon from '@mui/icons-material/Search';
@@ -25,6 +24,7 @@ import { useHistory } from 'react-router-dom';
 
 import { Categories } from '../../components/Categories';
 import { ChangeStatus } from '../../components/ChangeStatus';
+import { CreateTaskButton } from '../../components/CreateTaskButton/CreateTaskButton';
 import { Priority } from '../../components/Priority';
 import { Status } from '../../components/Status';
 import { TabPanel } from '../../components/TabPanel';
@@ -234,21 +234,11 @@ const VolunteerTasksListView = () => {
 export const TasksList = () => {
   const user = useSelector(state => state.user);
 
-  let history = useHistory();
-
-  const handleClick = () => {
-    history.push('/create-task');
-  };
-
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         <Title text={dictionary.tasks} />
-        {user.role === ROLES.operator && (
-          <div className={styles.icon} onClick={handleClick}>
-            <AddCircleOutlineIcon />
-          </div>
-        )}
+        {user.role === ROLES.operator && <CreateTaskButton />}
       </div>
 
       <div className={styles.body}>

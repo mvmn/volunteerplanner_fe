@@ -30,6 +30,24 @@ const yupPatterns = key => {
         .string()
         .oneOf([yup.ref('password'), null], 'Паролі не збігаються')
         .required('Обовязково пітверідть пароль');
+    case 'customer':
+      return yup.string().required("Замовник обов'язковий");
+    case 'collectionAddress':
+      return yup.string().required("Адрес збору обов'язковий");
+    case 'shippingAddress':
+      return yup.string().required("Адреса доставки обов'язкова");
+    case 'category':
+      return yup.string().required("Категорія обов'язкова");
+    case 'subCategory':
+      return yup.string().required("Підкатегорія обов'язкова");
+    case 'productName':
+      return yup.string().required("Ім'я продукту обов'язкове");
+    case 'quantity':
+      return yup.number().required("Кількість обов'язкова").min(1, 'Додайте хоча б одну одиницю');
+    case 'priority':
+      return yup.string().required("Пріорітет обов'язковий");
+    case 'date':
+      return yup.string().required('Укажіть дату');
     case 'note':
       return yup.string().min(3, 'Поле занадто коротке');
     default:

@@ -1,4 +1,4 @@
-import { SET_COMPLETED, SET_NEW, SET_REJECTED, SET_VERIFIED } from '../constants/tasks';
+import { SET_COMPLETED, SET_NEW_TASK, SET_REJECTED, SET_VERIFIED } from '../constants/tasks';
 import { TASK_STATUSES } from '../constants/uiConfig';
 import data from '../mocks/tasks.json';
 
@@ -11,7 +11,7 @@ const initState = {
 
 export const tasksReducer = function (state = initState, action) {
   switch (action.type) {
-    case SET_NEW:
+    case SET_NEW_TASK:
       return { ...state, new: action.payload };
     case SET_VERIFIED:
       return { ...state, verified: action.payload };
