@@ -1,4 +1,5 @@
 const dictionary = {
+  id: 'ID',
   displayName: 'Ім’я',
   yes: 'Так',
   no: 'Ні',
@@ -42,6 +43,7 @@ const dictionary = {
   lock: 'Блокувати',
   unlocked: 'Не заблоковано',
   locked: 'Заблоковано',
+  rating: 'Рейтинг',
   customer: 'Замовник',
   quantity: 'Кількість',
   productMeasure: 'Од вимірювання(кг/л/штуки)',

@@ -1,3 +1,4 @@
+import { LockedStatus } from '../components/LockedStatus';
 import { Priority } from '../components/Priority';
 import { Status } from '../components/Status';
 import dictionary from '../dictionary';
@@ -77,4 +78,42 @@ export const tasksColumns = [
   }
 ];
 
-export const ROW_TO_DISPLAY = ['phoneNumber', 'userName', 'fullName', 'email'];
+export const userFields = [
+  {
+    id: 'id',
+    label: dictionary.id
+  },
+  {
+    id: 'displayName',
+    label: dictionary.displayName,
+    render: row => (
+      <>
+        {row.displayName}
+        <Status status={row.userVerified} />
+      </>
+    )
+  },
+  {
+    id: 'phoneNumber',
+    label: dictionary.phoneNumber,
+    render: row => (
+      <>
+        {row.phoneNumber}
+        <Status status={row.phoneNumberVerified} />
+      </>
+    )
+  },
+  {
+    id: 'rating',
+    label: dictionary.rating
+  },
+  {
+    id: 'role',
+    label: dictionary.role
+  },
+  {
+    id: 'locked',
+    label: dictionary.locked,
+    render: row => <LockedStatus status={row.locked} />
+  }
+];

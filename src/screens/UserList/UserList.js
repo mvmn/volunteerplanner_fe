@@ -63,7 +63,7 @@ export const UserList = () => {
     onOpenHandler();
   };
 
-  const modalTitle = `${dictionary.user} : ${selectedUser?.fullName}`;
+  const modalTitle = `${dictionary.user}: ${selectedUser?.displayName}`;
 
   const dispatch = useDispatch();
   useEffect(() => {
