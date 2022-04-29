@@ -2,6 +2,7 @@ import 'yup-phone';
 
 import { Button, Container, Link, TextField } from '@mui/material';
 import { useFormik } from 'formik';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
 
@@ -26,11 +27,13 @@ export const SignIn = () => {
     initialValues,
     validationSchema,
     async onSubmit() {
-      dispatch(signIn(values));
+      dispatch(signIn({ ...values, setLoginError }));
     }
   });
 
   const { handleChange, handleSubmit, values, errors } = formik;
+
+  const [loginError, setLoginError] = useState();
 
   return (
     <Container className={styles.container}>
@@ -74,6 +77,11 @@ export const SignIn = () => {
         <Button variant='outlined' type='submit'>
           {dictionary.send}
         </Button>
+        {loginError
+          ? loginError === 'badCredentials'
+            ? dictionary.badCredentials
+            : dictionary.loginFailed
+          : ``}
       </form>
     </Container>
   );

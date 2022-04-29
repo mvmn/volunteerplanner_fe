@@ -5,7 +5,7 @@ export const getAll = async () => {
   const body = {};
 
   try {
-    const response = await axios.post(`${ENDPOINT}users/search`, body);
+    const response = await axios.post(`${ENDPOINT}/api/v1/users/search`, body);
     return response.data;
   } catch (e) {
     console.log(e);

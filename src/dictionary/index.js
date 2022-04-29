@@ -84,6 +84,8 @@ const dictionary = {
   clothes: 'Одяг',
   searchUsers: 'Пошук користувачів',
   changePassword: 'Змінити пароль',
-  searchTask: 'Пошук задачі'
+  searchTask: 'Пошук задачі',
+  badCredentials: 'Логін або пароль неправильні',
+  loginFailed: 'Помилка логіну'
 };
 export default dictionary;
