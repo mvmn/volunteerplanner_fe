@@ -15,12 +15,6 @@ import dictionary from '../../dictionary';
 import { useModalVisibleHook } from '../../hooks/useModalVisibleHook';
 import styles from './UserList.module.scss';
 
-const UserName = ({ params }) => {
-  const users = useSelector(state => state.users.all);
-  const user = users.find(user => user.id === params.id);
-  return <>{user ? user.displayName : ''}</>;
-};
-
 export const usersColumns = [
   { field: 'phoneNumber', headerName: dictionary.phoneNumber, flex: 2 },
   { field: 'displayName', headerName: dictionary.displayName, flex: 1 },
@@ -32,9 +26,8 @@ export const usersColumns = [
   },
   { field: 'role', headerName: dictionary.role, flex: 2 },
   {
-    field: 'userVerifiedByUserId',
+    field: 'userVerifiedBy',
     headerName: dictionary.userVerifiedByUserId,
-    renderCell: params => <UserName params={params} />,
     flex: 2
   },
   {
