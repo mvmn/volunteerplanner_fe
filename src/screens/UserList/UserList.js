@@ -73,7 +73,6 @@ export const UserList = () => {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    console.log('Effect');
     dispatch(getUsers({ getUsersRequest }));
   }, [dispatch]);
 
