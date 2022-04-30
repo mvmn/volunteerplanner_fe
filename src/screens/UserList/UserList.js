@@ -18,7 +18,7 @@ import styles from './UserList.module.scss';
 const UserName = ({ params }) => {
   const users = useSelector(state => state.users.all);
   const user = users.find(user => user.id === params.id);
-  return <>{user.displayName}</>;
+  return <>{user ? user.displayName : ''}</>;
 };
 
 export const usersColumns = [
@@ -51,8 +51,14 @@ export const usersColumns = [
   }
 ];
 
+const getUsersRequest = {
+  pageSize: MAX_USER_PER_PAGE,
+  page: 1
+};
+
 export const UserList = () => {
   const users = useSelector(state => state.users.all);
+  const totalCount = useSelector(state => state.users.totalCount);
   const { isModalVisible, onCloseHandler, onOpenHandler } = useModalVisibleHook();
 
   const [selectedUser, setSelectedUser] = useState();
@@ -67,8 +73,14 @@ export const UserList = () => {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getUsers());
+    console.log('Effect');
+    dispatch(getUsers({ getUsersRequest }));
   }, [dispatch]);
+
+  const setPageNumber = page => {
+    getUsersRequest.page = page + 1;
+    dispatch(getUsers({ getUsersRequest }));
+  };
 
   return (
     <div className={styles.container}>
@@ -116,6 +128,9 @@ export const UserList = () => {
         rowsPerPageOptions={[MAX_USER_PER_PAGE]}
         rows={users}
         columns={usersColumns}
+        rowCount={totalCount}
+        paginationMode='server'
+        onPageChange={page => setPageNumber(page)}
       />
     </div>
   );
