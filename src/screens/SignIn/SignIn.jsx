@@ -33,6 +33,11 @@ export const SignIn = () => {
 
   const { handleChange, handleSubmit, values, errors } = formik;
 
+  const onFieldChange = event => {
+    setLoginError(null);
+    return handleChange(event);
+  };
+
   const [loginError, setLoginError] = useState();
 
   return (
@@ -49,7 +54,7 @@ export const SignIn = () => {
             label={`Введіть ${dictionary.userName.toLocaleLowerCase()}`}
             size='small'
             margin='normal'
-            onChange={handleChange}
+            onChange={onFieldChange}
           />
           <div className={styles.errors_box}>
             <span className={styles.errors}>{errors.phoneNumber}</span>
@@ -65,11 +70,20 @@ export const SignIn = () => {
             type='password'
             size='small'
             margin='normal'
-            onChange={handleChange}
+            onChange={onFieldChange}
           />
           <div className={styles.errors_box}>
             <span className={styles.errors}>{errors.password}</span>
           </div>
+          {loginError ? (
+            <div className={styles.errors_box}>
+              <span className={styles.errors}>
+                {loginError === 'badCredentials'
+                  ? dictionary.badCredentials
+                  : dictionary.loginFailed}
+              </span>
+            </div>
+          ) : null}
         </div>
         <div className={styles.link}>
           <Link href='/password-reset'>{dictionary.forgotPassword}</Link>
@@ -77,11 +91,6 @@ export const SignIn = () => {
         <Button variant='outlined' type='submit'>
           {dictionary.send}
         </Button>
-        {loginError
-          ? loginError === 'badCredentials'
-            ? dictionary.badCredentials
-            : dictionary.loginFailed
-          : ``}
       </form>
     </Container>
   );
