@@ -5,18 +5,10 @@ import { ENDPOINT } from '../env-variables';
 export const authenticate = async ({ password, phoneNumber, setLoginError }) => {
   try {
     const response = await axios
-      .post(
-        `${ENDPOINT}/api/v1/authenticate`,
-        JSON.stringify({
-          principal: phoneNumber,
-          password
-        }),
-        {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
-      )
+      .post(`${ENDPOINT}/api/v1/authenticate`, {
+        principal: phoneNumber,
+        password
+      })
       .then(function (response) {
         if (response.status === 200) {
           const result = response.data;
