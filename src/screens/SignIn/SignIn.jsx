@@ -33,7 +33,7 @@ export const SignIn = () => {
 
   const { handleChange, handleSubmit, values, errors } = formik;
 
-  const onFieldChange = event => {
+  const handleFieldChange = event => {
     setLoginError(null);
     return handleChange(event);
   };
@@ -54,7 +54,7 @@ export const SignIn = () => {
             label={`Введіть ${dictionary.userName.toLocaleLowerCase()}`}
             size='small'
             margin='normal'
-            onChange={onFieldChange}
+            onChange={handleFieldChange}
           />
           <div className={styles.errors_box}>
             <span className={styles.errors}>{errors.phoneNumber}</span>
@@ -70,7 +70,7 @@ export const SignIn = () => {
             type='password'
             size='small'
             margin='normal'
-            onChange={onFieldChange}
+            onChange={handleFieldChange}
           />
           <div className={styles.errors_box}>
             <span className={styles.errors}>{errors.password}</span>
