@@ -5,7 +5,7 @@ import { ENDPOINT } from '../env-variables';
 export const authenticate = async ({ password, phoneNumber }) => {
   try {
     const response = await axios.post(
-      `${ENDPOINT}authenticate`,
+      `${ENDPOINT}/api/v1/authenticate`,
       JSON.stringify({
         principal: phoneNumber,
         password

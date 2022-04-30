@@ -81,6 +81,15 @@ export const UserList = () => {
     dispatch(getUsers({ getUsersRequest }));
   };
 
+  const handleSortModelChange = param => {
+    if (param.length > 0) {
+      getUsersRequest.sort = { field: param[0].field, order: param[0].sort };
+    } else {
+      getUsersRequest.sort = null;
+    }
+    dispatch(getUsers({ getUsersRequest }));
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.field_box}>
@@ -130,6 +139,8 @@ export const UserList = () => {
         rowCount={totalCount}
         paginationMode='server'
         onPageChange={page => setPageNumber(page)}
+        sortingMode='server'
+        onSortModelChange={handleSortModelChange}
       />
     </div>
   );
