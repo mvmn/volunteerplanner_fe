@@ -2,6 +2,7 @@ import 'yup-phone';
 
 import { Button, Container, Link, TextField } from '@mui/material';
 import { useFormik } from 'formik';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
 
@@ -26,11 +27,18 @@ export const SignIn = () => {
     initialValues,
     validationSchema,
     async onSubmit() {
-      dispatch(signIn(values));
+      dispatch(signIn({ ...values, setLoginError }));
     }
   });
 
   const { handleChange, handleSubmit, values, errors } = formik;
+
+  const handleFieldChange = event => {
+    setLoginError(null);
+    return handleChange(event);
+  };
+
+  const [loginError, setLoginError] = useState();
 
   return (
     <Container className={styles.container}>
@@ -46,7 +54,7 @@ export const SignIn = () => {
             label={`Введіть ${dictionary.userName.toLocaleLowerCase()}`}
             size='small'
             margin='normal'
-            onChange={handleChange}
+            onChange={handleFieldChange}
           />
           <div className={styles.errors_box}>
             <span className={styles.errors}>{errors.phoneNumber}</span>
@@ -62,11 +70,20 @@ export const SignIn = () => {
             type='password'
             size='small'
             margin='normal'
-            onChange={handleChange}
+            onChange={handleFieldChange}
           />
           <div className={styles.errors_box}>
             <span className={styles.errors}>{errors.password}</span>
           </div>
+          {loginError ? (
+            <div className={styles.errors_box}>
+              <span className={styles.errors}>
+                {loginError === 'badCredentials'
+                  ? dictionary.badCredentials
+                  : dictionary.loginFailed}
+              </span>
+            </div>
+          ) : null}
         </div>
         <div className={styles.link}>
           <Link href='/password-reset'>{dictionary.forgotPassword}</Link>
