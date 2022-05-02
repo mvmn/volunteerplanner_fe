@@ -15,12 +15,6 @@ import dictionary from '../../dictionary';
 import { useModalVisibleHook } from '../../hooks/useModalVisibleHook';
 import styles from './UserList.module.scss';
 
-const UserName = ({ params }) => {
-  const users = useSelector(state => state.users.all);
-  const user = users.find(user => user.id === params.id);
-  return <>{user.displayName}</>;
-};
-
 export const usersColumns = [
   { field: 'phoneNumber', headerName: dictionary.phoneNumber, flex: 2 },
   { field: 'displayName', headerName: dictionary.displayName, flex: 1 },
@@ -32,9 +26,8 @@ export const usersColumns = [
   },
   { field: 'role', headerName: dictionary.role, flex: 2 },
   {
-    field: 'userVerifiedByUserId',
+    field: 'userVerifiedBy',
     headerName: dictionary.userVerifiedByUserId,
-    renderCell: params => <UserName params={params} />,
     flex: 2
   },
   {
@@ -51,8 +44,14 @@ export const usersColumns = [
   }
 ];
 
+const getUsersRequest = {
+  pageSize: MAX_USER_PER_PAGE,
+  page: 1
+};
+
 export const UserList = () => {
   const users = useSelector(state => state.users.all);
+  const totalCount = useSelector(state => state.users.totalCount);
   const { isModalVisible, onCloseHandler, onOpenHandler } = useModalVisibleHook();
 
   const [selectedUser, setSelectedUser] = useState();
@@ -67,8 +66,22 @@ export const UserList = () => {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getUsers());
+    dispatch(getUsers({ getUsersRequest }));
   }, [dispatch]);
+
+  const setPageNumber = page => {
+    getUsersRequest.page = page + 1;
+    dispatch(getUsers({ getUsersRequest }));
+  };
+
+  const handleSortModelChange = param => {
+    if (param.length > 0) {
+      getUsersRequest.sort = { field: param[0].field, order: param[0].sort };
+    } else {
+      getUsersRequest.sort = null;
+    }
+    dispatch(getUsers({ getUsersRequest }));
+  };
 
   return (
     <div className={styles.container}>
@@ -116,6 +129,11 @@ export const UserList = () => {
         rowsPerPageOptions={[MAX_USER_PER_PAGE]}
         rows={users}
         columns={usersColumns}
+        rowCount={totalCount}
+        paginationMode='server'
+        onPageChange={page => setPageNumber(page)}
+        sortingMode='server'
+        onSortModelChange={handleSortModelChange}
       />
     </div>
   );

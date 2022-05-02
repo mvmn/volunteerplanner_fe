@@ -1,16 +1,13 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 
-import { setCount, setPage, setPageSize, setUsers } from '../actions/users';
+import { setUsers } from '../actions/users';
 import { getAll } from '../api';
 import { GET_USERS } from '../constants/users';
 
-function* usersSaga() {
+function* usersSaga(getUsersRequest) {
   try {
-    const data = yield call(getAll);
-    yield put(setUsers(data.items));
-    yield put(setPage(data.page));
-    yield put(setPageSize(data.pageSize));
-    yield put(setCount(data.totalCount));
+    const data = yield call(() => getAll(getUsersRequest.payload));
+    yield put(setUsers(data));
   } catch (e) {
     console.log(e);
   }
