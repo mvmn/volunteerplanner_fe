@@ -4,9 +4,8 @@ import { ENDPOINT } from '../env-variables';
 
 export const authenticate = async ({ password, phoneNumber, setLoginError }) => {
   try {
-    const response = await axios.post(
-      `${ENDPOINT}/api/v1/authenticate`,
-      {
+    const response = await axios
+      .post(`${ENDPOINT}/api/v1/authenticate`, {
         principal: phoneNumber,
         password
       })
