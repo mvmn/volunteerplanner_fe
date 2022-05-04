@@ -1,34 +1,38 @@
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { TreeItem, TreeView } from '@mui/lab';
-import { useContext, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useContext, useEffect, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import data from '../../mocks/subcategories.json';
+import { getCategories } from '../../actions/categories';
 import { CategoriesContext } from '../../screens/Main';
 import styles from './Categories.module.scss';
 
 export const Categories = () => {
-  const categories = useSelector(state => state.categories);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getCategories());
+  }, [dispatch]);
+
+  const categories = useSelector(state => state.categories.rootCategories);
+  const subcategories = useSelector(state => state.categories.subcategories);
   const handleToggle = (_, nodeIds) => {
     setExpanded([nodeIds[0]]);
   };
   const [expanded, setExpanded] = useState([]);
 
-  const SUBCATEGORIES_MAP = Object.entries(data).reduce((acc, [key, value]) => {
-    value.items.forEach(subcategory => {
-      acc[subcategory.id.toString() + key.toString()] = subcategory.name;
-    });
-    return acc;
-  }, {});
+  const CATEGORIES_MAP = useMemo(
+    () =>
+      categories.reduce((map, category) => {
+        map[category.id] = category.name;
 
-  const CATEGORIES_MAP = categories.reduce((map, category, index) => {
-    map[index.toString()] = category.name;
-    return map;
-  }, {});
+        return map;
+      }, {}),
+    [categories]
+  );
 
   const handleSelection = (_, id) => {
-    SUBCATEGORIES_MAP[id] && setSelectedSubCategory(SUBCATEGORIES_MAP[id]);
+    subcategories[id] && setSelectedSubCategory(subcategories[id]);
     CATEGORIES_MAP[id] && setSelectedCategory(CATEGORIES_MAP[id]);
   };
 
@@ -50,21 +54,21 @@ export const Categories = () => {
         onNodeSelect={handleSelection}
         sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
       >
-        {categories.map((category, index) => {
+        {categories.map(category => {
           return (
             <TreeItem
               classes={{ content: styles.content }}
               className={styles.treeItem}
-              nodeId={index.toString()}
+              nodeId={category.id.toString()}
               key={category.id}
               label={category.name}
             >
-              {data[category.id]?.items.map((subcategory, i) => (
+              {subcategories[category.id]?.map(subcategory => (
                 <TreeItem
                   classes={{ content: styles.content }}
                   className={styles.treeItem}
-                  nodeId={i.toString() + index.toString()}
-                  key={subcategory.name}
+                  nodeId={subcategory.id.toString()}
+                  key={subcategory.id}
                   label={subcategory.name}
                 />
               ))}
