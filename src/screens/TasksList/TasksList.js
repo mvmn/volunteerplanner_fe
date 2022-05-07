@@ -160,7 +160,7 @@ const OperatorTasksListView = () => {
   };
 
   const [tasksQuery, setTaskQuery] = useState({
-    statuses: ['VERIFIED'],
+    statuses: [TASK_STATUSES.verified],
     pageSize: MAX_TASKS_PER_PAGE
   });
   const { data, status } = useQuery(['tasks', tasksQuery], fetchTasks, {
