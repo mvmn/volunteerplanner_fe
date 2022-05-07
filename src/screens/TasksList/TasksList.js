@@ -161,7 +161,8 @@ const OperatorTasksListView = () => {
 
   const [tasksQuery, setTaskQuery] = useState({
     statuses: [TASK_STATUSES.verified],
-    pageSize: MAX_TASKS_PER_PAGE
+    pageSize: MAX_TASKS_PER_PAGE,
+    pageNumber: 0
   });
   const { data, status } = useQuery(['tasks', tasksQuery], () => fetchTasks(tasksQuery), {
     cacheTime: 0
