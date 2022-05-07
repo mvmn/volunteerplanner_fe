@@ -150,26 +150,28 @@ const OperatorTasksListView = () => {
     TASK_STATUSES.completed,
     TASK_STATUSES.rejected
   ];
-  const statusFilterChangeHandler = statusFilter => {
-    setTaskQuery({ ...tasksQuery, statuses: [statusFilter], pageNumber: 0 });
-  };
 
   const handleChange = (_, newValue) => {
     setTaskStatusTabValue(newValue);
-    statusFilterChangeHandler(taskStatuses[newValue]);
+    setTasksStatusFilter(taskStatuses[newValue]);
   };
 
-  const [tasksQuery, setTaskQuery] = useState({
-    statuses: [TASK_STATUSES.verified],
-    pageSize: MAX_TASKS_PER_PAGE,
-    pageNumber: 0
-  });
-  const { data, status } = useQuery(['tasks', tasksQuery], () => fetchTasks(tasksQuery), {
-    cacheTime: 0
-  });
-  const setPageNumber = page => {
-    setTaskQuery({ ...tasksQuery, pageNumber: page });
-  };
+  const [tasksStatusFilter, setTasksStatusFilter] = useState(TASK_STATUSES.verified);
+  const [tasksPageNumber, setTasksPageNumber] = useState(0);
+
+  const { data, status } = useQuery(
+    ['tasks', { tasksStatusFilter, tasksPageNumber }],
+    () =>
+      fetchTasks({
+        pageSize: MAX_TASKS_PER_PAGE,
+        pageNumber: tasksPageNumber,
+        statuses: [tasksStatusFilter]
+      }),
+    {
+      cacheTime: 0,
+      refetchOnWindowFocus: false
+    }
+  );
 
   if (status === 'loading') {
     return <div>Loading...</div>;
@@ -233,7 +235,7 @@ const OperatorTasksListView = () => {
           component='div'
           count={data.totalCount}
           page={data.page}
-          onPageChange={(event, page) => setPageNumber(page)}
+          onPageChange={(event, page) => setTasksPageNumber(page)}
           rowsPerPage={MAX_TASKS_PER_PAGE}
           rowsPerPageOptions={[]}
         />
