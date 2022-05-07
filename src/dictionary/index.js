@@ -54,6 +54,7 @@ const dictionary = {
   new: 'Нові',
   completed: 'Завершені',
   rejected: 'Відхилені',
+  critical: 'Критичний',
   high: 'Високий',
   medium: 'Середній',
   low: 'Низький',

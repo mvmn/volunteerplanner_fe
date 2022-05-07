@@ -19,9 +19,11 @@ import { DataGrid } from '@mui/x-data-grid';
 import clsx from 'clsx';
 import _ from 'lodash';
 import { createContext, useContext, useState } from 'react';
+import { useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
+import { fetchTasks } from '../../api/tasks';
 import { Categories } from '../../components/Categories';
 import { ChangeStatus } from '../../components/ChangeStatus';
 import { CreateTaskButton } from '../../components/CreateTaskButton/CreateTaskButton';
@@ -124,25 +126,41 @@ const Row = props => {
 const OperatorTasksListView = () => {
   const history = useHistory();
 
-  const [value, setValue] = useState(1);
-  const tasks = useSelector(state => state.tasks);
+  const [taskStatusTabValue, setTaskStatusTabValue] = useState(1);
   const [searchedTaskQuery, setSearchedTaskQuery] = useState('');
 
   const navigateSubTaskHandler = row => history.push(`/create-subtask/${row.id}`);
 
-  const { selectedCategory, selectedSubCategory } = useContext(CategoriesContext);
-  console.log(selectedCategory, selectedSubCategory);
+  // const { selectedCategory, selectedSubCategory } = useContext(CategoriesContext);
 
-  const handleChange = (_, newValue) => {
-    setValue(newValue);
+  const taskStatuses = ['NEW', 'VERIFIED', 'COMPLETED', 'REJECTED'];
+  const statusFilterChangeHandler = statusFilter => {
+    setTaskQuery({ ...tasksQuery, statuses: [statusFilter] });
   };
 
+  const handleChange = (_, newValue) => {
+    setTaskStatusTabValue(newValue);
+    statusFilterChangeHandler(taskStatuses[newValue]);
+  };
+
+  const [tasksQuery, setTaskQuery] = useState({ statuses: ['VERIFIED'] });
+  const { data, status } = useQuery(['tasks', tasksQuery], fetchTasks, {
+    cacheTime: 0
+  });
+
+  if (status === 'loading') {
+    return <div>Loading...</div>;
+  }
+
+  if (status === 'error') {
+    return <div>Error</div>;
+  }
   return (
-    <TabsContext.Provider value={{ value }}>
+    <TabsContext.Provider value={{ taskStatusTabValue }}>
       <div className={styles.tabsContainer}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <div className={styles.tabsSearchBox}>
-            <Tabs value={value} handleChange={handleChange}></Tabs>
+            <Tabs value={taskStatusTabValue} handleChange={handleChange}></Tabs>
             <div className={styles.search}>
               <TextField
                 id='search'
@@ -161,39 +179,32 @@ const OperatorTasksListView = () => {
             </div>
           </div>
         </Box>
-        {Object.entries(tasks).map(([key, tasksByStatus], i) => {
-          return (
-            <TabPanel key={key} value={value} index={i}>
-              <TableContainer component={Paper}>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell />
-                      <TableCell className={styles.fontBold}>{dictionary.priority}</TableCell>
-                      <TableCell className={styles.fontBold}>{dictionary.subtaskCount}</TableCell>
-                      <TableCell className={styles.fontBold}>{dictionary.productMeasure}</TableCell>
-                      <TableCell className={styles.fontBold}>{dictionary.quantity}</TableCell>
-                      <TableCell className={styles.fontBold}>{dictionary.productName}</TableCell>
-                      <TableCell className={styles.fontBold}>{dictionary.deadlineDate}</TableCell>
-                      <TableCell className={clsx(styles.fontBold, styles.noteCell)}>
-                        {dictionary.note}
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {tasksByStatus?.map(row => (
-                      <Row
-                        key={row.id}
-                        row={row}
-                        handleRowClick={() => navigateSubTaskHandler(row)}
-                      />
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </TabPanel>
-          );
+        {taskStatuses.map((key, i) => {
+          return <TabPanel key={key} value={taskStatusTabValue} index={i}></TabPanel>;
         })}
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell />
+                <TableCell className={styles.fontBold}>{dictionary.priority}</TableCell>
+                <TableCell className={styles.fontBold}>{dictionary.subtaskCount}</TableCell>
+                <TableCell className={styles.fontBold}>{dictionary.productMeasure}</TableCell>
+                <TableCell className={styles.fontBold}>{dictionary.quantity}</TableCell>
+                <TableCell className={styles.fontBold}>{dictionary.productName}</TableCell>
+                <TableCell className={styles.fontBold}>{dictionary.deadlineDate}</TableCell>
+                <TableCell className={clsx(styles.fontBold, styles.noteCell)}>
+                  {dictionary.note}
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {data.items?.map(row => (
+                <Row key={row.id} row={row} handleRowClick={() => navigateSubTaskHandler(row)} />
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
 
         <TablePagination
           component='div'
@@ -208,9 +219,8 @@ const OperatorTasksListView = () => {
   );
 };
 
-const VolunteerTasksListView = () => {
+const VolunteerTasksListView = props => {
   const history = useHistory();
-  const tasks = useSelector(state => state.tasks.verified);
 
   const navigateSubTaskHandler = e => history.push(`/create-subtask/${e.row.id}`);
 
@@ -224,7 +234,7 @@ const VolunteerTasksListView = () => {
         pageSize={MAX_TASKS_PER_PAGE}
         onRowClick={e => navigateSubTaskHandler(e)}
         rowsPerPageOptions={[MAX_TASKS_PER_PAGE]}
-        rows={tasks}
+        rows={props.tasks.items}
         columns={tasksColumns}
       />
     </div>
