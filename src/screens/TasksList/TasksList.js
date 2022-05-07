@@ -154,6 +154,7 @@ const OperatorTasksListView = () => {
   const handleChange = (_, newValue) => {
     setTaskStatusTabValue(newValue);
     setTasksStatusFilter(taskStatuses[newValue]);
+    setTasksPageNumber(0);
   };
 
   const [tasksStatusFilter, setTasksStatusFilter] = useState(TASK_STATUSES.verified);
