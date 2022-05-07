@@ -39,15 +39,6 @@ export const STATUS_NAME = {
   REJECTED: 'rejected'
 };
 
-export const products = {
-  1: 'Бронежелет',
-  2: 'Крупи',
-  3: 'Зубна паста',
-  4: 'Гель для душу',
-  5: 'Питна вода',
-  6: 'Каремати'
-};
-
 export const tasksColumns = [
   { field: 'subtaskCount', headerName: dictionary.subtaskCount, flex: 1 },
   { field: 'quantityLeft', headerName: dictionary.quantity, flex: 1 },
@@ -56,7 +47,7 @@ export const tasksColumns = [
     field: 'productId',
     headerName: dictionary.productName,
     renderCell: ({ row }) => {
-      return <>{products[row.productId]}</>;
+      return <>{row.product.name}</>;
     },
     flex: 1
   },

@@ -32,7 +32,7 @@ import { Status } from '../../components/Status';
 import { TabPanel } from '../../components/TabPanel';
 import { Tabs } from '../../components/Tabs';
 import { Title } from '../../components/Title';
-import { MAX_TASKS_PER_PAGE, ROLES, products, tasksColumns } from '../../constants/uiConfig';
+import { MAX_TASKS_PER_PAGE, ROLES, tasksColumns } from '../../constants/uiConfig';
 import dictionary from '../../dictionary';
 import { CategoriesContext } from '../Main';
 import styles from './TasksList.module.scss';
@@ -51,6 +51,17 @@ const Row = props => {
     subTask => subTask.taskId
   );
 
+  const deadlineDate = new Date(row.deadlineDate * 1000);
+  console.log(window.navigator.language);
+  const deadlineDateFmt = deadlineDate.toLocaleString(window.navigator.language, {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour12: false,
+    hour: '2-digit',
+    minute: '2-digit'
+  });
   return (
     <>
       <TableRow
@@ -69,8 +80,8 @@ const Row = props => {
         <TableCell scope='row'>{row.subtaskCount}</TableCell>
         <TableCell>{row.productMeasure}</TableCell>
         <TableCell>{row.quantity}</TableCell>
-        <TableCell>{products[row.productId]}</TableCell>
-        <TableCell>{row.deadlineDate}</TableCell>
+        <TableCell>{row.product.name}</TableCell>
+        <TableCell>{deadlineDateFmt}</TableCell>
         <TableCell className={styles.noteCell}>{row.note}</TableCell>
       </TableRow>
       <TableRow className={open ? styles.opened : ''}>
@@ -135,7 +146,7 @@ const OperatorTasksListView = () => {
 
   const taskStatuses = ['NEW', 'VERIFIED', 'COMPLETED', 'REJECTED'];
   const statusFilterChangeHandler = statusFilter => {
-    setTaskQuery({ ...tasksQuery, statuses: [statusFilter] });
+    setTaskQuery({ ...tasksQuery, statuses: [statusFilter], pageNumber: 0 });
   };
 
   const handleChange = (_, newValue) => {
@@ -143,10 +154,16 @@ const OperatorTasksListView = () => {
     statusFilterChangeHandler(taskStatuses[newValue]);
   };
 
-  const [tasksQuery, setTaskQuery] = useState({ statuses: ['VERIFIED'] });
+  const [tasksQuery, setTaskQuery] = useState({
+    statuses: ['VERIFIED'],
+    pageSize: MAX_TASKS_PER_PAGE
+  });
   const { data, status } = useQuery(['tasks', tasksQuery], fetchTasks, {
     cacheTime: 0
   });
+  const setPageNumber = page => {
+    setTaskQuery({ ...tasksQuery, pageNumber: page });
+  };
 
   if (status === 'loading') {
     return <div>Loading...</div>;
@@ -208,10 +225,10 @@ const OperatorTasksListView = () => {
 
         <TablePagination
           component='div'
-          count={100}
-          page={0}
-          onPageChange={() => {}}
-          rowsPerPage={10}
+          count={data.totalCount}
+          page={data.page}
+          onPageChange={(event, page) => setPageNumber(page)}
+          rowsPerPage={MAX_TASKS_PER_PAGE}
           rowsPerPageOptions={[]}
         />
       </div>
@@ -227,6 +244,26 @@ const VolunteerTasksListView = props => {
   const { selectedCategory, selectedSubCategory } = useContext(CategoriesContext);
   console.log(selectedCategory, selectedSubCategory);
 
+  const [tasksQuery, setTasksQuery] = useState({
+    statuses: ['VERIFIED'],
+    pageSize: MAX_TASKS_PER_PAGE
+  });
+  const { data, status } = useQuery(['tasks', tasksQuery], fetchTasks, {
+    cacheTime: 0
+  });
+
+  const setPageNumber = page => {
+    setTasksQuery({ ...tasksQuery, pageNumber: page });
+  };
+
+  if (status === 'loading') {
+    return <div>Loading...</div>;
+  }
+
+  if (status === 'error') {
+    return <div>Error</div>;
+  }
+
   return (
     <div className={styles.tabsContainer}>
       <DataGrid
@@ -234,8 +271,13 @@ const VolunteerTasksListView = props => {
         pageSize={MAX_TASKS_PER_PAGE}
         onRowClick={e => navigateSubTaskHandler(e)}
         rowsPerPageOptions={[MAX_TASKS_PER_PAGE]}
-        rows={props.tasks.items}
+        rows={data.items}
         columns={tasksColumns}
+        rowCount={data.totalCount}
+        paginationMode='server'
+        onPageChange={page => setPageNumber(page)}
+        sortingMode='server'
+        // onSortModelChange={handleSortModelChange}
       />
     </div>
   );
