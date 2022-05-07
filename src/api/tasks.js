@@ -1,9 +1,9 @@
 import { ENDPOINT } from '../env-variables';
 import axios from './axios';
 
-export const fetchTasks = async ({ queryKey }) => {
+export const fetchTasks = async tasksQuery => {
   try {
-    const response = await axios.post(`${ENDPOINT}/api/v1/tasks/search`, queryKey[1]);
+    const response = await axios.post(`${ENDPOINT}/api/v1/tasks/search`, tasksQuery);
     return response.data;
   } catch (e) {
     console.log(e);
