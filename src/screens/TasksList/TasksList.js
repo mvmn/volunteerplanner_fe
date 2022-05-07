@@ -32,7 +32,7 @@ import { Status } from '../../components/Status';
 import { TabPanel } from '../../components/TabPanel';
 import { Tabs } from '../../components/Tabs';
 import { Title } from '../../components/Title';
-import { MAX_TASKS_PER_PAGE, ROLES, tasksColumns } from '../../constants/uiConfig';
+import { MAX_TASKS_PER_PAGE, ROLES, TASK_STATUSES, tasksColumns } from '../../constants/uiConfig';
 import dictionary from '../../dictionary';
 import { CategoriesContext } from '../Main';
 import styles from './TasksList.module.scss';
@@ -144,7 +144,12 @@ const OperatorTasksListView = () => {
 
   // const { selectedCategory, selectedSubCategory } = useContext(CategoriesContext);
 
-  const taskStatuses = ['NEW', 'VERIFIED', 'COMPLETED', 'REJECTED'];
+  const taskStatuses = [
+    TASK_STATUSES.new,
+    TASK_STATUSES.verified,
+    TASK_STATUSES.completed,
+    TASK_STATUSES.rejected
+  ];
   const statusFilterChangeHandler = statusFilter => {
     setTaskQuery({ ...tasksQuery, statuses: [statusFilter], pageNumber: 0 });
   };
