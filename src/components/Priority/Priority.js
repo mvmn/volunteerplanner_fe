@@ -3,16 +3,17 @@ import clsx from 'clsx';
 import dictionary from '../../dictionary';
 import styles from './Priority.module.scss';
 
-const getPriorityName = num => {
-  switch (num) {
-    case 0:
+const getPriorityName = priority => {
+  switch (priority) {
+    case 'CRITICAL':
+      return dictionary.critical;
+    case 'HIGH':
       return dictionary.high;
-    case 1:
+    case 'NORMAL':
       return dictionary.medium;
-    case 2:
-      return dictionary.low;
+    case 'LOW':
     default:
-      return dictionary.medium;
+      return dictionary.low;
   }
 };
 

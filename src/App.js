@@ -3,6 +3,7 @@ import './App.css';
 import CssBaseline from '@mui/material/CssBaseline';
 import { StyledEngineProvider, ThemeProvider } from '@mui/material/styles';
 import { useEffect } from 'react';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { useDispatch } from 'react-redux';
 
 import { setLoggedIn } from '../src/actions/user';
@@ -11,6 +12,8 @@ import { Header } from './components/Header';
 import { ACCESS_TOKEN } from './constants/uiConfig';
 import { Main } from './screens/Main';
 import theme from './styles/theme';
+
+const queryClient = new QueryClient();
 
 function App({ children }) {
   // Test saga start
@@ -25,12 +28,14 @@ function App({ children }) {
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
-        <div className='App'>
-          <CssBaseline />
-          <Header />
-          <Main>{children}</Main>
-          <Footer />
-        </div>
+        <QueryClientProvider client={queryClient}>
+          <div className='App'>
+            <CssBaseline />
+            <Header />
+            <Main>{children}</Main>
+            <Footer />
+          </div>
+        </QueryClientProvider>
       </ThemeProvider>
     </StyledEngineProvider>
   );

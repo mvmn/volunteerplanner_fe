@@ -3,7 +3,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useContext, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { MAX_TASKS_PER_PAGE, SUBTASK_STATUSES, products } from '../../constants/uiConfig';
+import { MAX_TASKS_PER_PAGE, SUBTASK_STATUSES } from '../../constants/uiConfig';
 import dictionary from '../../dictionary';
 import { CategoriesContext } from '../../screens/Main';
 import { Categories } from '../Categories';
@@ -20,7 +20,7 @@ export const tasksColumns = [
     field: 'productId',
     headerName: dictionary.productName,
     renderCell: ({ row }) => {
-      return <>{products[row.productId]}</>;
+      return <>{row.product.name}</>;
     },
     flex: 1
   },

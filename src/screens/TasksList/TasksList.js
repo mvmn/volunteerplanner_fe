@@ -19,9 +19,11 @@ import { DataGrid } from '@mui/x-data-grid';
 import clsx from 'clsx';
 import _ from 'lodash';
 import { createContext, useContext, useState } from 'react';
+import { useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
+import { fetchTasks } from '../../api/tasks';
 import { Categories } from '../../components/Categories';
 import { ChangeStatus } from '../../components/ChangeStatus';
 import { CreateTaskButton } from '../../components/CreateTaskButton/CreateTaskButton';
@@ -30,7 +32,7 @@ import { Status } from '../../components/Status';
 import { TabPanel } from '../../components/TabPanel';
 import { Tabs } from '../../components/Tabs';
 import { Title } from '../../components/Title';
-import { MAX_TASKS_PER_PAGE, ROLES, products, tasksColumns } from '../../constants/uiConfig';
+import { MAX_TASKS_PER_PAGE, ROLES, TASK_STATUSES, tasksColumns } from '../../constants/uiConfig';
 import dictionary from '../../dictionary';
 import { CategoriesContext } from '../Main';
 import styles from './TasksList.module.scss';
@@ -49,6 +51,17 @@ const Row = props => {
     subTask => subTask.taskId
   );
 
+  const deadlineDate = new Date(row.deadlineDate * 1000);
+  console.log(window.navigator.language);
+  const deadlineDateFmt = deadlineDate.toLocaleString(window.navigator.language, {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour12: false,
+    hour: '2-digit',
+    minute: '2-digit'
+  });
   return (
     <>
       <TableRow
@@ -67,8 +80,8 @@ const Row = props => {
         <TableCell scope='row'>{row.subtaskCount}</TableCell>
         <TableCell>{row.productMeasure}</TableCell>
         <TableCell>{row.quantity}</TableCell>
-        <TableCell>{products[row.productId]}</TableCell>
-        <TableCell>{row.deadlineDate}</TableCell>
+        <TableCell>{row.product.name}</TableCell>
+        <TableCell>{deadlineDateFmt}</TableCell>
         <TableCell className={styles.noteCell}>{row.note}</TableCell>
       </TableRow>
       <TableRow className={open ? styles.opened : ''}>
@@ -124,25 +137,56 @@ const Row = props => {
 const OperatorTasksListView = () => {
   const history = useHistory();
 
-  const [value, setValue] = useState(1);
-  const tasks = useSelector(state => state.tasks);
+  const [taskStatusTabValue, setTaskStatusTabValue] = useState(1);
   const [searchedTaskQuery, setSearchedTaskQuery] = useState('');
 
   const navigateSubTaskHandler = row => history.push(`/create-subtask/${row.id}`);
 
-  const { selectedCategory, selectedSubCategory } = useContext(CategoriesContext);
-  console.log(selectedCategory, selectedSubCategory);
+  // const { selectedCategory, selectedSubCategory } = useContext(CategoriesContext);
+
+  const taskStatuses = [
+    TASK_STATUSES.new,
+    TASK_STATUSES.verified,
+    TASK_STATUSES.completed,
+    TASK_STATUSES.rejected
+  ];
 
   const handleChange = (_, newValue) => {
-    setValue(newValue);
+    setTaskStatusTabValue(newValue);
+    setTasksStatusFilter(taskStatuses[newValue]);
+    setTasksPageNumber(0);
   };
 
+  const [tasksStatusFilter, setTasksStatusFilter] = useState(TASK_STATUSES.verified);
+  const [tasksPageNumber, setTasksPageNumber] = useState(0);
+
+  const { data, status } = useQuery(
+    ['tasks', { tasksStatusFilter, tasksPageNumber }],
+    () =>
+      fetchTasks({
+        pageSize: MAX_TASKS_PER_PAGE,
+        pageNumber: tasksPageNumber,
+        statuses: [tasksStatusFilter]
+      }),
+    {
+      cacheTime: 0,
+      refetchOnWindowFocus: false
+    }
+  );
+
+  if (status === 'loading') {
+    return <div>Loading...</div>;
+  }
+
+  if (status === 'error') {
+    return <div>Error</div>;
+  }
   return (
-    <TabsContext.Provider value={{ value }}>
+    <TabsContext.Provider value={{ taskStatusTabValue }}>
       <div className={styles.tabsContainer}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <div className={styles.tabsSearchBox}>
-            <Tabs value={value} handleChange={handleChange}></Tabs>
+            <Tabs value={taskStatusTabValue} handleChange={handleChange}></Tabs>
             <div className={styles.search}>
               <TextField
                 id='search'
@@ -161,46 +205,39 @@ const OperatorTasksListView = () => {
             </div>
           </div>
         </Box>
-        {Object.entries(tasks).map(([key, tasksByStatus], i) => {
-          return (
-            <TabPanel key={key} value={value} index={i}>
-              <TableContainer component={Paper}>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell />
-                      <TableCell className={styles.fontBold}>{dictionary.priority}</TableCell>
-                      <TableCell className={styles.fontBold}>{dictionary.subtaskCount}</TableCell>
-                      <TableCell className={styles.fontBold}>{dictionary.productMeasure}</TableCell>
-                      <TableCell className={styles.fontBold}>{dictionary.quantity}</TableCell>
-                      <TableCell className={styles.fontBold}>{dictionary.productName}</TableCell>
-                      <TableCell className={styles.fontBold}>{dictionary.deadlineDate}</TableCell>
-                      <TableCell className={clsx(styles.fontBold, styles.noteCell)}>
-                        {dictionary.note}
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {tasksByStatus?.map(row => (
-                      <Row
-                        key={row.id}
-                        row={row}
-                        handleRowClick={() => navigateSubTaskHandler(row)}
-                      />
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </TabPanel>
-          );
+        {taskStatuses.map((key, i) => {
+          return <TabPanel key={key} value={taskStatusTabValue} index={i}></TabPanel>;
         })}
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell />
+                <TableCell className={styles.fontBold}>{dictionary.priority}</TableCell>
+                <TableCell className={styles.fontBold}>{dictionary.subtaskCount}</TableCell>
+                <TableCell className={styles.fontBold}>{dictionary.productMeasure}</TableCell>
+                <TableCell className={styles.fontBold}>{dictionary.quantity}</TableCell>
+                <TableCell className={styles.fontBold}>{dictionary.productName}</TableCell>
+                <TableCell className={styles.fontBold}>{dictionary.deadlineDate}</TableCell>
+                <TableCell className={clsx(styles.fontBold, styles.noteCell)}>
+                  {dictionary.note}
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {data.items?.map(row => (
+                <Row key={row.id} row={row} handleRowClick={() => navigateSubTaskHandler(row)} />
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
 
         <TablePagination
           component='div'
-          count={100}
-          page={0}
-          onPageChange={() => {}}
-          rowsPerPage={10}
+          count={data.totalCount}
+          page={data.page}
+          onPageChange={(event, page) => setTasksPageNumber(page)}
+          rowsPerPage={MAX_TASKS_PER_PAGE}
           rowsPerPageOptions={[]}
         />
       </div>
@@ -208,14 +245,33 @@ const OperatorTasksListView = () => {
   );
 };
 
-const VolunteerTasksListView = () => {
+const VolunteerTasksListView = props => {
   const history = useHistory();
-  const tasks = useSelector(state => state.tasks.verified);
 
   const navigateSubTaskHandler = e => history.push(`/create-subtask/${e.row.id}`);
 
   const { selectedCategory, selectedSubCategory } = useContext(CategoriesContext);
   console.log(selectedCategory, selectedSubCategory);
+
+  const [tasksQuery, setTasksQuery] = useState({
+    statuses: ['VERIFIED'],
+    pageSize: MAX_TASKS_PER_PAGE
+  });
+  const { data, status } = useQuery(['tasks', tasksQuery], fetchTasks, {
+    cacheTime: 0
+  });
+
+  const setPageNumber = page => {
+    setTasksQuery({ ...tasksQuery, pageNumber: page });
+  };
+
+  if (status === 'loading') {
+    return <div>Loading...</div>;
+  }
+
+  if (status === 'error') {
+    return <div>Error</div>;
+  }
 
   return (
     <div className={styles.tabsContainer}>
@@ -224,8 +280,13 @@ const VolunteerTasksListView = () => {
         pageSize={MAX_TASKS_PER_PAGE}
         onRowClick={e => navigateSubTaskHandler(e)}
         rowsPerPageOptions={[MAX_TASKS_PER_PAGE]}
-        rows={tasks}
+        rows={data.items}
         columns={tasksColumns}
+        rowCount={data.totalCount}
+        paginationMode='server'
+        onPageChange={page => setPageNumber(page)}
+        sortingMode='server'
+        // onSortModelChange={handleSortModelChange}
       />
     </div>
   );
