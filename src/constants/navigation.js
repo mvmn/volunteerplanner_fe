@@ -17,5 +17,6 @@ export const OPERATOR_NAVIGATION_ITEMS = [
 ];
 
 export const REQUESTOR_NAVIGATION_ITEMS = [
-  { link: 'tasks', title: dictionary.tasks, icon: <AssignmentOutlinedIcon /> }
+  { link: 'tasks', title: dictionary.tasks, icon: <AssignmentOutlinedIcon /> },
+  { link: 'stores', title: dictionary.stores, icon: <WarehouseIcon /> }
 ];
