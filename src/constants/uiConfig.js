@@ -28,7 +28,9 @@ export const SUBTASK_NAME = {
 
 export const ROLES = {
   operator: 'operator',
-  volunteer: 'volunteer'
+  volunteer: 'volunteer',
+  requestor: 'requestor',
+  root: 'root'
 };
 
 export const STATUS_NAME = {
