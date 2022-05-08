@@ -1,3 +1,4 @@
 export const GET_CATEGORIES = 'GET_CATEGORIES';
 export const SET_CATEGORIES = 'SET_CATEGORIES';
 export const SET_SUBCATEGORIES = 'SET_SUBCATEGORIES';
+export const SUBCATEGORY_ID_PREFIX = 'subcategory_';
