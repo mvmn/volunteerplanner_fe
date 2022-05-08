@@ -70,6 +70,10 @@ const Dropdown = () => {
   const handleDropdownVisibility = () => setIsOpened(!isOpened);
   const user = useSelector(state => state.user);
 
+  if (!user.isAuthorized) {
+    return <div></div>;
+  }
+
   return (
     <div>
       <Avatar sx={{ bgcolor: deepPurple[500] }} onClick={handleDropdownVisibility}>

@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { useDispatch } from 'react-redux';
 
-import { setLoggedIn } from '../src/actions/user';
+import { getCurrentUser, setLoggedOut } from '../src/actions/user';
 import { Footer } from './components/Footer';
 import { Header } from './components/Header';
 import { ACCESS_TOKEN } from './constants/uiConfig';
@@ -21,7 +21,9 @@ function App({ children }) {
 
   useEffect(() => {
     if (sessionStorage.getItem(ACCESS_TOKEN)) {
-      dispatch(setLoggedIn());
+      dispatch(getCurrentUser());
+    } else {
+      dispatch(setLoggedOut());
     }
   }, [dispatch]);
 
