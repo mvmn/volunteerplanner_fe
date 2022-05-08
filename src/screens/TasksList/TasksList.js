@@ -142,7 +142,6 @@ const OperatorTasksListView = () => {
   const navigateSubTaskHandler = row => history.push(`/create-subtask/${row.id}`);
 
   const { selectedCategory, selectedSubCategory } = useContext(CategoriesContext);
-  console.log(selectedCategory, selectedSubCategory);
 
   const taskStatuses = [
     TASK_STATUSES.new,
@@ -162,17 +161,21 @@ const OperatorTasksListView = () => {
 
   const { data, status } = useQuery(
     ['tasks', { tasksStatusFilter, tasksPageNumber, selectedCategory, selectedSubCategory }],
-    () =>
-      fetchTasks({
+    () => {
+      var categoryPath = null;
+      if (selectedCategory) {
+        categoryPath = '/' + selectedCategory;
+      }
+      if (selectedSubCategory) {
+        categoryPath += '/' + selectedSubCategory;
+      }
+      return fetchTasks({
         pageSize: MAX_TASKS_PER_PAGE,
         pageNumber: tasksPageNumber,
         statuses: [tasksStatusFilter],
-        categoryPath: selectedSubCategory
-          ? '/' + selectedCategory + '/' + selectedSubCategory
-          : selectedCategory
-          ? '/' + selectedCategory
-          : null
-      }),
+        categoryPath: categoryPath
+      });
+    },
     {
       cacheTime: 0,
       refetchOnWindowFocus: false
