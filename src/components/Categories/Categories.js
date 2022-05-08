@@ -56,9 +56,9 @@ export const Categories = () => {
             <TreeItem
               classes={{
                 content:
-                  selectedCategory === category.id.toString()
-                    ? styles.selectedContent
-                    : styles.content
+                  styles.content +
+                  ' ' +
+                  (selectedCategory === category.id.toString() ? styles.selectedContent : '')
               }}
               className={styles.treeItem}
               nodeId={category.id.toString()}
@@ -69,9 +69,11 @@ export const Categories = () => {
                 <TreeItem
                   classes={{
                     content:
-                      selectedSubCategory === subcategory.id.toString()
+                      styles.content +
+                      ' ' +
+                      (selectedSubCategory === subcategory.id.toString()
                         ? styles.selectedContent
-                        : styles.content
+                        : '')
                   }}
                   className={styles.treeItem}
                   nodeId={SUBCATEGORY_ID_PREFIX + subcategory.id.toString()}
