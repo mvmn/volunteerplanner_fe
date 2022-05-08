@@ -52,7 +52,6 @@ const Row = props => {
   );
 
   const deadlineDate = new Date(row.deadlineDate * 1000);
-  console.log(window.navigator.language);
   const deadlineDateFmt = deadlineDate.toLocaleString(window.navigator.language, {
     weekday: 'short',
     day: 'numeric',
@@ -142,7 +141,7 @@ const OperatorTasksListView = () => {
 
   const navigateSubTaskHandler = row => history.push(`/create-subtask/${row.id}`);
 
-  // const { selectedCategory, selectedSubCategory } = useContext(CategoriesContext);
+  const { selectedCategory, selectedSubCategory } = useContext(CategoriesContext);
 
   const taskStatuses = [
     TASK_STATUSES.new,
@@ -161,13 +160,22 @@ const OperatorTasksListView = () => {
   const [tasksPageNumber, setTasksPageNumber] = useState(0);
 
   const { data, status } = useQuery(
-    ['tasks', { tasksStatusFilter, tasksPageNumber }],
-    () =>
-      fetchTasks({
+    ['tasks', { tasksStatusFilter, tasksPageNumber, selectedCategory, selectedSubCategory }],
+    () => {
+      var categoryPath = null;
+      if (selectedCategory) {
+        categoryPath = '/' + selectedCategory;
+      }
+      if (selectedSubCategory) {
+        categoryPath += '/' + selectedSubCategory;
+      }
+      return fetchTasks({
         pageSize: MAX_TASKS_PER_PAGE,
         pageNumber: tasksPageNumber,
-        statuses: [tasksStatusFilter]
-      }),
+        statuses: [tasksStatusFilter],
+        categoryPath: categoryPath
+      });
+    },
     {
       cacheTime: 0,
       refetchOnWindowFocus: false
