@@ -9,9 +9,11 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 
 import NetworkService from './api/networkService';
 import App from './App';
+import { ROLES } from './constants/uiConfig';
 import dictionary from './dictionary';
 import { routes } from './navigation/routes';
 import { TasksList } from './screens/TasksList';
+import { UserList } from './screens/UserList';
 import { history, store } from './store';
 
 const ProtectedRoute = ({ role, children }) => {
@@ -39,18 +41,26 @@ ReactDOM.render(
               path='/'
               component={props => {
                 const isAuthorized = useSelector(state => state.user.isAuthorized);
-                return isAuthorized ? (
-                  <TasksList {...props} />
-                ) : (
-                  <>
-                    <div>
-                      <Link to='/login'>{dictionary.logIn}</Link>
-                    </div>
-                    <div>
-                      <Link to='/sign-up'>{dictionary.signUp}</Link>
-                    </div>
-                  </>
-                );
+                const user = useSelector(state => state.user);
+
+                if (!isAuthorized) {
+                  return (
+                    <>
+                      <div>
+                        <Link to='/login'>{dictionary.logIn}</Link>
+                      </div>
+                      <div>
+                        <Link to='/sign-up'>{dictionary.signUp}</Link>
+                      </div>
+                    </>
+                  );
+                }
+
+                if (ROLES.root === user.role) {
+                  return <UserList {...props} />;
+                } else {
+                  return <TasksList {...props} />;
+                }
               }}
             />
             {routes.map(item => {

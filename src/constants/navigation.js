@@ -20,3 +20,7 @@ export const REQUESTOR_NAVIGATION_ITEMS = [
   { link: 'tasks', title: dictionary.tasks, icon: <AssignmentOutlinedIcon /> },
   { link: 'stores', title: dictionary.stores, icon: <WarehouseIcon /> }
 ];
+
+export const ROOT_NAVIGATION_ITEMS = [
+  { link: 'users', title: dictionary.users, icon: <GroupOutlinedIcon /> }
+];
