@@ -74,7 +74,7 @@ const Dropdown = () => {
   const handleDropdownVisibility = () => setIsOpened(!isOpened);
   const user = useSelector(state => state.user);
 
-  if (!user.isAuthorized) {
+  if (!user.isAuthorized || !user.displayName) {
     return <div></div>;
   }
 
