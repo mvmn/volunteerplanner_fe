@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
 
 import { setLoggedIn } from '../../actions/user';
-import dictionry from '../../dictionary';
+import dictionary from '../../dictionary';
 import { yupPatterns } from '../../helpers/validation';
 import styles from './SignUp.module.scss';
 
@@ -42,7 +42,7 @@ export const SignUp = () => {
 
   return (
     <Container>
-      <h2>{dictionry.signIn}</h2>
+      <h2>{dictionary.signUp}</h2>
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.field_box}>
           <TextField
@@ -50,7 +50,7 @@ export const SignUp = () => {
             name='displayName'
             value={values.displayName}
             classes={{ root: styles.root }}
-            label={dictionry.displayName}
+            label={dictionary.displayName}
             type='text'
             size='small'
             margin='normal'
@@ -66,7 +66,7 @@ export const SignUp = () => {
             name='phoneNumber'
             value={values.phoneNumber}
             classes={{ root: styles.root }}
-            label={dictionry.phoneNumber}
+            label={dictionary.phoneNumber}
             type='tel'
             size='small'
             margin='normal'
@@ -82,7 +82,7 @@ export const SignUp = () => {
             name='email'
             value={values.email}
             classes={{ root: styles.root }}
-            label={dictionry.email}
+            label={dictionary.email}
             type='email'
             size='small'
             margin='normal'
@@ -98,7 +98,7 @@ export const SignUp = () => {
             name='password'
             value={values.password}
             classes={{ root: styles.root }}
-            label={dictionry.password}
+            label={dictionary.password}
             type='password'
             size='small'
             margin='normal'
@@ -114,7 +114,7 @@ export const SignUp = () => {
             name='confirmPassWord'
             value={values.confirmPassWord}
             classes={{ root: styles.root }}
-            label={dictionry.confirmPassWord}
+            label={dictionary.confirmPassWord}
             type='password'
             size='small'
             margin='normal'
@@ -125,7 +125,7 @@ export const SignUp = () => {
           </div>
         </div>
         <Button variant='outlined' type='submit'>
-          {dictionry.send}
+          {dictionary.send}
         </Button>
       </form>
     </Container>

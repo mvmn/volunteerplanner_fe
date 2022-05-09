@@ -6,6 +6,7 @@ import dictionary from '../dictionary';
 export const MAX_USER_PER_PAGE = 10;
 export const MAX_TASKS_PER_PAGE = 5;
 export const ACCESS_TOKEN = 'accessToken';
+export const REFRESH_TOKEN = 'refreshToken';
 
 export const TASK_STATUSES = {
   new: 'NEW',

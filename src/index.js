@@ -4,9 +4,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider, useSelector } from 'react-redux';
 import { Router } from 'react-router';
+import { Link } from 'react-router-dom';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
+import NetworkService from './api/networkService';
 import App from './App';
+import dictionary from './dictionary';
 import { routes } from './navigation/routes';
 import { TasksList } from './screens/TasksList';
 import { history, store } from './store';
@@ -23,6 +26,8 @@ const ProtectedRoute = ({ role, children }) => {
   return children;
 };
 
+NetworkService.setupInterceptors(store);
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
@@ -34,7 +39,18 @@ ReactDOM.render(
               path='/'
               component={props => {
                 const isAuthorized = useSelector(state => state.user.isAuthorized);
-                return isAuthorized ? <TasksList {...props} /> : <div>please, log in</div>;
+                return isAuthorized ? (
+                  <TasksList {...props} />
+                ) : (
+                  <>
+                    <div>
+                      <Link to='/login'>{dictionary.logIn}</Link>
+                    </div>
+                    <div>
+                      <Link to='/sign-up'>{dictionary.signUp}</Link>
+                    </div>
+                  </>
+                );
               }}
             />
             {routes.map(item => {

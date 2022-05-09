@@ -99,7 +99,7 @@ const ActionLinks = () => {
   return (
     <List className={styles.list}>
       <NavLink to={`${match.path}sign-up`} className={styles.link} exact={true}>
-        <ListItem button>{dictionary.signIn}</ListItem>
+        <ListItem button>{dictionary.signUp}</ListItem>
       </NavLink>{' '}
       <NavLink to={`${match.path}login`} className={styles.link} exact={true}>
         <ListItem button>{dictionary.logIn}</ListItem>
