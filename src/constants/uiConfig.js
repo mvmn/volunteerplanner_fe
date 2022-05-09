@@ -29,7 +29,9 @@ export const SUBTASK_NAME = {
 
 export const ROLES = {
   operator: 'operator',
-  volunteer: 'volunteer'
+  volunteer: 'volunteer',
+  requestor: 'requestor',
+  root: 'root'
 };
 
 export const STATUS_NAME = {
@@ -41,9 +43,9 @@ export const STATUS_NAME = {
 };
 
 export const tasksColumns = [
-  { field: 'subtaskCount', headerName: dictionary.subtaskCount, flex: 1 },
+  { field: 'subtaskCount', headerName: dictionary.subtaskCount, flex: 1, sortable: false },
   { field: 'quantityLeft', headerName: dictionary.quantity, flex: 1 },
-  { field: 'productMeasure', headerName: dictionary.productMeasure, flex: 1 },
+  { field: 'productMeasure', headerName: dictionary.productMeasure, flex: 1, sortable: false },
   {
     field: 'productId',
     headerName: dictionary.productName,
@@ -61,7 +63,7 @@ export const tasksColumns = [
     flex: 1
   },
   { field: 'deadlineDate', headerName: dictionary.deadlineDate, flex: 1 },
-  { field: 'note', headerName: dictionary.note, flex: 1 },
+  { field: 'note', headerName: dictionary.note, flex: 1, sortable: false },
   {
     field: 'status',
     headerName: dictionary.status,

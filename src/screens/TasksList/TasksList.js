@@ -32,6 +32,7 @@ import { Status } from '../../components/Status';
 import { TabPanel } from '../../components/TabPanel';
 import { Tabs } from '../../components/Tabs';
 import { Title } from '../../components/Title';
+import { TASKS_SORT_FIELD_MAPPINGS } from '../../constants/tasks';
 import { MAX_TASKS_PER_PAGE, ROLES, TASK_STATUSES, tasksColumns } from '../../constants/uiConfig';
 import dictionary from '../../dictionary';
 import { CategoriesContext } from '../Main';
@@ -261,17 +262,31 @@ const VolunteerTasksListView = props => {
   const { selectedCategory, selectedSubCategory } = useContext(CategoriesContext);
   console.log(selectedCategory, selectedSubCategory);
 
-  const [tasksQuery, setTasksQuery] = useState({
-    statuses: ['VERIFIED'],
-    pageSize: MAX_TASKS_PER_PAGE
-  });
-  const { data, status } = useQuery(['tasks', tasksQuery], fetchTasks, {
-    cacheTime: 0
-  });
+  const [tasksPageNumber, setTasksPageNumber] = useState(0);
+  const [tasksOrder, setTasksOrder] = useState(0);
 
-  const setPageNumber = page => {
-    setTasksQuery({ ...tasksQuery, pageNumber: page });
-  };
+  const { data, status } = useQuery(
+    ['volunteertasks', { tasksPageNumber, tasksOrder }],
+    async () => {
+      const query = {
+        pageSize: MAX_TASKS_PER_PAGE,
+        pageNumber: tasksPageNumber,
+        statuses: [TASK_STATUSES.verified]
+      };
+      if (tasksOrder && tasksOrder.length > 0) {
+        const tasksOrderSpec = tasksOrder[0];
+        query.sortOrder = TASKS_SORT_FIELD_MAPPINGS[tasksOrderSpec.field];
+        if (tasksOrderSpec.sort) {
+          query.sortDirection = tasksOrderSpec.sort.toUpperCase();
+        }
+      }
+      return await fetchTasks(query);
+    },
+    {
+      cacheTime: 0,
+      refetchOnWindowFocus: false
+    }
+  );
 
   if (status === 'loading') {
     return <div>Loading...</div>;
@@ -289,12 +304,14 @@ const VolunteerTasksListView = props => {
         onRowClick={e => navigateSubTaskHandler(e)}
         rowsPerPageOptions={[MAX_TASKS_PER_PAGE]}
         rows={data.items}
+        page={data.page}
         columns={tasksColumns}
         rowCount={data.totalCount}
         paginationMode='server'
-        onPageChange={page => setPageNumber(page)}
+        onPageChange={page => setTasksPageNumber(page)}
         sortingMode='server'
-        // onSortModelChange={handleSortModelChange}
+        onSortModelChange={setTasksOrder}
+        sortModel={tasksOrder ? tasksOrder : []}
       />
     </div>
   );
