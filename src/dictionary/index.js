@@ -14,7 +14,7 @@ const dictionary = {
   logIn: 'Ввійти',
   logOut: 'Вийти',
   taskMeneger: 'Менеджер задач',
-  signIn: 'Реєстрація',
+  signUp: 'Реєстрація',
   openProfile: 'Мій профіль',
   phoneNumber: 'Номер телефону',
   password: 'Пароль',
