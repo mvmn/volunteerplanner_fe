@@ -8,7 +8,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useRouteMatch } from 'react-router-dom';
 
 import { setLoggedOut } from '../../actions/user';
-import { NAVIGATION_ITEMS, OPERATOR_NAVIGATION_ITEMS } from '../../constants/navigation';
+import {
+  OPERATOR_NAVIGATION_ITEMS,
+  REQUESTOR_NAVIGATION_ITEMS,
+  VOLUNTEER_NAVIGATION_ITEMS
+} from '../../constants/navigation';
 import { ROLES } from '../../constants/uiConfig';
 import dictionary from '../../dictionary';
 import styles from './Header.module.scss';
@@ -109,7 +113,22 @@ export const Header = () => {
 
   const currentRole = useSelector(state => state.user.role);
 
-  const navigation = currentRole === ROLES.operator ? OPERATOR_NAVIGATION_ITEMS : NAVIGATION_ITEMS;
+  var navigation = [];
+  if (isAuthorized) {
+    switch (currentRole) {
+      case ROLES.operator:
+        navigation = OPERATOR_NAVIGATION_ITEMS;
+        break;
+      case ROLES.volunteer:
+        navigation = VOLUNTEER_NAVIGATION_ITEMS;
+        break;
+      case ROLES.requestor:
+        navigation = REQUESTOR_NAVIGATION_ITEMS;
+        break;
+      case ROLES.root:
+      default:
+    }
+  }
 
   return (
     <AppBar classes={{ root: styles.root }} sx={{ zIndex: theme => theme.zIndex.drawer + 1 }}>
@@ -119,7 +138,7 @@ export const Header = () => {
             <NavLink to='/' className={styles.link} exact={true}>
               <ListItem button>
                 <Typography variant='h6' noWrap component='div'>
-                  {dictionary.taskMeneger}
+                  {dictionary.taskManager}
                 </Typography>
               </ListItem>
             </NavLink>
