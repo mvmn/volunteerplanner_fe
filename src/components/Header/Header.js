@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useRouteMatch } from 'react-router-dom';
 
-import { setLoggedOut } from '../../actions/user';
+import { getCurrentUser, setLoggedOut } from '../../actions/user';
 import {
   OPERATOR_NAVIGATION_ITEMS,
   REQUESTOR_NAVIGATION_ITEMS,
@@ -73,8 +73,15 @@ const Dropdown = () => {
   const [isOpened, setIsOpened] = useState(false);
   const handleDropdownVisibility = () => setIsOpened(!isOpened);
   const user = useSelector(state => state.user);
+  const dispatch = useDispatch();
 
-  if (!user.isAuthorized || !user.displayName) {
+  if (!user.isAuthorized) {
+    return <div></div>;
+  }
+
+  if (!user.displayName) {
+    // Fetch user data
+    dispatch(getCurrentUser());
     return <div></div>;
   }
 

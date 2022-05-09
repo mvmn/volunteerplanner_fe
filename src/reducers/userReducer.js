@@ -10,7 +10,7 @@ export const userReducer = function (state = initState, action) {
     case SET_LOGGED_OUT:
       sessionStorage.removeItem(ACCESS_TOKEN);
       sessionStorage.removeItem(REFRESH_TOKEN);
-      return { ...state, isAuthorized: false };
+      return { isAuthorized: false };
     case SET_USER:
       return { ...state, ...action.payload, isAuthorized: !!action.payload };
     default:
