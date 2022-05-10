@@ -11,6 +11,7 @@ import { getCurrentUser, setLoggedOut } from '../../actions/user';
 import {
   OPERATOR_NAVIGATION_ITEMS,
   REQUESTOR_NAVIGATION_ITEMS,
+  ROOT_NAVIGATION_ITEMS,
   VOLUNTEER_NAVIGATION_ITEMS
 } from '../../constants/navigation';
 import { ROLES } from '../../constants/uiConfig';
@@ -133,6 +134,8 @@ export const Header = () => {
         navigation = REQUESTOR_NAVIGATION_ITEMS;
         break;
       case ROLES.root:
+        navigation = ROOT_NAVIGATION_ITEMS;
+        break;
       default:
     }
   }
