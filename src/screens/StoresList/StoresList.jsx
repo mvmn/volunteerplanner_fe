@@ -4,7 +4,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 
-import { fetchStores } from '../../api/stores';
+import { createStore, fetchStores } from '../../api/stores';
 import { CreateEntityButton } from '../../components/CreateEntityButton';
 import { StoreForm } from '../../components/StoreForm';
 import { Title } from '../../components/Title';
@@ -86,7 +86,12 @@ export const StoresList = () => {
     }
   );
   const queryClient = useQueryClient();
-  const invalidateQuery = () => queryClient.invalidateQueries(query);
+  const handleStoreCreation = form =>
+    createStore(form)
+      .then(() => queryClient.invalidateQueries(query))
+      .catch(error => {
+        console.error(error);
+      });
 
   let displayNode;
   switch (status) {
@@ -128,7 +133,7 @@ export const StoresList = () => {
           <CreateEntityButton
             title={dictionary.createStore}
             renderModalForm={onCloseHandler => <StoreForm onClose={onCloseHandler} />}
-            onEntitySaved={invalidateQuery}
+            onEntitySaved={handleStoreCreation}
           />
           <div className={styles.search}>
             <TextField

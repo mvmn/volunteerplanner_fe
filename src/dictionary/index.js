@@ -93,6 +93,8 @@ const dictionary = {
   loginFailed: 'Помилка логіну',
   confidentiality: 'Конфіденційність',
   private: 'Приватний',
-  public: 'Публічний'
+  public: 'Публічний',
+  storeName: 'Назва складу',
+  fieldIsRequired: 'Це поле потрібно заповнити'
 };
 export default dictionary;

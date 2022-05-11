@@ -2,6 +2,8 @@ import 'yup-phone';
 
 import * as yup from 'yup';
 
+import dictionary from '../dictionary';
+
 const yupPatterns = key => {
   switch (key) {
     case 'displayName':
@@ -50,6 +52,17 @@ const yupPatterns = key => {
       return yup.string().required('Укажіть дату');
     case 'note':
       return yup.string().min(3, 'Поле занадто коротке');
+    case 'notEmptyString':
+      return yup.string().required(dictionary.fieldIsRequired);
+    case 'geoName':
+      return yup
+        .object()
+        .shape({
+          id: yup.string().required('Необхідно вказати ідентифікатор'),
+          name: yup.string().required('Необхідно вказати назву')
+        })
+        .nullable()
+        .required(dictionary.fieldIsRequired);
     default:
       return yup.string();
   }
