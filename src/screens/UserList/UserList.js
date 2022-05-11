@@ -44,18 +44,51 @@ export const usersColumns = [
   }
 ];
 
-const getUsersRequest = {
+const getUsersRequestInitialState = {
   pageSize: MAX_USER_PER_PAGE,
-  page: 1
+  page: 1,
+  filter: null
 };
 
 export const UserList = () => {
+  const [getUsersRequest, setGetUsersRequest] = useState(getUsersRequestInitialState);
   const users = useSelector(state => state.users.all);
   const totalCount = useSelector(state => state.users.totalCount);
   const { isModalVisible, onCloseHandler, onOpenHandler } = useModalVisibleHook();
 
   const [selectedUser, setSelectedUser] = useState();
   const [searchedUserQuery, setSearchedUserQuery] = useState('');
+
+  const updateSearchText = searchText => {
+    setSearchedUserQuery(searchText);
+    if (searchText && searchText.trim().length > 0) {
+      setGetUsersRequest({
+        ...getUsersRequest,
+        filter: {
+          type: 'operator',
+          operator: 'or',
+          operands: [
+            {
+              type: 'text',
+              field: 'displayname',
+              value: searchText
+            },
+            {
+              type: 'text',
+              field: 'phone',
+              value: searchText
+            }
+          ]
+        }
+      });
+    } else {
+      setGetUsersRequest({
+        ...getUsersRequest,
+        filter: null
+      });
+    }
+    // dispatch(getUsers({ getUsersRequest }));
+  };
 
   const handleRowDoubleClick = e => {
     setSelectedUser(e.row);
@@ -67,20 +100,32 @@ export const UserList = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getUsers({ getUsersRequest }));
-  }, [dispatch]);
+  }, [dispatch, getUsersRequest]);
 
   const setPageNumber = page => {
-    getUsersRequest.page = page + 1;
-    dispatch(getUsers({ getUsersRequest }));
+    setGetUsersRequest({
+      ...getUsersRequest,
+      page: page + 1
+    });
+    // getUsersRequest.page = page + 1;
+    // dispatch(getUsers({ getUsersRequest }));
   };
 
   const handleSortModelChange = param => {
     if (param.length > 0) {
-      getUsersRequest.sort = { field: param[0].field, order: param[0].sort };
+      // getUsersRequest.sort = { field: param[0].field, order: param[0].sort };
+      setGetUsersRequest({
+        ...getUsersRequest,
+        sort: { field: param[0].field, order: param[0].sort }
+      });
     } else {
-      getUsersRequest.sort = null;
+      setGetUsersRequest({
+        ...getUsersRequest,
+        sort: null
+      });
+      // getUsersRequest.sort = null;
     }
-    dispatch(getUsers({ getUsersRequest }));
+    // dispatch(getUsers({ getUsersRequest }));
   };
 
   return (
@@ -97,7 +142,7 @@ export const UserList = () => {
             label={`${dictionary.searchUsers}`}
             size='small'
             margin='normal'
-            onChange={e => setSearchedUserQuery(e.target.value)}
+            onChange={e => updateSearchText(e.target.value)}
           />
           <button className={styles.search_action} disabled={searchedUserQuery.length < 1}>
             <SearchIcon />
