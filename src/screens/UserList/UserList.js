@@ -87,7 +87,6 @@ export const UserList = () => {
         filter: null
       });
     }
-    // dispatch(getUsers({ getUsersRequest }));
   };
 
   const handleRowDoubleClick = e => {
@@ -107,13 +106,10 @@ export const UserList = () => {
       ...getUsersRequest,
       page: page + 1
     });
-    // getUsersRequest.page = page + 1;
-    // dispatch(getUsers({ getUsersRequest }));
   };
 
   const handleSortModelChange = param => {
     if (param.length > 0) {
-      // getUsersRequest.sort = { field: param[0].field, order: param[0].sort };
       setGetUsersRequest({
         ...getUsersRequest,
         sort: { field: param[0].field, order: param[0].sort }
@@ -123,9 +119,7 @@ export const UserList = () => {
         ...getUsersRequest,
         sort: null
       });
-      // getUsersRequest.sort = null;
     }
-    // dispatch(getUsers({ getUsersRequest }));
   };
 
   return (
