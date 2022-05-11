@@ -12,6 +12,7 @@ const dictionary = {
   tasks: 'Задачі',
   stores: 'Склади',
   createTask: 'Створити завдання',
+  createStore: 'Створити склад',
   logIn: 'Ввійти',
   logOut: 'Вийти',
   taskManager: 'Менеджер задач',
@@ -87,7 +88,11 @@ const dictionary = {
   searchUsers: 'Пошук користувачів',
   changePassword: 'Змінити пароль',
   searchTask: 'Пошук задачі',
+  searchStores: 'Пошук складів',
   badCredentials: 'Логін або пароль неправильні',
-  loginFailed: 'Помилка логіну'
+  loginFailed: 'Помилка логіну',
+  confidentiality: 'Конфіденційність',
+  private: 'Приватний',
+  public: 'Публічний'
 };
 export default dictionary;
