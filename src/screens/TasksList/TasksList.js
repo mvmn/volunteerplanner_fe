@@ -279,14 +279,16 @@ const VolunteerTasksListView = props => {
 
   const [tasksPageNumber, setTasksPageNumber] = useState(0);
   const [tasksOrder, setTasksOrder] = useState(0);
+  const [searchedTaskQuery, setSearchedTaskQuery] = useState('');
 
   const { data, status } = useQuery(
-    ['volunteertasks', { tasksPageNumber, tasksOrder }],
+    ['volunteertasks', { tasksPageNumber, tasksOrder, searchedTaskQuery }],
     async () => {
       const query = {
         pageSize: MAX_TASKS_PER_PAGE,
         pageNumber: tasksPageNumber,
-        statuses: [TASK_STATUSES.verified]
+        statuses: [TASK_STATUSES.verified],
+        searchText: searchedTaskQuery
       };
       if (tasksOrder && tasksOrder.length > 0) {
         const tasksOrderSpec = tasksOrder[0];
@@ -303,31 +305,48 @@ const VolunteerTasksListView = props => {
     }
   );
 
-  if (status === 'loading') {
-    return <div>Loading...</div>;
-  }
-
-  if (status === 'error') {
-    return <div>Error</div>;
-  }
-
   return (
     <div className={styles.tabsContainer}>
-      <DataGrid
-        style={{ height: 600 }}
-        pageSize={MAX_TASKS_PER_PAGE}
-        onRowClick={e => navigateSubTaskHandler(e)}
-        rowsPerPageOptions={[MAX_TASKS_PER_PAGE]}
-        rows={data.items}
-        page={data.page}
-        columns={tasksColumns}
-        rowCount={data.totalCount}
-        paginationMode='server'
-        onPageChange={page => setTasksPageNumber(page)}
-        sortingMode='server'
-        onSortModelChange={setTasksOrder}
-        sortModel={tasksOrder ? tasksOrder : []}
-      />
+      <div className={styles.tabsSearchBox}>
+        <Title text={dictionary.tasks} />
+        <div className={styles.search}>
+          <TextField
+            id='search'
+            name='search'
+            value={searchedTaskQuery}
+            type='text'
+            classes={{ root: styles.root }}
+            label={dictionary.searchTask}
+            size='small'
+            margin='normal'
+            onChange={e => setSearchedTaskQuery(e.target.value)}
+          />
+          <button className={styles.search_action} disabled={searchedTaskQuery.length < 1}>
+            <SearchIcon />
+          </button>
+        </div>
+      </div>
+      {status === 'loading' ? (
+        <div>Loading...</div>
+      ) : status === 'error' ? (
+        <div>Error</div>
+      ) : (
+        <DataGrid
+          style={{ height: 600 }}
+          pageSize={MAX_TASKS_PER_PAGE}
+          onRowClick={e => navigateSubTaskHandler(e)}
+          rowsPerPageOptions={[MAX_TASKS_PER_PAGE]}
+          rows={data.items}
+          page={data.page}
+          columns={tasksColumns}
+          rowCount={data.totalCount}
+          paginationMode='server'
+          onPageChange={page => setTasksPageNumber(page)}
+          sortingMode='server'
+          onSortModelChange={setTasksOrder}
+          sortModel={tasksOrder ? tasksOrder : []}
+        />
+      )}
     </div>
   );
 };
