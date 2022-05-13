@@ -133,7 +133,7 @@ export const UserList = () => {
             value={searchedUserQuery}
             type='text'
             classes={{ root: styles.root }}
-            label={`${dictionary.searchUsers}`}
+            label={dictionary.searchUsers}
             size='small'
             margin='normal'
             onChange={e => updateSearchText(e.target.value)}
