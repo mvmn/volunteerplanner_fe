@@ -3,3 +3,4 @@ export const GET_USERS = 'GET_USERS';
 export const SET_COUNT = 'SET_COUNT';
 export const SET_PAGE = 'SET_PAGE';
 export const SET_PAGE_SIZE = 'SET_PAGE_SIZE';
+export const UPDATE_USER = 'UPDATE_USER';
