@@ -17,12 +17,12 @@ import {
 } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import clsx from 'clsx';
-import _ from 'lodash';
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
+import { getSubtasksByTaskId } from '../../api/subtasks';
 import { fetchTasks } from '../../api/tasks';
 import { Categories } from '../../components/Categories';
 import { ChangeStatus } from '../../components/ChangeStatus';
@@ -42,15 +42,59 @@ export const TabsContext = createContext();
 
 const VERIFIED_TAB_INDEX = 1;
 
+const SubtasksPane = ({ taskId, statusIndex }) => {
+  const [subtasks, setSubtasks] = useState([]);
+
+  useEffect(() => {
+    getSubtasksByTaskId(taskId).then(data => {
+      setSubtasks(data?.items ?? []);
+    });
+  }, [taskId]);
+
+  return (
+    <Box sx={{ margin: 1 }}>
+      <Table className={styles.subTable}>
+        <TableHead>
+          <TableRow>
+            <TableCell />
+            <TableCell className={styles.fontBold}>{dictionary.status}</TableCell>
+            <TableCell className={styles.fontBold} colSpan={4}>
+              {dictionary.quantity}
+            </TableCell>
+            <TableCell className={styles.fontBold}>{dictionary.transportRequired}</TableCell>
+            <TableCell className={clsx(styles.fontBold, styles.noteCell)}>
+              {dictionary.note}
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {subtasks.map(subTask => (
+            <TableRow key={subTask.id}>
+              <TableCell />
+              <TableCell>
+                {statusIndex === VERIFIED_TAB_INDEX ? (
+                  <ChangeStatus status={subTask.status} />
+                ) : (
+                  <Status status={subTask.status} />
+                )}
+              </TableCell>
+              <TableCell colSpan={4} scope='row'>
+                {subTask.quantity}
+              </TableCell>
+              <TableCell>{subTask.transportRequired ? dictionary.yes : dictionary.no}</TableCell>
+              <TableCell className={styles.noteCell}>{subTask.note}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </Box>
+  );
+};
+
 const Row = props => {
   const { row, handleRowClick } = props;
   const { value } = useContext(TabsContext);
   const [open, setOpen] = useState(false);
-  const subTasks = useSelector(state => state.subTasks);
-  const mapSubTasks = _.groupBy(
-    Object.values(subTasks).reduce((acc, value) => [...acc, ...value], []),
-    subTask => subTask.taskId
-  );
 
   const deadlineDate = new Date(row.deadlineDate * 1000);
   const deadlineDateFmt = deadlineDate.toLocaleString(window.navigator.language, {
@@ -62,6 +106,7 @@ const Row = props => {
     hour: '2-digit',
     minute: '2-digit'
   });
+
   return (
     <>
       <TableRow
@@ -87,46 +132,7 @@ const Row = props => {
       <TableRow className={open ? styles.opened : ''}>
         <TableCell className={styles.subRow} colSpan={12}>
           <Collapse in={open} timeout='auto' unmountOnExit>
-            <Box sx={{ margin: 1 }}>
-              <Table className={styles.subTable}>
-                <TableHead>
-                  <TableRow>
-                    <TableCell />
-                    <TableCell className={styles.fontBold}>{dictionary.status}</TableCell>
-                    <TableCell className={styles.fontBold} colSpan={4}>
-                      {dictionary.quantity}
-                    </TableCell>
-                    <TableCell className={styles.fontBold}>
-                      {dictionary.transportRequired}
-                    </TableCell>
-                    <TableCell className={clsx(styles.fontBold, styles.noteCell)}>
-                      {dictionary.note}
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {mapSubTasks[row.id]?.map(subTask => (
-                    <TableRow key={subTask.id}>
-                      <TableCell />
-                      <TableCell>
-                        {value === VERIFIED_TAB_INDEX ? (
-                          <ChangeStatus status={subTask.status} />
-                        ) : (
-                          <Status status={subTask.status} />
-                        )}
-                      </TableCell>
-                      <TableCell colSpan={4} scope='row'>
-                        {subTask.quantity}
-                      </TableCell>
-                      <TableCell>
-                        {subTask.transportRequired ? dictionary.yes : dictionary.no}
-                      </TableCell>
-                      <TableCell className={styles.noteCell}>{subTask.note}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Box>
+            <SubtasksPane taskId={row.id} statusIndex={value} />
           </Collapse>
         </TableCell>
       </TableRow>
