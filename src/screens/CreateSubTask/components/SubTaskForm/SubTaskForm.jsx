@@ -31,7 +31,7 @@ export const SubTaskForm = ({ task, onSave }) => {
       await onSave({
         ...values,
         // TODO: clarify unix time format: milliseconds (currently used) vs seconds
-        dueDate: values.dueDate ? new Date(values.dueDate).getTime() : null
+        dueDate: values.dueDate ? Math.round(new Date(values.dueDate).getTime() / 1000) : null
       });
       setIsLoading(false);
     }
