@@ -71,6 +71,8 @@ const yupPatterns = key => {
           is: false,
           then: yup.date().required('Необхідно вказати дату')
         });
+    case 'organization':
+      return yup.string().min(2, 'Щонайменше 2 символи').nullable();
     default:
       return yup.string();
   }

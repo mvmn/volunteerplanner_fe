@@ -1,25 +1,27 @@
 import { Button } from '@mui/material';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { updateCurrentUser } from '../../actions/user';
 import { Title } from '../../components/Title';
 import { UserInformation } from '../../components/UserInformation';
 import dictionary from '../../dictionary';
 import { ProfileEditForm } from './components/ProfileEditForm/ProfileEditForm';
 import styles from './Profile.module.scss';
 
-const DisplayData = () => {
-  const user = useSelector(state => state.user);
-  return <UserInformation user={user} />;
-};
-
 export const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
+  const dispatch = useDispatch();
 
   const user = useSelector(state => state.user);
-  const { phoneNumber, userName, fullName, email } = user;
+  const { phoneNumber, displayName, organization } = user;
 
   const handleEditClick = () => setIsEditing(true);
+
+  const handleProfileSave = values => {
+    dispatch(updateCurrentUser({ ...values, role: user.role }));
+    setIsEditing(false);
+  };
 
   return (
     <div className={styles.container}>
@@ -33,11 +35,11 @@ export const Profile = () => {
       </div>
       {isEditing ? (
         <ProfileEditForm
-          initialValues={{ phoneNumber, userName, fullName, email }}
-          setIsEditing={setIsEditing}
+          user={{ phoneNumber, displayName, organization }}
+          onSave={handleProfileSave}
         />
       ) : (
-        <DisplayData />
+        <UserInformation user={user} />
       )}
     </div>
   );
