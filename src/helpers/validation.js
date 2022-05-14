@@ -63,6 +63,14 @@ const yupPatterns = key => {
         })
         .nullable()
         .required(dictionary.fieldIsRequired);
+    case 'dueDate':
+      return yup
+        .date()
+        .nullable()
+        .when('transportRequired', {
+          is: false,
+          then: yup.date().required('Необхідно вказати дату')
+        });
     default:
       return yup.string();
   }

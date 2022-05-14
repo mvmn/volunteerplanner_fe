@@ -97,6 +97,8 @@ const dictionary = {
   private: 'Приватний',
   public: 'Публічний',
   storeName: 'Назва складу',
-  fieldIsRequired: 'Це поле потрібно заповнити'
+  fieldIsRequired: 'Це поле потрібно заповнити',
+  taskInfo: 'Задача',
+  subtaskFormHeader: 'Моя частка'
 };
 export default dictionary;
