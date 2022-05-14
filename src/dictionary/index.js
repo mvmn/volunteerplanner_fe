@@ -41,6 +41,8 @@ const dictionary = {
   notVerified: 'Не підтверджено',
   user: 'Користувач',
   verify: 'Підтвердити',
+  verifyUser: 'Підтвердити користувача',
+  verifyPhoneNumber: 'Підтвердити номер телефону',
   unlock: 'Активувати',
   lock: 'Блокувати',
   unlocked: 'Не заблоковано',

@@ -1,15 +1,14 @@
 import SearchIcon from '@mui/icons-material/Search';
-import { Button, DialogActions, DialogContent, TextField } from '@mui/material';
+import { TextField } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getUsers } from '../../actions/users';
 import { LockedStatus } from '../../components/LockedStatus';
-import { Modal } from '../../components/Modal';
 import { Status } from '../../components/Status';
 import { Title } from '../../components/Title';
-import { UserInformation } from '../../components/UserInformation';
+import { UserModal } from '../../components/UserModal/UserModal';
 import { MAX_USER_PER_PAGE } from '../../constants/uiConfig';
 import dictionary from '../../dictionary';
 import { useModalVisibleHook } from '../../hooks/useModalVisibleHook';
@@ -90,11 +89,9 @@ export const UserList = () => {
   };
 
   const handleRowDoubleClick = e => {
-    setSelectedUser(e.row);
+    setSelectedUser(e.row?.id);
     onOpenHandler();
   };
-
-  const modalTitle = `${dictionary.user}: ${selectedUser?.displayName}`;
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -143,22 +140,7 @@ export const UserList = () => {
           </button>
         </div>
       </div>
-      <Modal open={isModalVisible} onClose={onCloseHandler} title={modalTitle}>
-        <DialogContent dividers>
-          <UserInformation user={selectedUser} />
-        </DialogContent>
-        {selectedUser && (
-          <DialogActions>
-            {!selectedUser.userVerified ? (
-              <Button variant='outlined'>{dictionary.verify}</Button>
-            ) : (
-              <Button variant='outlined'>
-                {selectedUser.locked ? dictionary.unlock : dictionary.lock}
-              </Button>
-            )}
-          </DialogActions>
-        )}
-      </Modal>
+      <UserModal isModalVisible={isModalVisible} onClose={onCloseHandler} userId={selectedUser} />
 
       <DataGrid
         className={styles.dataGrid}

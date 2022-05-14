@@ -1,4 +1,4 @@
-import { SET_USERS } from '../constants/users';
+import { SET_USERS, UPDATE_USER } from '../constants/users';
 
 const initState = {
   all: [],
@@ -17,6 +17,17 @@ export const usersReducer = function (state = initState, action) {
         page: action.payload.page,
         pageSize: action.payload.pageSize
       };
+    case UPDATE_USER: {
+      const { id, ...rest } = action.payload;
+      if (!state.all.some(user => user.id === id)) {
+        return state;
+      }
+
+      return {
+        ...state,
+        all: state.all.map(user => (user.id === id ? { ...user, ...rest } : user))
+      };
+    }
     default:
       return state;
   }
