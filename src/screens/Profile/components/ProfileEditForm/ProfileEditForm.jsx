@@ -1,29 +1,28 @@
 import { Button, TextField } from '@mui/material';
 import { useFormik } from 'formik';
-import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
 
-import { setUser } from '../../../../actions/user';
 import dictionary from '../../../../dictionary';
 import { yupPatterns } from '../../../../helpers/validation';
 import styles from './ProfileEditForm.module.scss';
 
-export const ProfileEditForm = ({ initialValues, setIsEditing }) => {
-  const dispatch = useDispatch();
+const initialValues = {
+  phoneNumber: '',
+  displayName: ''
+};
 
+export const ProfileEditForm = ({ user, onSave }) => {
   const validationSchema = yup.object().shape({
     phoneNumber: yupPatterns('phoneNumber'),
-    email: yupPatterns('email'),
-    userName: yupPatterns('userName'),
-    fullName: yupPatterns('fullName')
+    displayName: yupPatterns('displayName'),
+    organization: yupPatterns('organization')
   });
 
   const formik = useFormik({
-    initialValues,
+    initialValues: { ...initialValues, ...user },
     validationSchema,
     async onSubmit(values) {
-      dispatch(setUser(values));
-      setIsEditing(false);
+      onSave(values);
     }
   });
 
@@ -56,58 +55,39 @@ export const ProfileEditForm = ({ initialValues, setIsEditing }) => {
         <p className={styles.label}>{dictionary.userName}:</p>
         <div>
           <TextField
-            id='userName'
-            name='userName'
-            value={values.userName}
+            id='displayName'
+            name='displayName'
+            value={values.displayName}
             type='text'
             className={styles.input}
-            label={dictionary.userName}
+            label={dictionary.displayName}
             size='small'
             margin='normal'
             sx={sxTextFiled}
             onChange={handleChange}
           />
           <div className={styles.errors_box}>
-            <span className={styles.errors}>{errors.userName}</span>
+            <span className={styles.errors}>{errors.displayName}</span>
           </div>
         </div>
       </div>
       <div className={styles.column}>
-        <p className={styles.label}>{dictionary.fullName}:</p>
+        <p className={styles.label}>{dictionary.organization}:</p>
         <div>
           <TextField
-            id='fullName'
-            name='fullName'
-            value={values.fullName}
-            label={dictionary.fullName}
+            id='organization'
+            name='organization'
+            value={values.organization}
             type='text'
             className={styles.input}
+            label={dictionary.organization}
             size='small'
             margin='normal'
             sx={sxTextFiled}
             onChange={handleChange}
           />
           <div className={styles.errors_box}>
-            <span className={styles.errors}>{errors.fullName}</span>
-          </div>
-        </div>
-      </div>
-      <div className={styles.column}>
-        <p className={styles.label}>{dictionary.email}:</p>
-        <div>
-          <TextField
-            id='email'
-            name='email'
-            value={values.email}
-            label={dictionary.email}
-            type='email'
-            className={styles.input}
-            margin='normal'
-            sx={sxTextFiled}
-            onChange={handleChange}
-          />
-          <div className={styles.errors_box}>
-            <span className={styles.errors}>{errors.email}</span>
+            <span className={styles.errors}>{errors.organization}</span>
           </div>
         </div>
       </div>

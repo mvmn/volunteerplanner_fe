@@ -9,3 +9,12 @@ export const fetchCurrentUser = async () => {
     console.log(e);
   }
 };
+
+export const updateCurrentUser = async user => {
+  try {
+    const response = await axios.put(`${ENDPOINT}/api/v1/users/current`, user);
+    return response.data;
+  } catch (e) {
+    console.log(e);
+  }
+};
