@@ -8,16 +8,17 @@ export const UserInformation = ({ user }) => {
     <TableContainer className={styles.table_container} component={Paper}>
       <Table style={{ borderBottom: 'none' }}>
         <TableBody>
-          {userFields.map(field => {
-            return (
-              <TableRow key={user.id + '_' + field.label}>
-                <TableCell className={styles.title}>{field.label}:</TableCell>
-                <TableCell className={styles.table_cell}>
-                  {field.render ? field.render(user) : user[field.id]}
-                </TableCell>
-              </TableRow>
-            );
-          })}
+          {user &&
+            userFields.map(field => {
+              return (
+                <TableRow key={user.id + '_' + field.label}>
+                  <TableCell className={styles.title}>{field.label}:</TableCell>
+                  <TableCell className={styles.table_cell}>
+                    {field.render ? field.render(user) : user[field.id]}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
         </TableBody>
       </Table>
     </TableContainer>
