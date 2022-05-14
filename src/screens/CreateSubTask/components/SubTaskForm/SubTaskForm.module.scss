@@ -1,43 +1,5 @@
 @import '../../../../styles/colors.scss';
 
 .form {
-    padding: 0.5rem 1rem 0;
-    
-    .checkbox_column {
-      width: 100%;
-      display: flex;
-      align-items: center;
-    }
-  
-    .column_box {
-      display: flex;
-    }
-  
-    .label {
-      min-width: 200px;
-      text-align: left;
-    }
-  
-    .column {
-      position: relative;
-      width: 100%;
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-  
-      .root {
-        min-width: 320px;
-      }
-    }
-  
-    .errors_box {
-      position: absolute;
-      top: 25px;
-      right: 22vw;
-  
-      .errors {
-          font-size: 14px;
-          color: $denim;
-      }
-    }
+    padding-top: 1rem;
   }

@@ -100,6 +100,8 @@ const dictionary = {
   storeName: 'Назва складу',
   fieldIsRequired: 'Це поле потрібно заповнити',
   notSet: 'Не вказано',
-  all: 'Всі'
+  all: 'Всі',
+  taskInfo: 'Задача',
+  subtaskFormHeader: 'Моя частка'
 };
 export default dictionary;

@@ -328,7 +328,7 @@ const OperatorTasksListView = () => {
   );
 };
 
-const VolunteerTasksListView = props => {
+const VolunteerTasksListView = () => {
   const history = useHistory();
 
   const navigateSubTaskHandler = e => history.push(`/create-subtask/${e.row.id}`);
