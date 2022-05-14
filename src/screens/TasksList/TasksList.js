@@ -13,6 +13,7 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  TableSortLabel,
   TextField
 } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
@@ -160,6 +161,23 @@ const OperatorTasksListView = () => {
   const [tasksStatusFilter, setTasksStatusFilter] = useState(TASK_STATUSES.verified);
   const [tasksPageNumber, setTasksPageNumber] = useState(0);
 
+  const [order, setOrder] = useState('');
+  const [orderBy, setOrderBy] = useState('');
+
+  const handleRequestSort = (event, property) => {
+    if (orderBy === property && order === 'desc') {
+      setOrderBy('');
+    } else {
+      const isAsc = orderBy === property && order === 'asc';
+      setOrder(isAsc ? 'desc' : 'asc');
+      setOrderBy(property);
+    }
+  };
+
+  const createSortHandler = property => event => {
+    handleRequestSort(event, property);
+  };
+
   const { data, status } = useQuery(
     [
       'tasks',
@@ -168,7 +186,9 @@ const OperatorTasksListView = () => {
         tasksPageNumber,
         selectedCategory,
         selectedSubCategory,
-        searchedTaskQuery
+        searchedTaskQuery,
+        order,
+        orderBy
       }
     ],
     () => {
@@ -179,12 +199,20 @@ const OperatorTasksListView = () => {
       if (selectedSubCategory) {
         categoryPath += '/' + selectedSubCategory;
       }
+      var sortOrder = null;
+      var sortDirection = null;
+      if (orderBy && orderBy.trim().length > 0) {
+        sortDirection = order === 'desc' ? 'DESC' : 'ASC';
+        sortOrder = orderBy;
+      }
       return fetchTasks({
         pageSize: MAX_TASKS_PER_PAGE,
         pageNumber: tasksPageNumber,
         statuses: [tasksStatusFilter],
-        categoryPath: categoryPath,
-        searchText: searchedTaskQuery
+        categoryPath,
+        searchText: searchedTaskQuery,
+        sortDirection,
+        sortOrder
       });
     },
     {
@@ -192,6 +220,15 @@ const OperatorTasksListView = () => {
       refetchOnWindowFocus: false
     }
   );
+
+  const headCells = [
+    { id: 'PRIORITY', label: dictionary.priority, sortable: true },
+    { id: 'subtaskCount', label: dictionary.subtaskCount },
+    { id: 'productMeasure', label: dictionary.productMeasure },
+    { id: 'QUANTITY_LEFT', label: dictionary.quantity, sortable: true },
+    { id: 'PRODUCT_NAME', label: dictionary.productName, sortable: true },
+    { id: 'DUEDATE', label: dictionary.deadlineDate, sortable: true }
+  ];
 
   return (
     <TabsContext.Provider value={{ taskStatusTabValue }}>
@@ -217,9 +254,9 @@ const OperatorTasksListView = () => {
             </div>
           </div>
         </Box>
-        {taskStatuses.map((key, i) => {
-          return <TabPanel key={key} value={taskStatusTabValue} index={i}></TabPanel>;
-        })}
+        {taskStatuses.map((key, i) => (
+          <TabPanel key={key} value={taskStatusTabValue} index={i}></TabPanel>
+        ))}
         {status === 'loading' ? (
           <div>Loading...</div>
         ) : status === 'error' ? (
@@ -231,12 +268,28 @@ const OperatorTasksListView = () => {
                 <TableHead>
                   <TableRow>
                     <TableCell />
-                    <TableCell className={styles.fontBold}>{dictionary.priority}</TableCell>
-                    <TableCell className={styles.fontBold}>{dictionary.subtaskCount}</TableCell>
-                    <TableCell className={styles.fontBold}>{dictionary.productMeasure}</TableCell>
-                    <TableCell className={styles.fontBold}>{dictionary.quantity}</TableCell>
-                    <TableCell className={styles.fontBold}>{dictionary.productName}</TableCell>
-                    <TableCell className={styles.fontBold}>{dictionary.deadlineDate}</TableCell>
+                    {headCells.map(headCell => {
+                      if (headCell.sortable) {
+                        return (
+                          <TableCell key={headCell.id} className={styles.fontBold}>
+                            <TableSortLabel
+                              key={headCell.id}
+                              active={orderBy === headCell.id}
+                              direction={orderBy === headCell.id ? order : 'asc'}
+                              onClick={createSortHandler(headCell.id)}
+                            >
+                              {headCell.label}
+                            </TableSortLabel>
+                          </TableCell>
+                        );
+                      } else {
+                        return (
+                          <TableCell key={headCell.id} className={styles.fontBold}>
+                            {headCell.label}
+                          </TableCell>
+                        );
+                      }
+                    })}
                     <TableCell className={clsx(styles.fontBold, styles.noteCell)}>
                       {dictionary.note}
                     </TableCell>
