@@ -161,7 +161,16 @@ const OperatorTasksListView = () => {
   const [tasksPageNumber, setTasksPageNumber] = useState(0);
 
   const { data, status } = useQuery(
-    ['tasks', { tasksStatusFilter, tasksPageNumber, selectedCategory, selectedSubCategory }],
+    [
+      'tasks',
+      {
+        tasksStatusFilter,
+        tasksPageNumber,
+        selectedCategory,
+        selectedSubCategory,
+        searchedTaskQuery
+      }
+    ],
     () => {
       var categoryPath = null;
       if (selectedCategory) {
@@ -174,7 +183,8 @@ const OperatorTasksListView = () => {
         pageSize: MAX_TASKS_PER_PAGE,
         pageNumber: tasksPageNumber,
         statuses: [tasksStatusFilter],
-        categoryPath: categoryPath
+        categoryPath: categoryPath,
+        searchText: searchedTaskQuery
       });
     },
     {
@@ -183,13 +193,6 @@ const OperatorTasksListView = () => {
     }
   );
 
-  if (status === 'loading') {
-    return <div>Loading...</div>;
-  }
-
-  if (status === 'error') {
-    return <div>Error</div>;
-  }
   return (
     <TabsContext.Provider value={{ taskStatusTabValue }}>
       <div className={styles.tabsContainer}>
@@ -217,38 +220,50 @@ const OperatorTasksListView = () => {
         {taskStatuses.map((key, i) => {
           return <TabPanel key={key} value={taskStatusTabValue} index={i}></TabPanel>;
         })}
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell />
-                <TableCell className={styles.fontBold}>{dictionary.priority}</TableCell>
-                <TableCell className={styles.fontBold}>{dictionary.subtaskCount}</TableCell>
-                <TableCell className={styles.fontBold}>{dictionary.productMeasure}</TableCell>
-                <TableCell className={styles.fontBold}>{dictionary.quantity}</TableCell>
-                <TableCell className={styles.fontBold}>{dictionary.productName}</TableCell>
-                <TableCell className={styles.fontBold}>{dictionary.deadlineDate}</TableCell>
-                <TableCell className={clsx(styles.fontBold, styles.noteCell)}>
-                  {dictionary.note}
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {data.items?.map(row => (
-                <Row key={row.id} row={row} handleRowClick={() => navigateSubTaskHandler(row)} />
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        {status === 'loading' ? (
+          <div>Loading...</div>
+        ) : status === 'error' ? (
+          <div>Error</div>
+        ) : (
+          <>
+            <TableContainer component={Paper}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell />
+                    <TableCell className={styles.fontBold}>{dictionary.priority}</TableCell>
+                    <TableCell className={styles.fontBold}>{dictionary.subtaskCount}</TableCell>
+                    <TableCell className={styles.fontBold}>{dictionary.productMeasure}</TableCell>
+                    <TableCell className={styles.fontBold}>{dictionary.quantity}</TableCell>
+                    <TableCell className={styles.fontBold}>{dictionary.productName}</TableCell>
+                    <TableCell className={styles.fontBold}>{dictionary.deadlineDate}</TableCell>
+                    <TableCell className={clsx(styles.fontBold, styles.noteCell)}>
+                      {dictionary.note}
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {data.items?.map(row => (
+                    <Row
+                      key={row.id}
+                      row={row}
+                      handleRowClick={() => navigateSubTaskHandler(row)}
+                    />
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
 
-        <TablePagination
-          component='div'
-          count={data.totalCount}
-          page={data.page}
-          onPageChange={(event, page) => setTasksPageNumber(page)}
-          rowsPerPage={MAX_TASKS_PER_PAGE}
-          rowsPerPageOptions={[]}
-        />
+            <TablePagination
+              component='div'
+              count={data.totalCount}
+              page={data.page}
+              onPageChange={(event, page) => setTasksPageNumber(page)}
+              rowsPerPage={MAX_TASKS_PER_PAGE}
+              rowsPerPageOptions={[]}
+            />
+          </>
+        )}
       </div>
     </TabsContext.Provider>
   );
@@ -264,14 +279,16 @@ const VolunteerTasksListView = props => {
 
   const [tasksPageNumber, setTasksPageNumber] = useState(0);
   const [tasksOrder, setTasksOrder] = useState(0);
+  const [searchedTaskQuery, setSearchedTaskQuery] = useState('');
 
   const { data, status } = useQuery(
-    ['volunteertasks', { tasksPageNumber, tasksOrder }],
+    ['volunteertasks', { tasksPageNumber, tasksOrder, searchedTaskQuery }],
     async () => {
       const query = {
         pageSize: MAX_TASKS_PER_PAGE,
         pageNumber: tasksPageNumber,
-        statuses: [TASK_STATUSES.verified]
+        statuses: [TASK_STATUSES.verified],
+        searchText: searchedTaskQuery
       };
       if (tasksOrder && tasksOrder.length > 0) {
         const tasksOrderSpec = tasksOrder[0];
@@ -288,31 +305,48 @@ const VolunteerTasksListView = props => {
     }
   );
 
-  if (status === 'loading') {
-    return <div>Loading...</div>;
-  }
-
-  if (status === 'error') {
-    return <div>Error</div>;
-  }
-
   return (
     <div className={styles.tabsContainer}>
-      <DataGrid
-        style={{ height: 600 }}
-        pageSize={MAX_TASKS_PER_PAGE}
-        onRowClick={e => navigateSubTaskHandler(e)}
-        rowsPerPageOptions={[MAX_TASKS_PER_PAGE]}
-        rows={data.items}
-        page={data.page}
-        columns={tasksColumns}
-        rowCount={data.totalCount}
-        paginationMode='server'
-        onPageChange={page => setTasksPageNumber(page)}
-        sortingMode='server'
-        onSortModelChange={setTasksOrder}
-        sortModel={tasksOrder ? tasksOrder : []}
-      />
+      <div className={styles.tabsSearchBox}>
+        <Title text={dictionary.tasks} />
+        <div className={styles.search}>
+          <TextField
+            id='search'
+            name='search'
+            value={searchedTaskQuery}
+            type='text'
+            classes={{ root: styles.root }}
+            label={dictionary.searchTask}
+            size='small'
+            margin='normal'
+            onChange={e => setSearchedTaskQuery(e.target.value)}
+          />
+          <button className={styles.search_action} disabled={searchedTaskQuery.length < 1}>
+            <SearchIcon />
+          </button>
+        </div>
+      </div>
+      {status === 'loading' ? (
+        <div>Loading...</div>
+      ) : status === 'error' ? (
+        <div>Error</div>
+      ) : (
+        <DataGrid
+          style={{ height: 600 }}
+          pageSize={MAX_TASKS_PER_PAGE}
+          onRowClick={e => navigateSubTaskHandler(e)}
+          rowsPerPageOptions={[MAX_TASKS_PER_PAGE]}
+          rows={data.items}
+          page={data.page}
+          columns={tasksColumns}
+          rowCount={data.totalCount}
+          paginationMode='server'
+          onPageChange={page => setTasksPageNumber(page)}
+          sortingMode='server'
+          onSortModelChange={setTasksOrder}
+          sortModel={tasksOrder ? tasksOrder : []}
+        />
+      )}
     </div>
   );
 };

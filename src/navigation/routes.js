@@ -13,7 +13,7 @@ import { UserList } from '../screens/UserList';
 export const routes = [
   { link: 'users', component: UserList, isAuthorized: true, role: ROLES.operator },
   { link: 'tasks', component: TasksList, isAuthorized: true },
-  { link: 'stores', component: StoresList, isAuthorized: true, role: ROLES.operator },
+  { link: 'stores', component: StoresList, isAuthorized: true },
   { link: 'my-tasks', component: VolunteerTasks, isAuthorized: true },
   { link: 'create-subtask/:taskId', component: CreateSubTask, isAuthorized: true },
   { link: 'profile', component: Profile, isAuthorized: true },
