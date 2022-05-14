@@ -148,7 +148,7 @@ export const VolunteerTasks = () => {
       }
 
       if (filters.length > 0) {
-        if (filters.lentgh === 1) {
+        if (filters.length === 1) {
           request.filter = filters[0];
         } else {
           request.filter = {
