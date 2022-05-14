@@ -17,13 +17,7 @@ const getPriorityName = priority => {
   }
 };
 
-const STYLES = {
-  0: 'high',
-  1: 'medium',
-  2: 'low'
-};
-
 export const Priority = ({ priority }) => {
   const name = getPriorityName(priority);
-  return <div className={clsx(styles.priority, styles[STYLES[priority]])}>{name}</div>;
+  return <div className={clsx(styles.priority, styles[priority?.toLowerCase()])}>{name}</div>;
 };

@@ -13,6 +13,8 @@
   background-color: $yellow;
 }
 
-.high {
+.high,
+.critical {
   background-color: $red;
+  color: white;
 }

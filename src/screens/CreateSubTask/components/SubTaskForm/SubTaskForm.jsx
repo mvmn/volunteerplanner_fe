@@ -1,92 +1,106 @@
-import { Button, Checkbox, TextField } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+import { Checkbox, FormControlLabel, Stack, TextField } from '@mui/material';
 import { useFormik } from 'formik';
+import { useState } from 'react';
 import * as yup from 'yup';
 
 import dictionary from '../../../../dictionary';
 import { yupPatterns } from '../../../../helpers/validation';
-import styles from './SubTaskForm.module.scss';
 
-export const SubTaskForm = ({ task }) => {
-  const initialValues = {
-    note: task.note,
-    quantity: task.quantity,
-    transportRequired: task.transportRequired ?? false
-  };
+const validationSchema = yup.object().shape({
+  note: yupPatterns('note'),
+  quantity: yupPatterns('quantity'),
+  dueDate: yupPatterns('dueDate')
+});
 
-  const validationSchema = yup.object().shape({
-    note: yupPatterns('note'),
-    quantity: yupPatterns('quantity')
-  });
+const initialValues = {
+  note: '',
+  quantity: 0,
+  transportRequired: true,
+  dueDate: ''
+};
+
+export const SubTaskForm = ({ task, onSave }) => {
+  const [isLoading, setIsLoading] = useState(false);
 
   const formik = useFormik({
-    initialValues,
+    initialValues: { ...initialValues, ...task },
     validationSchema,
     async onSubmit(values) {
-      console.log(values);
+      setIsLoading(true);
+      await onSave({
+        ...values,
+        // TODO: clarify unix time format: milliseconds (currently used) vs seconds
+        dueDate: values.dueDate ? Math.round(new Date(values.dueDate).getTime() / 1000) : null
+      });
+      setIsLoading(false);
     }
   });
 
   const { handleChange, handleSubmit, values, errors } = formik;
 
   return (
-    <form onSubmit={handleSubmit} className={styles.form}>
-      <div className={styles.column_box}>
-        <p className={styles.label}>{dictionary.note}:</p>
-        <div className={styles.column}>
+    <form onSubmit={handleSubmit}>
+      <Stack gap={2} my={2}>
+        <TextField
+          id='quantity'
+          name='quantity'
+          type='number'
+          value={values.quantity}
+          label={dictionary.quantity}
+          size='small'
+          onChange={handleChange}
+          helperText={errors.quantity}
+          error={Boolean(errors.quantity)}
+          fullWidth
+        />
+
+        <TextField
+          id='note'
+          name='note'
+          type='text'
+          value={values.note}
+          label={dictionary.note}
+          size='small'
+          onChange={handleChange}
+          helperText={errors.note}
+          error={Boolean(errors.note)}
+          fullWidth
+        />
+
+        <FormControlLabel
+          control={
+            <Checkbox
+              id='transportRequired'
+              name='transportRequired'
+              checked={values.transportRequired}
+              onChange={handleChange}
+            />
+          }
+          label={dictionary.transportRequired}
+        />
+
+        {!values.transportRequired && (
           <TextField
-            id='note'
-            name='note'
-            value={values.note}
-            type='text'
-            classes={{ root: styles.root }}
-            label={dictionary.note}
+            id='dueDate'
+            name='dueDate'
+            type='date'
+            value={values.dueDate}
+            label={dictionary.dueDate}
             size='small'
-            margin='normal'
             onChange={handleChange}
+            helperText={errors.dueDate}
+            error={Boolean(errors.dueDate)}
+            fullWidth
           />
-          <div className={styles.errors_box}>
-            <span className={styles.errors}>{errors.note}</span>
-          </div>
-        </div>
-      </div>
-      <div className={styles.column_box}>
-        <p className={styles.label}>{dictionary.quantity}:</p>
-        <div className={styles.column}>
-          <TextField
-            id='quantity'
-            name='quantity'
-            value={values.quantity}
-            type='number'
-            classes={{ root: styles.root }}
-            label={dictionary.quantity}
-            size='small'
-            margin='normal'
-            onChange={handleChange}
-          />
-          <div className={styles.errors_box}>
-            <span className={styles.errors}>{errors.quantity}</span>
-          </div>
-        </div>
-      </div>
-      <div className={styles.column_box}>
-        <div className={styles.column}>
-          <div className={styles.checkbox_column}>
-            <p className={styles.label}>{dictionary.transportRequired}</p>
-            <div>
-              <Checkbox
-                id='transportRequired'
-                name='transportRequired'
-                label={dictionary.transportRequired}
-                value={values.transportRequired}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-          <Button variant='outlined' type='submit'>
-            {dictionary.save}
-          </Button>
-        </div>
-      </div>
+        )}
+      </Stack>
+
+      <Stack alignItems='flex-end'>
+        <LoadingButton variant='outlined' type='submit' loading={isLoading}>
+          {dictionary.save}
+        </LoadingButton>
+      </Stack>
     </form>
   );
 };
