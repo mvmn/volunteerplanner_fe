@@ -53,6 +53,7 @@ const dictionary = {
   productMeasure: 'Од вимірювання(кг/л/штуки)',
   priority: 'Пріоритет',
   deadlineDate: 'Кінцевий термін',
+  dueDate: 'Термін поставки',
   note: 'Додаткова інформація',
   status: 'Статус',
   new: 'Нові',
@@ -97,6 +98,8 @@ const dictionary = {
   private: 'Приватний',
   public: 'Публічний',
   storeName: 'Назва складу',
-  fieldIsRequired: 'Це поле потрібно заповнити'
+  fieldIsRequired: 'Це поле потрібно заповнити',
+  notSet: 'Не вказано',
+  all: 'Всі'
 };
 export default dictionary;

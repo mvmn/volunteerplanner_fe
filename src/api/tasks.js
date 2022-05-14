@@ -9,3 +9,14 @@ export const fetchTasks = async tasksQuery => {
     console.log(e);
   }
 };
+
+export const getTasksByIds = async taskIds => {
+  try {
+    const response = await axios.get(`${ENDPOINT}/api/v1/tasks/search`, {
+      params: { ids: taskIds.join(',') }
+    });
+    return response.data;
+  } catch (e) {
+    console.log(e);
+  }
+};
