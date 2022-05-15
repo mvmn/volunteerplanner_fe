@@ -388,6 +388,11 @@ const VolunteerTasksListView = () => {
     exportTasks(prepareQuery());
   };
 
+  const changePageSize = pageSize => {
+    setPageSize(pageSize);
+    setTasksPageNumber(0);
+  };
+
   return (
     <div className={styles.tabsContainer}>
       <div className={styles.tabsSearchBox}>
@@ -432,7 +437,7 @@ const VolunteerTasksListView = () => {
           onSortModelChange={setTasksOrder}
           sortModel={tasksOrder ? tasksOrder : []}
           rowsPerPageOptions={[5, 10, 25, 50]}
-          onPageSizeChange={newPageSize => setPageSize(newPageSize)}
+          onPageSizeChange={changePageSize}
           pageSize={pageSize}
         />
       )}
