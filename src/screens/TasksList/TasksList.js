@@ -36,6 +36,7 @@ import { Title } from '../../components/Title';
 import { TASKS_SORT_FIELD_MAPPINGS } from '../../constants/tasks';
 import { MAX_TASKS_PER_PAGE, ROLES, TASK_STATUSES, tasksColumns } from '../../constants/uiConfig';
 import dictionary from '../../dictionary';
+import { unixTimeToPrettyDate } from '../../helpers/dates';
 import { CategoriesContext } from '../Main';
 import styles from './TasksList.module.scss';
 
@@ -97,16 +98,7 @@ const Row = props => {
   const { value } = useContext(TabsContext);
   const [open, setOpen] = useState(false);
 
-  const deadlineDate = new Date(row.deadlineDate * 1000);
-  const deadlineDateFmt = deadlineDate.toLocaleString(window.navigator.language, {
-    weekday: 'short',
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-    hour12: false,
-    hour: '2-digit',
-    minute: '2-digit'
-  });
+  const deadlineDateFmt = unixTimeToPrettyDate(row.deadlineDate);
 
   return (
     <>

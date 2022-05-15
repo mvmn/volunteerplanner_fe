@@ -8,6 +8,7 @@ import { getTasksByIds } from '../../api/tasks';
 import { SUBTASKS_SORT_FIELD_MAPPINGS } from '../../constants/subTasks';
 import { MAX_TASKS_PER_PAGE, SUBTASK_STATUSES } from '../../constants/uiConfig';
 import dictionary from '../../dictionary';
+import { unixTimeToPrettyDate } from '../../helpers/dates';
 import { CategoriesContext } from '../../screens/Main';
 import { Categories } from '../Categories';
 import { Priority } from '../Priority';
@@ -54,19 +55,7 @@ export const tasksColumns = [
     headerName: dictionary.deadlineDate,
     flex: 1,
     renderCell: ({ row }) => (
-      <>
-        {row.task.deadlineDate
-          ? new Date(row.task.deadlineDate * 1000).toLocaleString(window.navigator.language, {
-              weekday: 'short',
-              day: 'numeric',
-              month: 'short',
-              year: 'numeric',
-              hour12: false,
-              hour: '2-digit',
-              minute: '2-digit'
-            })
-          : dictionary.notSet}
-      </>
+      <>{row.task.deadlineDate ? unixTimeToPrettyDate(row.task.deadlineDate) : dictionary.notSet}</>
     )
   },
   {
@@ -74,19 +63,7 @@ export const tasksColumns = [
     headerName: dictionary.dueDate,
     flex: 1,
     renderCell: ({ row }) => (
-      <>
-        {row.dueDate
-          ? new Date(row.dueDate * 1000).toLocaleString(window.navigator.language, {
-              weekday: 'short',
-              day: 'numeric',
-              month: 'short',
-              year: 'numeric',
-              hour12: false,
-              hour: '2-digit',
-              minute: '2-digit'
-            })
-          : dictionary.notSet}
-      </>
+      <>{row.dueDate ? unixTimeToPrettyDate(row.dueDate) : dictionary.notSet}</>
     )
   },
   {
@@ -222,6 +199,7 @@ export const VolunteerTasks = () => {
               rowCount={data.totalCount}
               page={data.page - 1}
               columns={tasksColumns}
+              columnVisibilityModel={{ status: subtaskStatus === 3 }}
               paginationMode='server'
               onPageChange={page => setPageNumber(page)}
               sortingMode='server'
