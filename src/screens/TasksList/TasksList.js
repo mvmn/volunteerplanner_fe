@@ -1,3 +1,4 @@
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import SearchIcon from '@mui/icons-material/Search';
@@ -24,7 +25,7 @@ import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import { getSubtasksByTaskId } from '../../api/subtasks';
-import { fetchTasks } from '../../api/tasks';
+import { exportTasks, fetchTasks } from '../../api/tasks';
 import { Categories } from '../../components/Categories';
 import { ChangeStatus } from '../../components/ChangeStatus';
 import { CreateTaskButton } from '../../components/CreateTaskButton/CreateTaskButton';
@@ -176,6 +177,32 @@ const OperatorTasksListView = () => {
     handleRequestSort(event, property);
   };
 
+  const prepareQuery = () => {
+    var categoryPath = null;
+    if (selectedCategory) {
+      categoryPath = '/' + selectedCategory;
+    }
+    if (selectedSubCategory) {
+      categoryPath += '/' + selectedSubCategory;
+    }
+    var sortOrder = null;
+    var sortDirection = null;
+    if (orderBy && orderBy.trim().length > 0) {
+      sortDirection = order === 'desc' ? 'DESC' : 'ASC';
+      sortOrder = orderBy;
+    }
+    const query = {
+      pageSize: MAX_TASKS_PER_PAGE,
+      pageNumber: tasksPageNumber,
+      statuses: [tasksStatusFilter],
+      categoryPath,
+      searchText: searchedTaskQuery,
+      sortDirection,
+      sortOrder
+    };
+    return query;
+  };
+
   const { data, status } = useQuery(
     [
       'tasks',
@@ -190,28 +217,7 @@ const OperatorTasksListView = () => {
       }
     ],
     () => {
-      var categoryPath = null;
-      if (selectedCategory) {
-        categoryPath = '/' + selectedCategory;
-      }
-      if (selectedSubCategory) {
-        categoryPath += '/' + selectedSubCategory;
-      }
-      var sortOrder = null;
-      var sortDirection = null;
-      if (orderBy && orderBy.trim().length > 0) {
-        sortDirection = order === 'desc' ? 'DESC' : 'ASC';
-        sortOrder = orderBy;
-      }
-      return fetchTasks({
-        pageSize: MAX_TASKS_PER_PAGE,
-        pageNumber: tasksPageNumber,
-        statuses: [tasksStatusFilter],
-        categoryPath,
-        searchText: searchedTaskQuery,
-        sortDirection,
-        sortOrder
-      });
+      return fetchTasks(prepareQuery());
     },
     {
       cacheTime: 0,
@@ -228,6 +234,10 @@ const OperatorTasksListView = () => {
     { id: 'DUEDATE', label: dictionary.deadlineDate, sortable: true }
   ];
 
+  const exportTasksPage = () => {
+    exportTasks(prepareQuery());
+  };
+
   return (
     <TabsContext.Provider value={{ taskStatusTabValue }}>
       <div className={styles.tabsContainer}>
@@ -235,6 +245,11 @@ const OperatorTasksListView = () => {
           <div className={styles.tabsSearchBox}>
             <Tabs value={taskStatusTabValue} handleChange={handleChange}></Tabs>
             <div className={styles.search}>
+              <div className={styles.export_button}>
+                <button onClick={exportTasksPage}>
+                  <FileDownloadIcon />
+                </button>
+              </div>
               <TextField
                 id='search'
                 name='search'
@@ -332,23 +347,27 @@ const VolunteerTasksListView = () => {
   const [tasksOrder, setTasksOrder] = useState(0);
   const [searchedTaskQuery, setSearchedTaskQuery] = useState('');
 
+  const prepareQuery = () => {
+    const query = {
+      pageSize: MAX_TASKS_PER_PAGE,
+      pageNumber: tasksPageNumber,
+      statuses: [TASK_STATUSES.verified],
+      searchText: searchedTaskQuery
+    };
+    if (tasksOrder && tasksOrder.length > 0) {
+      const tasksOrderSpec = tasksOrder[0];
+      query.sortOrder = TASKS_SORT_FIELD_MAPPINGS[tasksOrderSpec.field];
+      if (tasksOrderSpec.sort) {
+        query.sortDirection = tasksOrderSpec.sort.toUpperCase();
+      }
+    }
+    return query;
+  };
+
   const { data, status } = useQuery(
     ['volunteertasks', { tasksPageNumber, tasksOrder, searchedTaskQuery }],
     async () => {
-      const query = {
-        pageSize: MAX_TASKS_PER_PAGE,
-        pageNumber: tasksPageNumber,
-        statuses: [TASK_STATUSES.verified],
-        searchText: searchedTaskQuery
-      };
-      if (tasksOrder && tasksOrder.length > 0) {
-        const tasksOrderSpec = tasksOrder[0];
-        query.sortOrder = TASKS_SORT_FIELD_MAPPINGS[tasksOrderSpec.field];
-        if (tasksOrderSpec.sort) {
-          query.sortDirection = tasksOrderSpec.sort.toUpperCase();
-        }
-      }
-      return await fetchTasks(query);
+      return await fetchTasks(prepareQuery());
     },
     {
       cacheTime: 0,
@@ -356,11 +375,20 @@ const VolunteerTasksListView = () => {
     }
   );
 
+  const exportTasksPage = () => {
+    exportTasks(prepareQuery());
+  };
+
   return (
     <div className={styles.tabsContainer}>
       <div className={styles.tabsSearchBox}>
         <Title text={dictionary.tasks} />
         <div className={styles.search}>
+          <div className={styles.export_button}>
+            <button onClick={exportTasksPage}>
+              <FileDownloadIcon />
+            </button>
+          </div>
           <TextField
             id='search'
             name='search'
