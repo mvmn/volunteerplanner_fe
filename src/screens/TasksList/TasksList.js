@@ -35,7 +35,7 @@ import { TabPanel } from '../../components/TabPanel';
 import { Tabs } from '../../components/Tabs';
 import { Title } from '../../components/Title';
 import { TASKS_SORT_FIELD_MAPPINGS } from '../../constants/tasks';
-import { ROLES, TASK_STATUSES, tasksColumns } from '../../constants/uiConfig';
+import { MAX_TASKS_PER_PAGE, ROLES, TASK_STATUSES, tasksColumns } from '../../constants/uiConfig';
 import dictionary from '../../dictionary';
 import { unixTimeToPrettyDate } from '../../helpers/dates';
 import { CategoriesContext } from '../Main';
@@ -137,7 +137,7 @@ const Row = props => {
 const OperatorTasksListView = () => {
   const history = useHistory();
 
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(MAX_TASKS_PER_PAGE);
   const [taskStatusTabValue, setTaskStatusTabValue] = useState(1);
   const [searchedTaskQuery, setSearchedTaskQuery] = useState('');
 
@@ -240,6 +240,11 @@ const OperatorTasksListView = () => {
     exportTasks(prepareQuery());
   };
 
+  const changePageSize = pageSize => {
+    setPageSize(pageSize);
+    setTasksPageNumber(0);
+  };
+
   return (
     <TabsContext.Provider value={{ taskStatusTabValue }}>
       <div className={styles.tabsContainer}>
@@ -328,7 +333,7 @@ const OperatorTasksListView = () => {
               page={data.page}
               onPageChange={(event, page) => setTasksPageNumber(page)}
               rowsPerPageOptions={[5, 10, 25, 50]}
-              onRowsPerPageChange={e => setPageSize(e.target.value)}
+              onRowsPerPageChange={e => changePageSize(e.target.value)}
               rowsPerPage={pageSize}
             />
           </>
@@ -346,7 +351,7 @@ const VolunteerTasksListView = () => {
   const { selectedCategory, selectedSubCategory } = useContext(CategoriesContext);
   console.log(selectedCategory, selectedSubCategory);
 
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(MAX_TASKS_PER_PAGE);
   const [tasksPageNumber, setTasksPageNumber] = useState(0);
   const [tasksOrder, setTasksOrder] = useState(0);
   const [searchedTaskQuery, setSearchedTaskQuery] = useState('');
