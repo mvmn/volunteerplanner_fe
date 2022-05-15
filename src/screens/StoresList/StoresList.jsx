@@ -44,16 +44,17 @@ export const storesColumns = [
 ];
 
 export const StoresList = () => {
+  const [pageSize, setPageSize] = useState(MAX_STORES_PER_PAGE);
   const [pageNumber, setPageNumber] = useState(0);
   const [order, setOrder] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const query = ['stores', { pageNumber, searchQuery, order }];
+  const query = ['stores', { pageNumber, searchQuery, order, pageSize }];
   const { data, status } = useQuery(
     query,
     async () => {
       const query = {
-        pageSize: MAX_STORES_PER_PAGE,
+        pageSize: pageSize,
         page: pageNumber + 1
       };
 
@@ -93,6 +94,11 @@ export const StoresList = () => {
         console.error(error);
       });
 
+  const updatePageSize = pageSize => {
+    setPageSize(pageSize);
+    setPageNumber(0);
+  };
+
   let displayNode;
   switch (status) {
     case 'loading': {
@@ -108,10 +114,8 @@ export const StoresList = () => {
         <DataGrid
           className={styles.dataGrid}
           style={{ height: 600 }}
-          pageSize={MAX_STORES_PER_PAGE}
-          rowsPerPageOptions={[MAX_STORES_PER_PAGE]}
           rows={data.items}
-          page={data.page}
+          page={data.page - 1}
           columns={storesColumns}
           rowCount={data.totalCount}
           paginationMode='server'
@@ -119,6 +123,9 @@ export const StoresList = () => {
           sortingMode='server'
           onSortModelChange={setOrder}
           sortModel={order || []}
+          pageSize={pageSize}
+          rowsPerPageOptions={[5, 10, 25, 50]}
+          onPageSizeChange={updatePageSize}
         />
       );
       break;
