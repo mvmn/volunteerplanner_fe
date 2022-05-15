@@ -50,6 +50,7 @@ export const SignIn = () => {
             name='phoneNumber'
             value={values.phoneNumber}
             type='tel'
+            autoComplete='username'
             classes={{ root: styles.root }}
             label={`Введіть ${dictionary.userName.toLocaleLowerCase()}`}
             size='small'
@@ -68,6 +69,7 @@ export const SignIn = () => {
             classes={{ root: styles.root }}
             label={dictionary.password}
             type='password'
+            autoComplete='password'
             size='small'
             margin='normal'
             onChange={handleFieldChange}

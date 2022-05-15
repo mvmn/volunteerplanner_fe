@@ -1,3 +1,4 @@
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import SearchIcon from '@mui/icons-material/Search';
@@ -24,7 +25,7 @@ import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import { getSubtasksByTaskId } from '../../api/subtasks';
-import { fetchTasks } from '../../api/tasks';
+import { exportTasks, fetchTasks } from '../../api/tasks';
 import { Categories } from '../../components/Categories';
 import { ChangeStatus } from '../../components/ChangeStatus';
 import { CreateTaskButton } from '../../components/CreateTaskButton/CreateTaskButton';
@@ -36,6 +37,7 @@ import { Title } from '../../components/Title';
 import { TASKS_SORT_FIELD_MAPPINGS } from '../../constants/tasks';
 import { ROLES, TASK_STATUSES, tasksColumns } from '../../constants/uiConfig';
 import dictionary from '../../dictionary';
+import { unixTimeToPrettyDate } from '../../helpers/dates';
 import { CategoriesContext } from '../Main';
 import styles from './TasksList.module.scss';
 
@@ -97,16 +99,7 @@ const Row = props => {
   const { value } = useContext(TabsContext);
   const [open, setOpen] = useState(false);
 
-  const deadlineDate = new Date(row.deadlineDate * 1000);
-  const deadlineDateFmt = deadlineDate.toLocaleString(window.navigator.language, {
-    weekday: 'short',
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-    hour12: false,
-    hour: '2-digit',
-    minute: '2-digit'
-  });
+  const deadlineDateFmt = unixTimeToPrettyDate(row.deadlineDate);
 
   return (
     <>
@@ -243,6 +236,10 @@ const OperatorTasksListView = () => {
     { id: 'DUEDATE', label: dictionary.deadlineDate, sortable: true }
   ];
 
+  const exportTasksPage = () => {
+    exportTasks(prepareQuery());
+  };
+
   return (
     <TabsContext.Provider value={{ taskStatusTabValue }}>
       <div className={styles.tabsContainer}>
@@ -250,6 +247,11 @@ const OperatorTasksListView = () => {
           <div className={styles.tabsSearchBox}>
             <Tabs value={taskStatusTabValue} handleChange={handleChange}></Tabs>
             <div className={styles.search}>
+              <div className={styles.export_button}>
+                <button onClick={exportTasksPage}>
+                  <FileDownloadIcon />
+                </button>
+              </div>
               <TextField
                 id='search'
                 name='search'
@@ -351,7 +353,7 @@ const VolunteerTasksListView = () => {
 
   const prepareQuery = () => {
     const query = {
-      pageSize: pageSize,
+      pageSize,
       pageNumber: tasksPageNumber,
       statuses: [TASK_STATUSES.verified],
       searchText: searchedTaskQuery
@@ -377,11 +379,20 @@ const VolunteerTasksListView = () => {
     }
   );
 
+  const exportTasksPage = () => {
+    exportTasks(prepareQuery());
+  };
+
   return (
     <div className={styles.tabsContainer}>
       <div className={styles.tabsSearchBox}>
         <Title text={dictionary.tasks} />
         <div className={styles.search}>
+          <div className={styles.export_button}>
+            <button onClick={exportTasksPage}>
+              <FileDownloadIcon />
+            </button>
+          </div>
           <TextField
             id='search'
             name='search'
