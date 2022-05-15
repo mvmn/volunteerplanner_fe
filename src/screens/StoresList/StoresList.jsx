@@ -65,12 +65,17 @@ export const StoresList = () => {
           operands: [
             {
               type: 'text',
+              field: 'name',
+              value: searchQuery
+            },
+            {
+              type: 'text',
               field: 'address',
               value: searchQuery
             },
             {
               type: 'text',
-              field: 'city.name',
+              field: 'note',
               value: searchQuery
             }
           ]
