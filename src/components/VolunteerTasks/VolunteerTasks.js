@@ -82,6 +82,7 @@ export const tasksColumns = [
 ];
 
 export const VolunteerTasks = () => {
+  const [pageSize, setPageSize] = useState(MAX_TASKS_PER_PAGE);
   const [pageNumber, setPageNumber] = useState(0);
   const [sortOrder, setSortOrder] = useState(0);
   const [subtaskStatus, setSubtaskStatus] = useState(0);
@@ -165,6 +166,11 @@ export const VolunteerTasks = () => {
     }
   );
 
+  const changePageSize = pageSize => {
+    setPageSize(pageSize);
+    setPageNumber(0);
+  };
+
   const handleRowClick = () => {};
 
   return (
@@ -192,19 +198,20 @@ export const VolunteerTasks = () => {
           ) : (
             <DataGrid
               style={{ height: 600 }}
-              pageSize={MAX_TASKS_PER_PAGE}
               onRowClick={e => handleRowClick(e)}
-              rowsPerPageOptions={[MAX_TASKS_PER_PAGE]}
               rows={data.items}
               rowCount={data.totalCount}
               page={data.page - 1}
               columns={tasksColumns}
               columnVisibilityModel={{ status: subtaskStatus === 3 }}
               paginationMode='server'
-              onPageChange={page => setPageNumber(page)}
+              onPageChange={setPageNumber}
               sortingMode='server'
               onSortModelChange={setSortOrder}
               sortModel={sortOrder ? sortOrder : []}
+              rowsPerPageOptions={[5, 10, 25, 50]}
+              onPageSizeChange={changePageSize}
+              pageSize={pageSize}
             />
           )}
         </div>

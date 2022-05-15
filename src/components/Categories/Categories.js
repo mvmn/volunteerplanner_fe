@@ -39,6 +39,10 @@ export const Categories = () => {
     setSelectedSubCategory();
   }, [selectedCategory, setSelectedSubCategory]);
 
+  if (!categories) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div>
       <TreeView
