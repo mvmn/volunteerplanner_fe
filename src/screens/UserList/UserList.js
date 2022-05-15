@@ -55,6 +55,7 @@ export const UserList = () => {
   const totalCount = useSelector(state => state.users.totalCount);
   const { isModalVisible, onCloseHandler, onOpenHandler } = useModalVisibleHook();
 
+  const [pageSize, setPageSize] = useState(MAX_USER_PER_PAGE);
   const [selectedUser, setSelectedUser] = useState();
   const [searchedUserQuery, setSearchedUserQuery] = useState('');
 
@@ -86,6 +87,14 @@ export const UserList = () => {
         filter: null
       });
     }
+  };
+
+  const pageSizeChange = pageSize => {
+    setPageSize(pageSize);
+    setGetUsersRequest({
+      ...getUsersRequest,
+      pageSize
+    });
   };
 
   const handleRowDoubleClick = e => {
@@ -145,9 +154,7 @@ export const UserList = () => {
       <DataGrid
         className={styles.dataGrid}
         style={{ height: 600 }}
-        pageSize={MAX_USER_PER_PAGE}
         onRowDoubleClick={e => handleRowDoubleClick(e)}
-        rowsPerPageOptions={[MAX_USER_PER_PAGE]}
         rows={users}
         columns={usersColumns}
         rowCount={totalCount}
@@ -155,6 +162,9 @@ export const UserList = () => {
         onPageChange={page => setPageNumber(page)}
         sortingMode='server'
         onSortModelChange={handleSortModelChange}
+        pageSize={pageSize}
+        rowsPerPageOptions={[5, 10, 25, 50]}
+        onPageSizeChange={pageSizeChange}
       />
     </div>
   );
