@@ -17,9 +17,10 @@ export const TASK_STATUSES = {
 };
 
 export const SUBTASK_STATUSES = {
-  completed: 'COMPLETED',
   inProgress: 'IN_PROGRESS',
-  rejected: 'REJECTED'
+  completed: 'COMPLETED',
+  rejected: 'REJECTED',
+  all: 'ALL'
 };
 
 export const SUBTASK_NAME = {
