@@ -52,6 +52,7 @@ const getUsersRequestInitialState = {
 export const UserList = () => {
   const [getUsersRequest, setGetUsersRequest] = useState(getUsersRequestInitialState);
   const users = useSelector(state => state.users.all);
+  const currentPageNumber = useSelector(state => state.users.page);
   const totalCount = useSelector(state => state.users.totalCount);
   const { isModalVisible, onCloseHandler, onOpenHandler } = useModalVisibleHook();
 
@@ -93,6 +94,7 @@ export const UserList = () => {
     setPageSize(pageSize);
     setGetUsersRequest({
       ...getUsersRequest,
+      page: 1,
       pageSize
     });
   };
@@ -159,7 +161,8 @@ export const UserList = () => {
         columns={usersColumns}
         rowCount={totalCount}
         paginationMode='server'
-        onPageChange={page => setPageNumber(page)}
+        page={currentPageNumber - 1}
+        onPageChange={setPageNumber}
         sortingMode='server'
         onSortModelChange={handleSortModelChange}
         pageSize={pageSize}
