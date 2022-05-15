@@ -1,6 +1,7 @@
 import SearchIcon from '@mui/icons-material/Search';
 import { Stack, TextField } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
+import clsx from 'clsx';
 import { useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 
@@ -8,15 +9,31 @@ import { createStore, fetchStores } from '../../api/stores';
 import { CreateEntityButton } from '../../components/CreateEntityButton';
 import { StoreForm } from '../../components/StoreForm';
 import { Title } from '../../components/Title';
+import { STORES_SORT_FIELD_MAPPINGS } from '../../constants/stores';
 import { MAX_STORES_PER_PAGE } from '../../constants/uiConfig';
 import dictionary from '../../dictionary';
 import styles from './StoresList.module.scss';
 
+export const StoreConfidentiality = ({ confidential }) => {
+  const color = confidential ? 'yellow' : 'green';
+  return (
+    <div className={clsx(styles.highlightedValue, styles[color])}>
+      {confidential === true ? dictionary.private : dictionary.public}
+    </div>
+  );
+};
+
 export const storesColumns = [
+  {
+    field: 'name',
+    headerName: dictionary.storeName,
+    flex: 2
+  },
   {
     field: 'address',
     headerName: dictionary.shippingAddress,
-    flex: 2
+    flex: 2,
+    sortable: false
   },
   {
     field: 'city.name',
@@ -33,13 +50,14 @@ export const storesColumns = [
   {
     field: 'confidential',
     headerName: dictionary.confidentiality,
-    valueGetter: ({ row }) => (row.confidential === true ? dictionary.private : dictionary.public),
+    renderCell: ({ row }) => <StoreConfidentiality confidential={row.confidential} />,
     flex: 1
   },
   {
     field: 'note',
     headerName: dictionary.note,
-    flex: 2
+    flex: 2,
+    sortable: false
   }
 ];
 
@@ -76,7 +94,13 @@ export const StoresList = () => {
         };
       }
 
-      // TODO: sorting
+      if (order && order.length > 0) {
+        const storesOrderSpec = order[0];
+        query.sort = {
+          field: STORES_SORT_FIELD_MAPPINGS[storesOrderSpec.field],
+          order: storesOrderSpec.sort.toLowerCase()
+        };
+      }
 
       return await fetchStores(query);
     },

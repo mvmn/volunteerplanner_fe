@@ -1,3 +1,5 @@
+@import '../../styles/colors.scss';
+
 .container {
   text-align: start;
 
@@ -37,4 +39,18 @@
   border: 2px solid #000;
   box-shadow: 24;
   padding: 4;
+}
+
+.highlightedValue {
+  border-radius: 13px;
+  padding: 2px 5px;
+  width: max-content;
+}
+
+.green {
+  background-color: $green;
+}
+
+.yellow {
+  background-color: $yellow;
 }
