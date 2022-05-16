@@ -14,8 +14,14 @@ import styles from './StoresList.module.scss';
 
 export const storesColumns = [
   {
+    field: 'name',
+    headerName: dictionary.storeName,
+    flex: 2
+  },
+  {
     field: 'address',
     headerName: dictionary.shippingAddress,
+    sortable: false,
     flex: 2
   },
   {
@@ -27,6 +33,7 @@ export const storesColumns = [
   {
     field: 'city.region.name',
     headerName: dictionary.region,
+    sortable: false,
     valueGetter: ({ row }) => row.city?.region?.name,
     flex: 2
   },
@@ -38,6 +45,7 @@ export const storesColumns = [
   },
   {
     field: 'note',
+    sortable: false,
     headerName: dictionary.note,
     flex: 2
   }
@@ -46,16 +54,21 @@ export const storesColumns = [
 export const StoresList = () => {
   const [pageSize, setPageSize] = useState(MAX_STORES_PER_PAGE);
   const [pageNumber, setPageNumber] = useState(0);
-  const [order, setOrder] = useState(0);
+  const [sort, setSort] = useState();
   const [searchQuery, setSearchQuery] = useState('');
 
-  const query = ['stores', { pageNumber, searchQuery, order, pageSize }];
+  const handleSortModelChange = param => {
+    setSort(param.length > 0 ? { field: param[0].field, order: param[0].sort } : null);
+  };
+
+  const query = ['stores', { pageNumber, searchQuery, sort, pageSize }];
   const { data, status } = useQuery(
     query,
     async () => {
       const query = {
         pageSize: pageSize,
-        page: pageNumber + 1
+        page: pageNumber + 1,
+        sort
       };
 
       if (searchQuery) {
@@ -82,8 +95,6 @@ export const StoresList = () => {
         };
       }
 
-      // TODO: sorting
-
       return await fetchStores(query);
     },
     {
@@ -104,38 +115,9 @@ export const StoresList = () => {
     setPageNumber(0);
   };
 
-  let displayNode;
-  switch (status) {
-    case 'loading': {
-      displayNode = <div>Loading...</div>;
-      break;
-    }
-    case 'error': {
-      displayNode = <div>Error</div>;
-      break;
-    }
-    default: {
-      displayNode = (
-        <DataGrid
-          className={styles.dataGrid}
-          style={{ height: 600 }}
-          rows={data.items}
-          page={data.page - 1}
-          columns={storesColumns}
-          rowCount={data.totalCount}
-          paginationMode='server'
-          onPageChange={page => setPageNumber(page)}
-          sortingMode='server'
-          onSortModelChange={setOrder}
-          sortModel={order || []}
-          pageSize={pageSize}
-          rowsPerPageOptions={[5, 10, 25, 50]}
-          onPageSizeChange={updatePageSize}
-        />
-      );
-      break;
-    }
-  }
+  const items = data?.items ?? [];
+  const page = data?.page ?? 1;
+  const totalCount = data?.totalCount ?? 0;
 
   return (
     <div className={styles.container}>
@@ -166,7 +148,25 @@ export const StoresList = () => {
         </Stack>
       </div>
 
-      {displayNode}
+      {status === 'error' ? (
+        <div>Error</div>
+      ) : (
+        <DataGrid
+          className={styles.dataGrid}
+          style={{ height: 600 }}
+          rows={items}
+          page={page - 1}
+          columns={storesColumns}
+          rowCount={totalCount}
+          paginationMode='server'
+          onPageChange={page => setPageNumber(page)}
+          sortingMode='server'
+          onSortModelChange={handleSortModelChange}
+          pageSize={pageSize}
+          rowsPerPageOptions={[5, 10, 25, 50]}
+          onPageSizeChange={updatePageSize}
+        />
+      )}
     </div>
   );
 };
