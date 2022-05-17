@@ -137,7 +137,12 @@ export const TaskForm = ({ onClose }) => {
                   <span className={styles.errors}>{errors.note}</span>
                 </div>
               </div>
-              <ProductsFieldArray values={values} handleChange={handleChange} errors={errors} />
+              <ProductsFieldArray
+                values={values}
+                handleChange={handleChange}
+                errors={errors}
+                setFieldValue={setFieldValue}
+              />
               <Button variant='outlined' type='submit' className={styles.submit_button}>
                 {dictionary.save}
               </Button>
