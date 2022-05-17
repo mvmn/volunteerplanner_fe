@@ -19,18 +19,17 @@ export const ProductsFieldArray = ({ values, handleChange, errors, setFieldValue
       render={arrayHelpers => (
         <div>
           {values.products && values.products.length > 0 ? (
-            values.products.map((product, index) =>
-              !product.isActive ? null : (
-                <ProductsField
-                  values={values}
-                  index={index}
-                  handleChange={handleChange}
-                  errors={errors}
-                  setFieldValue={setFieldValue}
-                  arrayHelpers={arrayHelpers}
-                />
-              )
-            )
+            values.products.map((product, index) => (
+              <ProductsField
+                key={index}
+                values={values}
+                index={index}
+                handleChange={handleChange}
+                errors={errors}
+                setFieldValue={setFieldValue}
+                arrayHelpers={arrayHelpers}
+              />
+            ))
           ) : (
             // show this when user has removed all products from the list
             <Button

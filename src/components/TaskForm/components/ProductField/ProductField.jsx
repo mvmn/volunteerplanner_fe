@@ -6,22 +6,17 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import dictionary from '../../../../dictionary/index';
-import {
-  primaryCategory,
-  priorityOptions,
-  productMeasureOptions,
-  subCategoryProduct
-} from '../../config';
+import { priorityOptions, productMeasureOptions } from '../../config';
 import styles from '../ProductsFieldArray/ProductsFieldArray.module.scss';
 
 export const initialProductValue = {
   id: Date.now(),
   productName: '',
-  category: primaryCategory[0].label,
+  category: '',
   quantity: '',
-  subCategory: subCategoryProduct[0].label,
-  priority: priorityOptions[0].label,
-  productMeasure: productMeasureOptions[0].label,
+  subCategory: '',
+  priority: '',
+  productMeasure: '',
   date: '',
   isActive: true
 };
@@ -36,17 +31,13 @@ export const ProductsField = ({
 }) => {
   const categories = useSelector(state => state.categories.rootCategories);
   const subcategories = useSelector(state => state.categories.subcategories);
-  const [subcategoriesByCategory, setSubcategoriesByCategory] = useState(
-    subcategories[categories[0].id]
-  );
-  const [selectedCategory, setSelectedCategory] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState();
+  const [subcategoriesByCategory, setSubcategoriesByCategory] = useState([]);
   useEffect(() => {
-    if (selectedCategory?.id) {
-      setSubcategoriesByCategory(
-        subcategories[categories.filter(i => i.id === selectedCategory.id)[0].id]
-      );
+    if (selectedCategory) {
+      setSubcategoriesByCategory(subcategories[selectedCategory]);
     }
-  }, [selectedCategory]);
+  }, [selectedCategory, subcategories]);
 
   return (
     <div key={index}>
@@ -69,28 +60,23 @@ export const ProductsField = ({
       </div>
       <div className={styles.group}>
         <div className={styles.field_box}>
-          {/* <div> */}
           <FormHelperText>{dictionary.category}</FormHelperText>
           <Select
             id={`products.${index}.category`}
             name={`products.${index}.category`}
-            value={values.products[index].category}
+            value={values.products[index]?.category}
             size='small'
-            margin='normal'
             className={styles.root}
-            // onChange={handleChange}
-            onChange={(_, value) => {
-              console.log('!!!!!!!!!!!!!!', _);
-              console.log('!!!!!!!!!!!!!!', value);
+            onChange={event => {
+              const value = event.target.value;
               setFieldValue(`products.${index}.category`, value);
-              setSelectedCategory(value.props.value);
+              setSelectedCategory(event.target.value);
             }}
           >
             {categories.map(item => (
-              <MenuItem key={item.id} value={item.name}>
+              <MenuItem key={item.id} value={item.id}>
                 {item.name}
               </MenuItem>
-              //   <MenuItem key={item.id} value={item.id} primaryText={item.name} />
             ))}
           </Select>
           {/* <Autocomplete
@@ -129,14 +115,14 @@ export const ProductsField = ({
           <Select
             id={`products.${index}.subCategory`}
             name={`products.${index}.subCategory`}
-            value={values.products[index].subCategory}
+            value={values.products[index]?.subCategory}
             size='small'
-            margin='normal'
             className={styles.root}
             onChange={handleChange}
+            disabled={!selectedCategory}
           >
             {subcategoriesByCategory.map(item => (
-              <MenuItem key={item.id} value={item.name}>
+              <MenuItem key={item.id} value={item.id}>
                 {item.name}
               </MenuItem>
             ))}
@@ -151,7 +137,6 @@ export const ProductsField = ({
             name={`products.${index}.priority`}
             value={values.products[index].priority}
             size='small'
-            margin='normal'
             className={styles.root}
             onChange={handleChange}
           >
@@ -169,7 +154,6 @@ export const ProductsField = ({
             name={`products.${index}.productMeasure`}
             value={values.products[index].productMeasure}
             size='small'
-            margin='normal'
             className={styles.root}
             onChange={handleChange}
           >
