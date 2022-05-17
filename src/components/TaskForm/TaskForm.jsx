@@ -7,13 +7,7 @@ import { setNewTask } from '../../actions/tasks';
 import dictionary from '../../dictionary';
 import { yupPatterns } from '../../helpers/validation';
 import { ProductsFieldArray } from './components/ProductsFieldArray/ProductsFieldArray';
-import {
-  customerOptions,
-  primaryCategory,
-  priorityOptions,
-  productMeasureOptions,
-  subCategoryProduct
-} from './config';
+import { customerOptions } from './config';
 import styles from './TaskForm.module.scss';
 
 export const TaskForm = ({ onClose }) => {
@@ -28,10 +22,10 @@ export const TaskForm = ({ onClose }) => {
       {
         id: 0,
         productName: '',
-        category: primaryCategory[0].label,
-        subCategory: subCategoryProduct[0].label,
-        priority: priorityOptions[0].label,
-        productMeasure: productMeasureOptions[0].label,
+        category: '',
+        subCategory: '',
+        priority: '',
+        productMeasure: '',
         date: '',
         isActive: true
       }

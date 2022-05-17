@@ -1,27 +1,39 @@
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
-import { FormHelperText, IconButton, MenuItem, Select, TextField } from '@mui/material';
-import { Field } from 'formik';
+import {
+  Autocomplete,
+  FormHelperText,
+  IconButton,
+  MenuItem,
+  Select,
+  Stack,
+  TextField,
+  Typography,
+  styled
+} from '@mui/material';
+import { Box } from '@mui/system';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import dictionary from '../../../../dictionary/index';
-import {
-  primaryCategory,
-  priorityOptions,
-  productMeasureOptions,
-  subCategoryProduct
-} from '../../config';
+import { priorityOptions, productMeasureOptions } from '../../config';
 import styles from '../ProductsFieldArray/ProductsFieldArray.module.scss';
+
+const InputWrapper = styled(Box)(({ theme }) => ({
+  width: '50%',
+  [theme.breakpoints.down('md')]: {
+    width: '100%'
+  }
+}));
 
 export const initialProductValue = {
   id: Date.now(),
   productName: '',
-  category: primaryCategory[0].label,
+  category: '',
   quantity: '',
-  subCategory: subCategoryProduct[0].label,
-  priority: priorityOptions[0].label,
-  productMeasure: productMeasureOptions[0].label,
+  subCategory: '',
+  priority: '',
+  productMeasure: '',
   date: '',
   isActive: true
 };
@@ -36,23 +48,20 @@ export const ProductsField = ({
 }) => {
   const categories = useSelector(state => state.categories.rootCategories);
   const subcategories = useSelector(state => state.categories.subcategories);
-  const [subcategoriesByCategory, setSubcategoriesByCategory] = useState(
-    subcategories[categories[0].id]
-  );
-  const [selectedCategory, setSelectedCategory] = useState([]);
+  const [subcategoriesByCategory, setSubcategoriesByCategory] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState();
   useEffect(() => {
     if (selectedCategory?.id) {
-      setSubcategoriesByCategory(
-        subcategories[categories.filter(i => i.id === selectedCategory.id)[0].id]
-      );
+      setSubcategoriesByCategory(subcategories[selectedCategory?.id] ?? []);
     }
-  }, [selectedCategory]);
+  }, [selectedCategory, subcategories]);
 
   return (
-    <div key={index}>
-      <h4 className={styles.title}>Продукт</h4>
-      <div className={styles.field_box}>
-        <Field
+    <Stack direction='row' flexWrap='wrap'>
+      <Typography variant='h4'>Продукт</Typography>
+
+      <Box width='100%'>
+        <TextField
           id={`products.${index}.productName`}
           name={`products.${index}.productName`}
           classes={{ root: styles.root }}
@@ -64,85 +73,74 @@ export const ProductsField = ({
           margin='normal'
           value={values.products[index].productName}
           onChange={handleChange}
-          component={TextField}
+          fullWidth
         />
-      </div>
-      <div className={styles.group}>
-        <div className={styles.field_box}>
-          {/* <div> */}
-          <FormHelperText>{dictionary.category}</FormHelperText>
-          <Select
-            id={`products.${index}.category`}
-            name={`products.${index}.category`}
-            value={values.products[index].category}
-            size='small'
-            margin='normal'
-            className={styles.root}
-            // onChange={handleChange}
-            onChange={(_, value) => {
-              console.log('!!!!!!!!!!!!!!', _);
-              console.log('!!!!!!!!!!!!!!', value);
-              setFieldValue(`products.${index}.category`, value);
-              setSelectedCategory(value.props.value);
-            }}
-          >
-            {categories.map(item => (
-              <MenuItem key={item.id} value={item.name}>
-                {item.name}
-              </MenuItem>
-              //   <MenuItem key={item.id} value={item.id} primaryText={item.name} />
-            ))}
-          </Select>
-          {/* <Autocomplete
-            id={`products.${index}.category`}
-            name={`products.${index}.category`}
-            freeSolo
-            disablePortal
-            getOptionLabel={option => option.name}
-            options={categories}
-            size='small'
-            margin='normal'
-            fullWidth
-            onChange={(_, value) => {
-              setFieldValue(`products.${index}.category`, value);
-              //   setFieldValue('city', null);
-              setSelectedCategory(value);
-            }}
-            renderInput={params => (
-              <TextField
-                {...params}
-                type='text'
-                size='small'
-                margin='normal'
-                value={values.category}
-                label={dictionary.category}
-                onChange={handleChange}
-                error={Boolean(errors.category)}
-                helperText={errors.category}
-                fullWidth
-              />
-            )}
-          /> */}
-        </div>
-        <div className={styles.field_box}>
-          <FormHelperText>{dictionary.subcategory}</FormHelperText>
-          <Select
-            id={`products.${index}.subCategory`}
-            name={`products.${index}.subCategory`}
-            value={values.products[index].subCategory}
-            size='small'
-            margin='normal'
-            className={styles.root}
-            onChange={handleChange}
-          >
-            {subcategoriesByCategory.map(item => (
-              <MenuItem key={item.id} value={item.name}>
-                {item.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </div>
-      </div>
+      </Box>
+
+      <InputWrapper sx={{ pr: { xs: 0, md: 1 } }}>
+        <Autocomplete
+          id={`products.${index}.category`}
+          name={`products.${index}.category`}
+          freeSolo
+          disablePortal
+          getOptionLabel={option => option.name}
+          options={categories}
+          size='small'
+          margin='normal'
+          fullWidth
+          onChange={(_, value) => {
+            setFieldValue(`products.${index}.category`, value);
+            setSelectedCategory(value);
+          }}
+          renderInput={params => (
+            <TextField
+              {...params}
+              type='text'
+              size='small'
+              margin='normal'
+              value={values.products[index]?.category?.id}
+              label={dictionary.category}
+              onChange={handleChange}
+              error={Boolean(errors.category)}
+              helperText={errors.category}
+              fullWidth
+            />
+          )}
+        />
+      </InputWrapper>
+
+      <InputWrapper sx={{ pl: { xs: 0, md: 1 } }}>
+        <Autocomplete
+          id={`products.${index}.subCategory`}
+          name={`products.${index}.subCategory`}
+          freeSolo
+          disablePortal
+          getOptionLabel={option => option.name}
+          options={subcategoriesByCategory}
+          size='small'
+          margin='normal'
+          fullWidth
+          onChange={(_, value) => {
+            setFieldValue(`products.${index}.subCategory`, value);
+            setSelectedCategory(value);
+          }}
+          renderInput={params => (
+            <TextField
+              {...params}
+              type='text'
+              size='small'
+              margin='normal'
+              value={values.products[index]?.subCategory?.id}
+              label={dictionary.subcategory}
+              onChange={handleChange}
+              error={Boolean(errors.products?.[index]?.subCategory)}
+              helperText={errors.products?.[index]?.subCategory}
+              fullWidth
+            />
+          )}
+        />
+      </InputWrapper>
+
       <div className={styles.group}>
         <div className={styles.field_box}>
           <FormHelperText>{dictionary.priority}</FormHelperText>
@@ -162,6 +160,7 @@ export const ProductsField = ({
             ))}
           </Select>
         </div>
+
         <div className={styles.field_box}>
           <FormHelperText>{dictionary.productMeasure}</FormHelperText>
           <Select
@@ -181,6 +180,7 @@ export const ProductsField = ({
           </Select>
         </div>
       </div>
+
       <div className={styles.group}>
         <div className={styles.field_box}>
           <TextField
@@ -226,6 +226,6 @@ export const ProductsField = ({
           <AddCircleOutlineIcon />
         </IconButton>
       </div>
-    </div>
+    </Stack>
   );
 };
