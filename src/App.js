@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { useDispatch } from 'react-redux';
 
 import { getCurrentUser, setLoggedOut } from '../src/actions/user';
+import { getConfig } from './actions/config';
 import { Footer } from './components/Footer';
 import { Header } from './components/Header';
 import { ACCESS_TOKEN } from './constants/uiConfig';
@@ -18,6 +19,10 @@ const queryClient = new QueryClient();
 function App({ children }) {
   // Test saga start
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getConfig());
+  }, [dispatch]);
 
   useEffect(() => {
     if (sessionStorage.getItem(ACCESS_TOKEN)) {
