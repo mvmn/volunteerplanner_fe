@@ -2,6 +2,7 @@ import { connectRouter } from 'connected-react-router';
 import { combineReducers } from 'redux';
 
 import { categoriesReducer } from './categories';
+import { configReducer } from './config';
 import { subTasksReducer } from './subTasksReducer';
 import { tasksReducer } from './tasksReducer';
 import { userReducer } from './userReducer';
@@ -14,5 +15,6 @@ export const rootReducer = history =>
     tasks: tasksReducer,
     users: usersReducer,
     categories: categoriesReducer,
+    config: configReducer,
     subTasks: subTasksReducer
   });
