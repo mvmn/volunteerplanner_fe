@@ -50,6 +50,8 @@ const dictionary = {
   rating: 'Рейтинг',
   customer: 'Замовник',
   quantity: 'Кількість',
+  quantityOriginal: 'Кількість початкова',
+  quantityLeft: 'Кількість залишкова',
   productMeasure: 'Од вимірювання(кг/л/штуки)',
   priority: 'Пріоритет',
   deadlineDate: 'Кінцевий термін',

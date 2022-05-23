@@ -119,6 +119,7 @@ const Row = props => {
         <TableCell scope='row'>{row.subtaskCount}</TableCell>
         <TableCell>{row.productMeasure}</TableCell>
         <TableCell>{row.quantity}</TableCell>
+        <TableCell>{row.quantityLeft}</TableCell>
         <TableCell>{row.product.name}</TableCell>
         <TableCell>{deadlineDateFmt}</TableCell>
         <TableCell className={styles.noteCell}>{row.note}</TableCell>
@@ -231,7 +232,8 @@ const OperatorTasksListView = () => {
     { id: 'PRIORITY', label: dictionary.priority, sortable: true },
     { id: 'subtaskCount', label: dictionary.subtaskCount },
     { id: 'productMeasure', label: dictionary.productMeasure },
-    { id: 'QUANTITY_LEFT', label: dictionary.quantity, sortable: true },
+    { id: 'QUANTITY', label: dictionary.quantityOriginal, sortable: true },
+    { id: 'QUANTITY_LEFT', label: dictionary.quantityLeft, sortable: true },
     { id: 'PRODUCT_NAME', label: dictionary.productName, sortable: true },
     { id: 'DUEDATE', label: dictionary.deadlineDate, sortable: true }
   ];
