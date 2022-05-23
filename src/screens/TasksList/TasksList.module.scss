@@ -64,3 +64,23 @@
     }
   }
 }
+
+.btnGreen {
+  background-color: $green;
+  color: white;
+}
+
+.btnRed {
+  background-color: $red;
+  color: white;
+}
+
+.btnGreen:hover {
+  background-color: $darkgreen;
+  color: white;
+}
+
+.btnRed:hover {
+  background-color: $pink;
+  color: white;
+}

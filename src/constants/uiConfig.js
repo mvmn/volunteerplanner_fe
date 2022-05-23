@@ -23,6 +23,12 @@ export const SUBTASK_STATUSES = {
   all: 'ALL'
 };
 
+export const SUBTASK_STATUS = {
+  inProgress: 'IN_PROGRESS',
+  completed: 'COMPLETED',
+  rejected: 'REJECTED'
+};
+
 export const SUBTASK_NAME = {
   COMPLETED: 'completed',
   IN_PROGRESS: 'inProgress',
@@ -42,6 +48,12 @@ export const STATUS_NAME = {
   COMPLETED: 'completed',
   IN_PROGRESS: 'inProgress',
   REJECTED: 'rejected'
+};
+
+export const SUBTASK_STATUS_NAME = {
+  COMPLETED: 'subtaskStatusCompleted',
+  IN_PROGRESS: 'subtaskStatusInProgress',
+  REJECTED: 'subtaskStatusRejected'
 };
 
 export const tasksColumns = [

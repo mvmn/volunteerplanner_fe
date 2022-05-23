@@ -4,6 +4,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import SearchIcon from '@mui/icons-material/Search';
 import {
   Box,
+  Button,
   Collapse,
   IconButton,
   Paper,
@@ -24,10 +25,9 @@ import { useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { getSubtasksByTaskId } from '../../api/subtasks';
+import { getSubtasksByTaskId, subtaskComplete, subtaskReject } from '../../api/subtasks';
 import { exportTasks, fetchTasks } from '../../api/tasks';
 import { Categories } from '../../components/Categories';
-import { ChangeStatus } from '../../components/ChangeStatus';
 import { CreateTaskButton } from '../../components/CreateTaskButton/CreateTaskButton';
 import { Priority } from '../../components/Priority';
 import { Status } from '../../components/Status';
@@ -48,11 +48,25 @@ const VERIFIED_TAB_INDEX = 1;
 const SubtasksPane = ({ taskId, statusIndex }) => {
   const [subtasks, setSubtasks] = useState([]);
 
+  const [statusUpdateInProgress, setStatusUpdateInProgress] = useState(false);
+
   useEffect(() => {
     getSubtasksByTaskId(taskId).then(data => {
       setSubtasks(data?.items ?? []);
     });
-  }, [taskId]);
+  }, [taskId, statusUpdateInProgress]);
+
+  const completeSubTask = async subtaskId => {
+    setStatusUpdateInProgress(true);
+    await subtaskComplete(subtaskId);
+    setStatusUpdateInProgress(false);
+  };
+
+  const rejectSubTask = async subtaskId => {
+    setStatusUpdateInProgress(true);
+    await subtaskReject(subtaskId);
+    setStatusUpdateInProgress(false);
+  };
 
   return (
     <Box sx={{ margin: 1 }}>
@@ -61,7 +75,7 @@ const SubtasksPane = ({ taskId, statusIndex }) => {
           <TableRow>
             <TableCell />
             <TableCell className={styles.fontBold}>{dictionary.status}</TableCell>
-            <TableCell className={styles.fontBold} colSpan={3}>
+            <TableCell className={styles.fontBold} colSpan={2}>
               {dictionary.quantity}
             </TableCell>
             <TableCell className={styles.fontBold}>{dictionary.transportRequired}</TableCell>
@@ -69,6 +83,7 @@ const SubtasksPane = ({ taskId, statusIndex }) => {
             <TableCell className={clsx(styles.fontBold, styles.noteCell)}>
               {dictionary.note}
             </TableCell>
+            <TableCell></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -76,18 +91,36 @@ const SubtasksPane = ({ taskId, statusIndex }) => {
             <TableRow key={subTask.id}>
               <TableCell />
               <TableCell>
-                {statusIndex === VERIFIED_TAB_INDEX ? (
-                  <ChangeStatus status={subTask.status} />
-                ) : (
-                  <Status status={subTask.status} />
-                )}
+                <Status status={subTask.status} />
               </TableCell>
-              <TableCell colSpan={3} scope='row'>
+              <TableCell colSpan={2} scope='row'>
                 {subTask.quantity}
               </TableCell>
               <TableCell>{subTask.transportRequired ? dictionary.yes : dictionary.no}</TableCell>
               <TableCell>{subTask.dueDate ? unixTimeToPrettyDate(subTask.dueDate) : ''}</TableCell>
               <TableCell className={styles.noteCell}>{subTask.note}</TableCell>
+              <TableCell>
+                {statusIndex === VERIFIED_TAB_INDEX && subTask.status === 'IN_PROGRESS' ? (
+                  statusUpdateInProgress ? (
+                    <span>Loading...</span>
+                  ) : (
+                    <>
+                      <Button
+                        className={styles.btnGreen}
+                        onClick={() => completeSubTask(subTask.id)}
+                      >
+                        {dictionary.complete}
+                      </Button>
+                      &nbsp;
+                      <Button className={styles.btnRed} onClick={() => rejectSubTask(subTask.id)}>
+                        {dictionary.reject}
+                      </Button>
+                    </>
+                  )
+                ) : (
+                  <></>
+                )}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -97,8 +130,7 @@ const SubtasksPane = ({ taskId, statusIndex }) => {
 };
 
 const Row = props => {
-  const { row, handleRowClick } = props;
-  const { value } = useContext(TabsContext);
+  const { row, handleRowClick, tasksTabIndex } = props;
   const [open, setOpen] = useState(false);
 
   const deadlineDateFmt = unixTimeToPrettyDate(row.deadlineDate);
@@ -129,7 +161,7 @@ const Row = props => {
       <TableRow className={open ? styles.opened : ''}>
         <TableCell className={styles.subRow} colSpan={12}>
           <Collapse in={open} timeout='auto' unmountOnExit>
-            <SubtasksPane taskId={row.id} statusIndex={value} />
+            <SubtasksPane taskId={row.id} statusIndex={tasksTabIndex} />
           </Collapse>
         </TableCell>
       </TableRow>
@@ -325,6 +357,7 @@ const OperatorTasksListView = () => {
                       key={row.id}
                       row={row}
                       handleRowClick={() => navigateSubTaskHandler(row)}
+                      tasksTabIndex={taskStatusTabValue}
                     />
                   ))}
                 </TableBody>
