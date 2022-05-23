@@ -61,10 +61,11 @@ const SubtasksPane = ({ taskId, statusIndex }) => {
           <TableRow>
             <TableCell />
             <TableCell className={styles.fontBold}>{dictionary.status}</TableCell>
-            <TableCell className={styles.fontBold} colSpan={4}>
+            <TableCell className={styles.fontBold} colSpan={3}>
               {dictionary.quantity}
             </TableCell>
             <TableCell className={styles.fontBold}>{dictionary.transportRequired}</TableCell>
+            <TableCell className={styles.fontBold}>{dictionary.dueDate}</TableCell>
             <TableCell className={clsx(styles.fontBold, styles.noteCell)}>
               {dictionary.note}
             </TableCell>
@@ -81,10 +82,11 @@ const SubtasksPane = ({ taskId, statusIndex }) => {
                   <Status status={subTask.status} />
                 )}
               </TableCell>
-              <TableCell colSpan={4} scope='row'>
+              <TableCell colSpan={3} scope='row'>
                 {subTask.quantity}
               </TableCell>
               <TableCell>{subTask.transportRequired ? dictionary.yes : dictionary.no}</TableCell>
+              <TableCell>{subTask.dueDate ? unixTimeToPrettyDate(subTask.dueDate) : ''}</TableCell>
               <TableCell className={styles.noteCell}>{subTask.note}</TableCell>
             </TableRow>
           ))}
