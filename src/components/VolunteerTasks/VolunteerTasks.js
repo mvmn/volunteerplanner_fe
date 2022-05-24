@@ -1,7 +1,8 @@
 import { Box, Tab, Tabs } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import { useContext, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { useQuery } from 'react-query';
+import { useHistory } from 'react-router';
 
 import { getSubtasks } from '../../api/subtasks';
 import { getTasksByIds } from '../../api/tasks';
@@ -90,6 +91,7 @@ export const VolunteerTasks = () => {
     setSubtaskStatus(subtaskStatus);
   };
   const { selectedCategory, selectedSubCategory } = useContext(CategoriesContext);
+  const history = useHistory();
   const { data, status } = useQuery(
     [
       'my_subtasks',
@@ -171,7 +173,7 @@ export const VolunteerTasks = () => {
     setPageNumber(0);
   };
 
-  const handleRowClick = () => {};
+  const handleRowClick = useCallback(row => history.push(`/subtasks/${row.id}`), [history]);
 
   return (
     <div className={styles.container}>

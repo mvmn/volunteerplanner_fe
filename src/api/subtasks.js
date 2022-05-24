@@ -37,6 +37,15 @@ export const createSubtask = async subtask => {
   }
 };
 
+export const updateSubtask = async (subtaskId, subtask) => {
+  try {
+    const response = await axios.put(`${ENDPOINT}/api/v1/subtasks/${subtaskId}`, subtask);
+    return response.data;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 export const subtaskReject = async subtaskId => {
   try {
     const response = await axios.put(`${ENDPOINT}/api/v1/subtasks/${subtaskId}/reject`);
