@@ -61,10 +61,11 @@ const SubtasksPane = ({ taskId, statusIndex }) => {
           <TableRow>
             <TableCell />
             <TableCell className={styles.fontBold}>{dictionary.status}</TableCell>
-            <TableCell className={styles.fontBold} colSpan={4}>
+            <TableCell className={styles.fontBold} colSpan={3}>
               {dictionary.quantity}
             </TableCell>
             <TableCell className={styles.fontBold}>{dictionary.transportRequired}</TableCell>
+            <TableCell className={styles.fontBold}>{dictionary.dueDate}</TableCell>
             <TableCell className={clsx(styles.fontBold, styles.noteCell)}>
               {dictionary.note}
             </TableCell>
@@ -81,10 +82,11 @@ const SubtasksPane = ({ taskId, statusIndex }) => {
                   <Status status={subTask.status} />
                 )}
               </TableCell>
-              <TableCell colSpan={4} scope='row'>
+              <TableCell colSpan={3} scope='row'>
                 {subTask.quantity}
               </TableCell>
               <TableCell>{subTask.transportRequired ? dictionary.yes : dictionary.no}</TableCell>
+              <TableCell>{subTask.dueDate ? unixTimeToPrettyDate(subTask.dueDate) : ''}</TableCell>
               <TableCell className={styles.noteCell}>{subTask.note}</TableCell>
             </TableRow>
           ))}
@@ -119,6 +121,7 @@ const Row = props => {
         <TableCell scope='row'>{row.subtaskCount}</TableCell>
         <TableCell>{row.productMeasure}</TableCell>
         <TableCell>{row.quantity}</TableCell>
+        <TableCell>{row.quantityLeft}</TableCell>
         <TableCell>{row.product.name}</TableCell>
         <TableCell>{deadlineDateFmt}</TableCell>
         <TableCell className={styles.noteCell}>{row.note}</TableCell>
@@ -231,7 +234,8 @@ const OperatorTasksListView = () => {
     { id: 'PRIORITY', label: dictionary.priority, sortable: true },
     { id: 'subtaskCount', label: dictionary.subtaskCount },
     { id: 'productMeasure', label: dictionary.productMeasure },
-    { id: 'QUANTITY_LEFT', label: dictionary.quantity, sortable: true },
+    { id: 'QUANTITY', label: dictionary.quantityOriginal, sortable: true },
+    { id: 'QUANTITY_LEFT', label: dictionary.quantityLeft, sortable: true },
     { id: 'PRODUCT_NAME', label: dictionary.productName, sortable: true },
     { id: 'DUEDATE', label: dictionary.deadlineDate, sortable: true }
   ];
