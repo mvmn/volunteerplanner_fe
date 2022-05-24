@@ -11,7 +11,7 @@ const initialValues = {
   displayName: ''
 };
 
-export const ProfileEditForm = ({ user, onSave }) => {
+export const ProfileEditForm = ({ user, onSave, onCancel }) => {
   const validationSchema = yup.object().shape({
     phoneNumber: yupPatterns('phoneNumber'),
     displayName: yupPatterns('displayName'),
@@ -91,6 +91,10 @@ export const ProfileEditForm = ({ user, onSave }) => {
           </div>
         </div>
       </div>
+      <Button variant='outlined' onClick={onCancel}>
+        {dictionary.cancel}
+      </Button>
+
       <Button variant='outlined' type='submit'>
         {dictionary.save}
       </Button>
