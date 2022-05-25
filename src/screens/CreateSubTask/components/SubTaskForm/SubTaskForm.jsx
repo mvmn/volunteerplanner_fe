@@ -1,18 +1,12 @@
 import { LoadingButton } from '@mui/lab';
 import { Checkbox, FormControlLabel, Stack, TextField } from '@mui/material';
 import { useFormik } from 'formik';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import * as yup from 'yup';
 
 import dictionary from '../../../../dictionary';
 import { unixTimeToLocalDateTime } from '../../../../helpers/dates';
 import { yupPatterns } from '../../../../helpers/validation';
-
-const validationSchema = yup.object().shape({
-  note: yupPatterns('note'),
-  quantity: yupPatterns('quantity'),
-  dueDate: yupPatterns('dueDate')
-});
 
 const initialValues = {
   note: '',
@@ -29,8 +23,21 @@ const taskToForm = task =>
       }
     : undefined;
 
-export const SubTaskForm = ({ task, onSave, onReject, isLocked }) => {
+export const SubTaskForm = ({ task, onSave, onReject, isLocked, maxQuantity = Infinity }) => {
   const [isLoading, setIsLoading] = useState(false);
+
+  const validationSchema = useMemo(
+    () =>
+      yup.object().shape({
+        note: yupPatterns('note'),
+        quantity: yupPatterns('quantity').max(
+          maxQuantity,
+          `${dictionary.noMoreThan} ${maxQuantity}`
+        ),
+        dueDate: yupPatterns('dueDate')
+      }),
+    [maxQuantity]
+  );
 
   const formik = useFormik({
     initialValues: { ...initialValues, ...taskToForm(task) },

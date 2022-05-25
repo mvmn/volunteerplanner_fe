@@ -15,6 +15,7 @@ export const EditSubTask = () => {
   const history = useHistory();
   const [task, setTask] = useState();
   const [subtask, setSubtask] = useState();
+  const [maxQuantity, setMaxQuantity] = useState();
   const { taskId: subTaskId } = params;
 
   useEffect(() => {
@@ -38,6 +39,12 @@ export const EditSubTask = () => {
 
   const isTaskEditable = EDITABLE_STATUSES.includes(subtask?.status);
 
+  useEffect(() => {
+    if (task && subtask) {
+      setMaxQuantity(task.quantityLeft + subtask.quantity);
+    }
+  }, [task, subtask]);
+
   return (
     <Container maxWidth='md'>
       <Typography variant='h4' component='h1' textAlign='left' my={2}>
@@ -55,6 +62,7 @@ export const EditSubTask = () => {
         onReject={handleFormReject}
         task={subtask}
         isLocked={!isTaskEditable}
+        maxQuantity={maxQuantity}
       />
     </Container>
   );
