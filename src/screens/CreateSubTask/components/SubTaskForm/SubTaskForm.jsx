@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import * as yup from 'yup';
 
 import dictionary from '../../../../dictionary';
-import { unixTimeToPrettyDate } from '../../../../helpers/dates';
+import { unixTimeToLocalDateTime } from '../../../../helpers/dates';
 import { yupPatterns } from '../../../../helpers/validation';
 
 const validationSchema = yup.object().shape({
@@ -25,7 +25,7 @@ const taskToForm = task =>
   task
     ? {
         ...task,
-        dueDate: Number.isFinite(task?.dueDate) ? unixTimeToPrettyDate(task.dueDate) : ''
+        dueDate: Number.isFinite(task?.dueDate) ? unixTimeToLocalDateTime(task.dueDate) : ''
       }
     : undefined;
 
@@ -111,7 +111,7 @@ export const SubTaskForm = ({ task, onSave, onReject, isLocked }) => {
           <TextField
             id='dueDate'
             name='dueDate'
-            type='date'
+            type='datetime-local'
             value={values.dueDate}
             label={dictionary.dueDate}
             size='small'
