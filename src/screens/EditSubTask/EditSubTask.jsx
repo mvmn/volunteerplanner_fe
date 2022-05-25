@@ -10,6 +10,8 @@ import { TaskInfo } from '../CreateSubTask/components/TaskInfo/TaskInfo';
 
 const EDITABLE_STATUSES = ['IN_PROGRESS'];
 
+const exitEditMode = history => (history.length ? history.goBack() : history.push('/my-tasks'));
+
 export const EditSubTask = () => {
   const params = useParams();
   const history = useHistory();
@@ -28,12 +30,12 @@ export const EditSubTask = () => {
 
   const handleFormSave = values =>
     updateSubtask(subTaskId, values).then(() => {
-      history.push('/my-tasks');
+      exitEditMode(history);
     });
 
   const handleFormReject = () =>
     subtaskReject(subTaskId).then(() => {
-      history.push('/my-tasks');
+      exitEditMode(history);
     });
 
   const isTaskEditable = EDITABLE_STATUSES.includes(subtask?.status);

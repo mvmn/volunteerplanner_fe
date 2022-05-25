@@ -84,3 +84,11 @@
   background-color: $pink;
   color: white;
 }
+
+.subtaskRow {
+  cursor: pointer;
+}
+
+.subtaskRow:hover > * {
+  background-color: $mui-grey-200;
+}

@@ -46,8 +46,8 @@ export const TabsContext = createContext();
 const VERIFIED_TAB_INDEX = 1;
 
 const SubtasksPane = ({ taskId, statusIndex }) => {
+  const history = useHistory();
   const [subtasks, setSubtasks] = useState([]);
-
   const [statusUpdateInProgress, setStatusUpdateInProgress] = useState(false);
 
   useEffect(() => {
@@ -66,6 +66,12 @@ const SubtasksPane = ({ taskId, statusIndex }) => {
     setStatusUpdateInProgress(true);
     await subtaskReject(subtaskId);
     setStatusUpdateInProgress(false);
+  };
+
+  const onSubtaskClick = subTask => {
+    if (subTask?.id) {
+      history.push(`/subtasks/${subTask.id}`);
+    }
   };
 
   return (
@@ -88,7 +94,11 @@ const SubtasksPane = ({ taskId, statusIndex }) => {
         </TableHead>
         <TableBody>
           {subtasks.map(subTask => (
-            <TableRow key={subTask.id}>
+            <TableRow
+              key={subTask.id}
+              className={styles.subtaskRow}
+              onClick={() => onSubtaskClick(subTask)}
+            >
               <TableCell />
               <TableCell>
                 <Status status={subTask.status} />
