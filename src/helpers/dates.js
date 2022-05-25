@@ -1,5 +1,5 @@
 const unixTimeToPrettyDate = unixtimeValue => {
-  return new Date(unixtimeValue * 1000).toLocaleString(window.navigator.language, {
+  return new Date(unixtimeValue * 1000).toLocaleString('uk', {
     weekday: 'short',
     day: 'numeric',
     month: 'short',
