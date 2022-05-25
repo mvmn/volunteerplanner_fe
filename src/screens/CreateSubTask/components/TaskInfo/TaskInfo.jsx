@@ -3,8 +3,9 @@ import { useMemo } from 'react';
 
 import { Priority } from '../../../../components/Priority/Priority';
 import dictionary from '../../../../dictionary';
+import { unixTimeToPrettyDate } from '../../../../helpers/dates';
 
-const ROW_TO_DISPLAY = ['deadlineDate', 'quantity', 'priority', 'subtaskCount'];
+const ROW_TO_DISPLAY = ['product', 'deadlineDate', 'quantity', 'priority', 'subtaskCount'];
 
 export const TaskInfo = ({ task }) => {
   const rows = useMemo(
@@ -13,9 +14,10 @@ export const TaskInfo = ({ task }) => {
         ? ROW_TO_DISPLAY.map(key => {
             let value = task[key];
             let render;
-
-            if (key === 'deadlineDate') {
-              value = new Date(value).toLocaleString();
+            if (key === 'product') {
+              value = task.product.name;
+            } else if (key === 'deadlineDate') {
+              value = unixTimeToPrettyDate(value);
             } else if (key === 'quantity') {
               value = `${task.quantity} ${task.productMeasure}`;
             } else if (key === 'priority') {

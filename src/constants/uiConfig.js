@@ -2,6 +2,7 @@ import { LockedStatus } from '../components/LockedStatus';
 import { Priority } from '../components/Priority';
 import { Status } from '../components/Status';
 import dictionary from '../dictionary';
+import { unixTimeToPrettyDate } from '../helpers/dates';
 
 export const MAX_USER_PER_PAGE = 10;
 export const MAX_STORES_PER_PAGE = 10;
@@ -76,7 +77,12 @@ export const tasksColumns = [
     },
     flex: 1
   },
-  { field: 'deadlineDate', headerName: dictionary.deadlineDate, flex: 1 },
+  {
+    field: 'deadlineDate',
+    headerName: dictionary.deadlineDate,
+    flex: 1,
+    renderCell: ({ row }) => unixTimeToPrettyDate(row.deadlineDate)
+  },
   { field: 'note', headerName: dictionary.note, flex: 1, sortable: false },
   {
     field: 'status',
