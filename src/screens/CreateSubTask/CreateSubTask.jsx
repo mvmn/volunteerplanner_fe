@@ -22,6 +22,13 @@ export const CreateSubTask = () => {
     }
   }, [taskId]);
 
+  const [maxQuantity, setMaxQuantity] = useState();
+  useEffect(() => {
+    if (task) {
+      setMaxQuantity(task.quantityLeft);
+    }
+  }, [task]);
+
   const handleFormSave = values =>
     createSubtask({ ...values, taskId }).then(() => history.goBack());
 
@@ -37,7 +44,7 @@ export const CreateSubTask = () => {
         {dictionary.subtaskFormHeader}
       </Typography>
 
-      <SubTaskForm onSave={handleFormSave} />
+      <SubTaskForm onSave={handleFormSave} maxQuantity={maxQuantity} />
     </Container>
   );
 };

@@ -110,6 +110,7 @@ const dictionary = {
   all: 'Всі',
   taskInfo: 'Задача',
   subtaskFormHeader: 'Моя частка',
-  organization: 'Організація'
+  organization: 'Організація',
+  noMoreThan: 'Не більше'
 };
 export default dictionary;
