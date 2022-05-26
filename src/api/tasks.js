@@ -53,3 +53,30 @@ export const exportTasks = async tasksQuery => {
     console.log(e);
   }
 };
+
+export const verifyTask = async taskId => {
+  try {
+    const response = await axios.post(`${ENDPOINT}/api/v1/tasks/${taskId}/verify`);
+    return response.data;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const completeTask = async taskId => {
+  try {
+    const response = await axios.post(`${ENDPOINT}/api/v1/tasks/${taskId}/complete`);
+    return response.data;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const rejectTask = async taskId => {
+  try {
+    const response = await axios.post(`${ENDPOINT}/api/v1/tasks/${taskId}/reject`);
+    return response.data;
+  } catch (e) {
+    console.log(e);
+  }
+};
