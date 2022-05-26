@@ -5,9 +5,21 @@ import { Priority } from '../../../../components/Priority/Priority';
 import dictionary from '../../../../dictionary';
 import { unixTimeToPrettyDate } from '../../../../helpers/dates';
 
-const ROW_TO_DISPLAY = ['product', 'deadlineDate', 'quantity', 'priority', 'subtaskCount'];
+const ROW_TO_DISPLAY = [
+  'product',
+  'quantity',
+  'deadlineDate',
+  'priority',
+  'subtaskCount',
+  'volunteerStore',
+  'customerStore'
+];
 
 export const TaskInfo = ({ task }) => {
+  const storeDisplay = store => {
+    return `${store.name} (${store.address}, ${store.city.name}, ${store.city.region.name})`;
+  };
+
   const rows = useMemo(
     () =>
       task
@@ -22,6 +34,12 @@ export const TaskInfo = ({ task }) => {
               value = `${task.quantity} ${task.productMeasure}`;
             } else if (key === 'priority') {
               render = <Priority priority={value} />;
+            } else if (key === 'volunteerStore') {
+              value = storeDisplay(task.volunteerStore);
+            } else if (key === 'customerStore') {
+              value = task.customerStore
+                ? storeDisplay(task.customerStore)
+                : dictionary.confidential;
             }
 
             return {
