@@ -12,13 +12,15 @@ export const VOLUNTEER_NAVIGATION_ITEMS = [
 
 export const OPERATOR_NAVIGATION_ITEMS = [
   { link: 'tasks', title: dictionary.tasks, icon: <AssignmentOutlinedIcon /> },
+  { link: 'my-tasks', title: dictionary.myTasks, icon: <DoneAllIcon /> },
   { link: 'users', title: dictionary.users, icon: <GroupOutlinedIcon /> },
   { link: 'stores', title: dictionary.stores, icon: <WarehouseIcon /> }
 ];
 
 export const REQUESTOR_NAVIGATION_ITEMS = [
   { link: 'tasks', title: dictionary.tasks, icon: <AssignmentOutlinedIcon /> },
-  { link: 'stores', title: dictionary.stores, icon: <WarehouseIcon /> }
+  { link: 'stores', title: dictionary.stores, icon: <WarehouseIcon /> },
+  { link: 'my-tasks', title: dictionary.myTasks, icon: <DoneAllIcon /> }
 ];
 
 export const ROOT_NAVIGATION_ITEMS = [
