@@ -36,7 +36,6 @@ const dictionary = {
   edit: 'Редагувати',
   active: 'Активний',
   inactive: 'Не активний',
-  verified: 'Підтверджено',
   phoneNumberVerified: 'Телефон підтверджено',
   notVerified: 'Не підтверджено',
   user: 'Користувач',
@@ -58,9 +57,14 @@ const dictionary = {
   dueDate: 'Термін поставки',
   note: 'Додаткова інформація',
   status: 'Статус',
-  new: 'Нові',
-  completed: 'Завершені',
-  rejected: 'Відхилені',
+  new: 'Нова',
+  verified: 'Підтверджено',
+  completed: 'Виконано',
+  rejected: 'Відхилено',
+  newPlural: 'Нові',
+  verifiedPlural: 'Підтверджено',
+  completedPlural: 'Виконані',
+  rejectedPlural: 'Відхилені',
   complete: 'Завершити',
   reject: 'Відхилити',
   subtaskStatusCompleted: 'Завершена',
@@ -116,6 +120,10 @@ const dictionary = {
   taskInfo: 'Задача',
   subtaskFormHeader: 'Моя частка',
   organization: 'Організація',
-  noMoreThan: 'Не більше'
+  noMoreThan: 'Не більше',
+  createdBy: 'Створив(ла)',
+  verifiedBy: 'Підтвердив(ла)',
+  approvedBy: 'Прийняв(ла)',
+  rejectedBy: 'Відхилив(ла)'
 };
 export default dictionary;
