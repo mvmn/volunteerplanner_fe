@@ -53,17 +53,23 @@ export const EditSubTask = () => {
 
       <TaskInfo task={task} />
 
-      <Typography variant='h4' component='h1' textAlign='left' my={2}>
-        {dictionary.subtaskFormHeader}
-      </Typography>
+      {task && task.status === 'VERIFIED' ? (
+        <>
+          <Typography variant='h4' component='h1' textAlign='left' my={2}>
+            {dictionary.subtaskFormHeader}
+          </Typography>
 
-      <SubTaskForm
-        onSave={handleFormSave}
-        onReject={handleFormReject}
-        task={subtask}
-        isLocked={!isTaskEditable}
-        maxQuantity={maxQuantity}
-      />
+          <SubTaskForm
+            onSave={handleFormSave}
+            onReject={handleFormReject}
+            task={subtask}
+            isLocked={!isTaskEditable}
+            maxQuantity={maxQuantity}
+          />
+        </>
+      ) : (
+        <></>
+      )}
     </Container>
   );
 };

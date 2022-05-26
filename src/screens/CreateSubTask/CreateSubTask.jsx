@@ -39,12 +39,17 @@ export const CreateSubTask = () => {
       </Typography>
 
       <TaskInfo task={task} />
+      {task && task.status === 'VERIFIED' ? (
+        <>
+          <Typography variant='h4' component='h1' textAlign='left' my={2}>
+            {dictionary.subtaskFormHeader}
+          </Typography>
 
-      <Typography variant='h4' component='h1' textAlign='left' my={2}>
-        {dictionary.subtaskFormHeader}
-      </Typography>
-
-      <SubTaskForm onSave={handleFormSave} maxQuantity={maxQuantity} />
+          <SubTaskForm onSave={handleFormSave} maxQuantity={maxQuantity} />
+        </>
+      ) : (
+        <></>
+      )}
     </Container>
   );
 };
