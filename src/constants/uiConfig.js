@@ -59,8 +59,6 @@ export const SUBTASK_STATUS_NAME = {
 
 export const tasksColumns = [
   { field: 'subtaskCount', headerName: dictionary.subtaskCount, flex: 1, sortable: false },
-  { field: 'quantityLeft', headerName: dictionary.quantity, flex: 1 },
-  { field: 'productMeasure', headerName: dictionary.productMeasure, flex: 1, sortable: false },
   {
     field: 'productId',
     headerName: dictionary.productName,
@@ -68,6 +66,14 @@ export const tasksColumns = [
       return <>{row.product.name}</>;
     },
     flex: 1
+  },
+  {
+    field: 'quantityLeft',
+    headerName: dictionary.quantity,
+    flex: 1,
+    renderCell: ({ row }) => {
+      return `${row.quantity} ${row.productMeasure}`;
+    }
   },
   {
     field: 'priority',
@@ -83,13 +89,20 @@ export const tasksColumns = [
     flex: 1,
     renderCell: ({ row }) => unixTimeToPrettyDate(row.deadlineDate)
   },
-  { field: 'note', headerName: dictionary.note, flex: 1, sortable: false },
+  {
+    field: 'volunteerStore',
+    headerName: dictionary.volunteerStore,
+    flex: 1,
+    sortable: false,
+    renderCell: ({ row }) => row.volunteerStore.name
+  },
   {
     field: 'status',
     headerName: dictionary.status,
     renderCell: ({ row }) => <Status status={row.status} />,
     flex: 1
-  }
+  },
+  { field: 'note', headerName: dictionary.note, flex: 1, sortable: false }
 ];
 
 export const userFields = [

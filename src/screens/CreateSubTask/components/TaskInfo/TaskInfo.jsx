@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 import { Priority } from '../../../../components/Priority/Priority';
 import dictionary from '../../../../dictionary';
 import { unixTimeToPrettyDate } from '../../../../helpers/dates';
+import { storeDisplay } from '../../../../helpers/store';
 
 const ROW_TO_DISPLAY = [
   'product',
@@ -16,10 +17,6 @@ const ROW_TO_DISPLAY = [
 ];
 
 export const TaskInfo = ({ task }) => {
-  const storeDisplay = store => {
-    return `${store.name} (${store.address}, ${store.city.name}, ${store.city.region.name})`;
-  };
-
   const rows = useMemo(
     () =>
       task

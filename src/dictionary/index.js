@@ -79,6 +79,7 @@ const dictionary = {
   allCategories: 'Всі категорії',
   myTasks: 'Мої задачі',
   needTransportation: 'Потрібна допомога з транспортуванням',
+  needTransportationShort: 'Потребує трансп.',
   expandAll: 'Відкрити всі',
   collapseAll: 'Закрити всі',
   product: 'Продукт',
