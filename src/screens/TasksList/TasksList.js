@@ -356,9 +356,9 @@ const OperatorTasksListView = () => {
           <TabPanel key={key} value={taskStatusTabValue} index={i}></TabPanel>
         ))}
         {status === 'loading' ? (
-          <div>Loading...</div>
+          <div>{dictionary.loading}...</div>
         ) : status === 'error' ? (
-          <div>Error</div>
+          <div>{dictionary.error}</div>
         ) : (
           <>
             <TableContainer component={Paper}>
@@ -501,9 +501,9 @@ const VolunteerTasksListView = () => {
         </div>
       </div>
       {status === 'loading' ? (
-        <div>Loading...</div>
+        <div>{dictionary.loading}...</div>
       ) : status === 'error' ? (
-        <div>Error</div>
+        <div>{dictionary.error}</div>
       ) : (
         <DataGrid
           style={{ height: 600 }}
