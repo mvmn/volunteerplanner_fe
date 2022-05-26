@@ -1,4 +1,4 @@
-import { Button } from '@mui/material';
+import { Button, Container, Paper } from '@mui/material';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -7,7 +7,6 @@ import { Title } from '../../components/Title';
 import { UserInformation } from '../../components/UserInformation';
 import dictionary from '../../dictionary';
 import { ProfileEditForm } from './components/ProfileEditForm/ProfileEditForm';
-import styles from './Profile.module.scss';
 
 export const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -24,23 +23,25 @@ export const Profile = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
+    <Container maxWidth='md'>
+      <Paper sx={{ p: 2 }}>
         <Title text={dictionary.profile} />
+
+        {isEditing ? (
+          <ProfileEditForm
+            user={{ phoneNumber, displayName, organization }}
+            onSave={handleProfileSave}
+          />
+        ) : (
+          <UserInformation user={user} />
+        )}
+
         {!isEditing && (
           <Button variant='outlined' size='large' onClick={handleEditClick}>
             {dictionary.edit}
           </Button>
         )}
-      </div>
-      {isEditing ? (
-        <ProfileEditForm
-          user={{ phoneNumber, displayName, organization }}
-          onSave={handleProfileSave}
-        />
-      ) : (
-        <UserInformation user={user} />
-      )}
-    </div>
+      </Paper>
+    </Container>
   );
 };

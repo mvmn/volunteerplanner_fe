@@ -112,6 +112,16 @@ export const userFields = [
     label: dictionary.id
   },
   {
+    id: 'phoneNumber',
+    label: dictionary.phoneNumber,
+    render: row => (
+      <>
+        {row.phoneNumber}
+        <Status status={row.phoneNumberVerified} />
+      </>
+    )
+  },
+  {
     id: 'displayName',
     label: dictionary.displayName,
     render: row => (
@@ -122,14 +132,8 @@ export const userFields = [
     )
   },
   {
-    id: 'phoneNumber',
-    label: dictionary.phoneNumber,
-    render: row => (
-      <>
-        {row.phoneNumber}
-        <Status status={row.phoneNumberVerified} />
-      </>
-    )
+    id: 'organization',
+    label: dictionary.organization
   },
   {
     id: 'rating',
