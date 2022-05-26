@@ -4,7 +4,7 @@ import { useCallback, useContext, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useHistory } from 'react-router';
 
-import { getSubtasks } from '../../api/subtasks';
+import { getUsersSubtasks } from '../../api/subtasks';
 import { getTasksByIds } from '../../api/tasks';
 import { SUBTASKS_SORT_FIELD_MAPPINGS } from '../../constants/subTasks';
 import { MAX_TASKS_PER_PAGE, SUBTASK_STATUSES } from '../../constants/uiConfig';
@@ -149,7 +149,7 @@ export const VolunteerTasks = () => {
         }
       }
 
-      const subtasks = await getSubtasks(request);
+      const subtasks = await getUsersSubtasks(request);
       const taskIds = subtasks.items.map(subtask => subtask.taskId);
       const tasks = taskIds.length > 0 ? await getTasksByIds(taskIds) : { items: [] };
       const tasksById = tasks.items.reduce((result, task) => {

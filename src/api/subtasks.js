@@ -19,6 +19,15 @@ export const getSubtasks = async searchRequest => {
   }
 };
 
+export const getUsersSubtasks = async searchRequest => {
+  try {
+    const response = await axios.post(`${ENDPOINT}/api/v1/subtasks/search/my`, searchRequest);
+    return response.data;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 export const getSubtaskById = async taskId => {
   try {
     const response = await axios.get(`${ENDPOINT}/api/v1/subtasks/${taskId}`);
