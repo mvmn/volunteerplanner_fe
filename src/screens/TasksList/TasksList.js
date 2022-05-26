@@ -386,7 +386,6 @@ const VolunteerTasksListView = () => {
   const navigateSubTaskHandler = e => history.push(`/create-subtask/${e.row.id}`);
 
   const { selectedCategory, selectedSubCategory } = useContext(CategoriesContext);
-  console.log(selectedCategory, selectedSubCategory);
 
   const [pageSize, setPageSize] = useState(MAX_TASKS_PER_PAGE);
   const [tasksPageNumber, setTasksPageNumber] = useState(0);
@@ -394,11 +393,19 @@ const VolunteerTasksListView = () => {
   const [searchedTaskQuery, setSearchedTaskQuery] = useState('');
 
   const prepareQuery = () => {
+    var categoryPath = null;
+    if (selectedCategory) {
+      categoryPath = '/' + selectedCategory;
+    }
+    if (selectedSubCategory) {
+      categoryPath += '/' + selectedSubCategory;
+    }
     const query = {
       pageSize,
       pageNumber: tasksPageNumber,
       statuses: [TASK_STATUSES.verified],
-      searchText: searchedTaskQuery
+      searchText: searchedTaskQuery,
+      categoryPath
     };
     if (tasksOrder && tasksOrder.length > 0) {
       const tasksOrderSpec = tasksOrder[0];
@@ -411,7 +418,17 @@ const VolunteerTasksListView = () => {
   };
 
   const { data, status } = useQuery(
-    ['volunteertasks', { tasksPageNumber, tasksOrder, searchedTaskQuery, pageSize }],
+    [
+      'volunteertasks',
+      {
+        tasksPageNumber,
+        tasksOrder,
+        searchedTaskQuery,
+        pageSize,
+        selectedCategory,
+        selectedSubCategory
+      }
+    ],
     async () => {
       return await fetchTasks(prepareQuery());
     },
