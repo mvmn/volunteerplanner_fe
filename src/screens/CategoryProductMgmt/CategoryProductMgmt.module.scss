@@ -1,0 +1,50 @@
+@import '../../styles/colors.scss';
+
+.root {
+  color: $theme-text-color;
+}
+
+.container {
+  text-align: start;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* Can be moved to shared styles */
+  .fontBold {
+    font-weight: 400;
+  }
+
+  .body {
+    display: flex;
+
+    .tabsContainer {
+      flex: 2;
+
+      .tabsSearchBox {
+        display: flex;
+        justify-content: space-between;
+
+        .search{
+          position: relative;
+    
+          .search_action {
+            background-color: transparent;
+            border: none;
+            position: absolute;
+            top: 24px;
+            right: 8px;
+          }
+          
+          .export_button {
+            margin: 16px;
+            display: inline-flex;
+          }
+        }
+      }
+    }
+  }
+}
