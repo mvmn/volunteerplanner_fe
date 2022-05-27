@@ -1,4 +1,12 @@
-import { Autocomplete, Box, Button, FormControlLabel, Switch, TextField } from '@mui/material';
+import {
+  Autocomplete,
+  Box,
+  Button,
+  FormControlLabel,
+  Switch,
+  TextField,
+  TextareaAutosize
+} from '@mui/material';
 import { Formik } from 'formik';
 import { useEffect, useState } from 'react';
 import * as yup from 'yup';
@@ -19,6 +27,7 @@ const initialValues = {
   address: '',
   region: null,
   city: null,
+  note: '',
   confidential: true
 };
 
@@ -60,6 +69,18 @@ export const StoreForm = ({ onClose, input }) => {
               fullWidth
               error={Boolean(errors.name)}
               helperText={errors.name}
+            />
+
+            <TextareaAutosize
+              name='note'
+              value={values.note}
+              label={dictionary.note}
+              placeholder={dictionary.note}
+              type='text'
+              size='small'
+              margin='normal'
+              onChange={handleChange}
+              className={styles.noteTextarea}
             />
 
             <TextField
