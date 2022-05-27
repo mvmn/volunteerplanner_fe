@@ -65,7 +65,7 @@ export const StoreForm = ({ onClose, input }) => {
             <TextField
               name='address'
               value={values.address}
-              label={dictionary.collectionAddress}
+              label={dictionary.address}
               type='text'
               size='small'
               margin='normal'

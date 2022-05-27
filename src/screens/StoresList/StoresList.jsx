@@ -31,7 +31,7 @@ export const storesColumns = [
   },
   {
     field: 'address',
-    headerName: dictionary.shippingAddress,
+    headerName: dictionary.address,
     flex: 2,
     sortable: false
   },

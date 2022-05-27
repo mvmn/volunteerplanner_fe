@@ -19,29 +19,24 @@ import styles from './VolunteerTasks.module.scss';
 
 export const tasksColumns = [
   {
-    field: 'quantity',
-    headerName: dictionary.quantity,
-    flex: 1,
-    renderCell: ({ row }) => {
-      return <>{row.quantity}</>;
-    }
-  },
-  {
-    field: 'productMeasure',
-    headerName: dictionary.productMeasure,
-    flex: 1,
-    renderCell: ({ row }) => {
-      return <>{row.task.productMeasure}</>;
-    },
-    sortable: false
-  },
-  {
     field: 'productId',
     headerName: dictionary.productName,
     renderCell: ({ row }) => {
       return <>{row.task.product.name}</>;
     },
     flex: 1
+  },
+  {
+    field: 'quantity',
+    headerName: dictionary.quantity,
+    flex: 1,
+    renderCell: ({ row }) => {
+      return (
+        <>
+          {row.quantity} {row.task.productMeasure}
+        </>
+      );
+    }
   },
   {
     field: 'priority',
@@ -68,17 +63,29 @@ export const tasksColumns = [
     )
   },
   {
-    field: 'note',
-    headerName: dictionary.note,
+    field: 'needTransportation',
+    headerName: dictionary.needTransportationShort,
     flex: 1,
-    renderCell: ({ row }) => <>{row.note}</>,
-    sortable: false
+    renderCell: ({ row }) => <>{row.transportRequired ? dictionary.yes : dictionary.no}</>
+  },
+  {
+    field: 'volunteerStore',
+    headerName: dictionary.volunteerStore,
+    flex: 1,
+    renderCell: ({ row }) => <>{row.task.volunteerStore.name}</>
   },
   {
     field: 'status',
     headerName: dictionary.status,
     renderCell: ({ row }) => <Status status={row.status} />,
     flex: 1
+  },
+  {
+    field: 'note',
+    headerName: dictionary.note,
+    flex: 1,
+    renderCell: ({ row }) => <>{row.note}</>,
+    sortable: false
   }
 ];
 

@@ -33,7 +33,6 @@ import { Categories } from '../../components/Categories';
 import { CreateTaskButton } from '../../components/CreateTaskButton/CreateTaskButton';
 import { Priority } from '../../components/Priority';
 import { Status } from '../../components/Status';
-import { TabPanel } from '../../components/TabPanel';
 import { Tabs } from '../../components/Tabs';
 import { Title } from '../../components/Title';
 import { TASKS_SORT_FIELD_MAPPINGS } from '../../constants/tasks';
@@ -174,11 +173,12 @@ const Row = props => {
           <Priority priority={row.priority} />
         </TableCell>
         <TableCell scope='row'>{row.subtaskCount}</TableCell>
-        <TableCell>{row.productMeasure}</TableCell>
-        <TableCell>{row.quantity}</TableCell>
-        <TableCell>{row.quantityLeft}</TableCell>
         <TableCell>{row.product.name}</TableCell>
+        <TableCell>{`${row.quantity} ${row.productMeasure}`}</TableCell>
+        <TableCell>{`${row.quantityLeft} ${row.productMeasure}`}</TableCell>
         <TableCell>{deadlineDateFmt}</TableCell>
+        <TableCell>{row.volunteerStore.name}</TableCell>
+        <TableCell>{row.customerStore.name}</TableCell>
         <TableCell className={styles.noteCell}>{row.note}</TableCell>
         <TableCell>
           {row.status !== 'REJECTED' && row.status !== 'COMPLETED' ? (
@@ -307,11 +307,12 @@ const OperatorTasksListView = () => {
   const headCells = [
     { id: 'PRIORITY', label: dictionary.priority, sortable: true },
     { id: 'subtaskCount', label: dictionary.subtaskCount },
-    { id: 'productMeasure', label: dictionary.productMeasure },
+    { id: 'PRODUCT_NAME', label: dictionary.productName, sortable: true },
     { id: 'QUANTITY', label: dictionary.quantityOriginal, sortable: true },
     { id: 'QUANTITY_LEFT', label: dictionary.quantityLeft, sortable: true },
-    { id: 'PRODUCT_NAME', label: dictionary.productName, sortable: true },
-    { id: 'DUEDATE', label: dictionary.deadlineDate, sortable: true }
+    { id: 'DUEDATE', label: dictionary.deadlineDate, sortable: true },
+    { id: 'VOLUNTEER_STORE', label: dictionary.volunteerStore, sortable: false },
+    { id: 'CUSTOMER_STORE', label: dictionary.customerStore, sortable: false }
   ];
 
   const exportTasksPage = () => {
@@ -352,9 +353,6 @@ const OperatorTasksListView = () => {
             </div>
           </div>
         </Box>
-        {taskStatuses.map((key, i) => (
-          <TabPanel key={key} value={taskStatusTabValue} index={i}></TabPanel>
-        ))}
         {status === 'loading' ? (
           <div>{dictionary.loading}...</div>
         ) : status === 'error' ? (
