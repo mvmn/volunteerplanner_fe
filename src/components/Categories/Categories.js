@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { getCategories } from '../../actions/categories';
 import { SUBCATEGORY_ID_PREFIX } from '../../constants/categories';
+import dictionary from '../../dictionary';
 import { CategoriesContext } from '../../screens/Main';
 import styles from './Categories.module.scss';
 
@@ -40,7 +41,7 @@ export const Categories = () => {
   }, [selectedCategory, setSelectedSubCategory]);
 
   if (!categories) {
-    return <div>Loading...</div>;
+    return <div>{dictionary.loading}...</div>;
   }
 
   return (

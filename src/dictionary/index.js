@@ -113,6 +113,8 @@ const dictionary = {
   taskInfo: 'Задача',
   subtaskFormHeader: 'Моя частка',
   organization: 'Організація',
-  noMoreThan: 'Не більше'
+  noMoreThan: 'Не більше',
+  loading: 'Завантаження',
+  error: 'Помилка'
 };
 export default dictionary;
