@@ -7,7 +7,7 @@ import { useModalVisibleHook } from '../../hooks/useModalVisibleHooks';
 import image from '../../styles/iStock-529679954.jpg';
 import style from './CreateEntityButton.module.scss';
 
-export const CreateEntityButton = ({ title, renderModalForm, onEntitySaved }) => {
+export const CreateEntityButton = ({ title, renderModalForm, onEntitySaved, disabled }) => {
   const { isModalVisible, onCloseHandler, onOpenHandler } = useModalVisibleHook();
 
   const handleModalClose = useCallback(
@@ -23,7 +23,13 @@ export const CreateEntityButton = ({ title, renderModalForm, onEntitySaved }) =>
 
   return (
     <div>
-      <Button variant='outlined' size='large' startIcon={<AddIcon />} onClick={onOpenHandler}>
+      <Button
+        variant='outlined'
+        size='large'
+        startIcon={<AddIcon />}
+        onClick={onOpenHandler}
+        disabled={disabled}
+      >
         {title}
       </Button>
       <Modal open={isModalVisible} onClose={onCloseHandler}>

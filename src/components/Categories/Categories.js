@@ -31,7 +31,7 @@ export const CreateCategoryForm = ({ onClose, onSave, parentCategory }) => {
     if (parentCategory) {
       request.parent = { id: parentCategory.id };
     }
-    createCategory(request);
+    await createCategory(request);
     setSubmitting(false);
     onSave();
     onClose({ form: values });
@@ -91,11 +91,12 @@ export const CreateCategoryForm = ({ onClose, onSave, parentCategory }) => {
 export const Categories = ({ editable }) => {
   const categories = useSelector(state => state.categories.rootCategories);
   const subcategories = useSelector(state => state.categories.subcategories);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getCategories());
-  }, [dispatch, categories, subcategories]);
+  }, [dispatch, refreshKey]);
 
   const { setSelectedSubCategory, setSelectedCategory, selectedCategory, selectedSubCategory } =
     useContext(CategoriesContext);
@@ -131,7 +132,11 @@ export const Categories = ({ editable }) => {
             renderModalForm={onCloseHandler => (
               <CreateCategoryForm
                 onClose={onCloseHandler}
-                onSave={() => dispatch(getCategories())}
+                onSave={() => {
+                  dispatch(getCategories());
+                  setRefreshKey(refreshKey + 1);
+                  setExpanded([selectedCategory]);
+                }}
                 parentCategory={
                   selectedCategory
                     ? categories
