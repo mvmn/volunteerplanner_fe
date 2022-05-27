@@ -393,7 +393,7 @@ const VolunteerTasksListView = () => {
   const [searchedTaskQuery, setSearchedTaskQuery] = useState('');
 
   const prepareQuery = () => {
-    var categoryPath = null;
+    let categoryPath = null;
     if (selectedCategory) {
       categoryPath = '/' + selectedCategory;
     }
