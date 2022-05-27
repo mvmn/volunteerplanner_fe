@@ -1,7 +1,7 @@
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { TreeItem, TreeView } from '@mui/lab';
-import { Button, TextField, TextareaAutosize } from '@mui/material';
+import { Button, TextField, TextareaAutosize, Tooltip } from '@mui/material';
 import { Formik } from 'formik';
 import { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -163,35 +163,48 @@ export const Categories = ({ editable }) => {
       >
         {categories.map(category => {
           return (
-            <TreeItem
-              classes={{
-                content:
-                  styles.content +
-                  ' ' +
-                  (selectedCategory === category.id.toString() ? styles.selectedContent : '')
-              }}
-              className={styles.treeItem}
-              nodeId={category.id.toString()}
+            <Tooltip
               key={category.id}
-              label={category.name}
+              title={category.note ? category.note.trim() : ''}
+              placement='right-start'
             >
-              {subcategories[category.id]?.map(subcategory => (
-                <TreeItem
-                  classes={{
-                    content:
-                      styles.content +
-                      ' ' +
-                      (selectedSubCategory === subcategory.id.toString()
-                        ? styles.selectedContent
-                        : '')
-                  }}
-                  className={styles.treeItem}
-                  nodeId={SUBCATEGORY_ID_PREFIX + subcategory.id.toString()}
-                  key={subcategory.id}
-                  label={subcategory.name}
-                />
-              ))}
-            </TreeItem>
+              <TreeItem
+                classes={{
+                  content:
+                    styles.content +
+                    ' ' +
+                    (selectedCategory === category.id.toString() ? styles.selectedContent : '')
+                }}
+                className={styles.treeItem}
+                nodeId={category.id.toString()}
+                key={category.id}
+                label={category.name}
+                t
+              >
+                {subcategories[category.id]?.map(subcategory => (
+                  <Tooltip
+                    key={category.id.toString() + '_' + subcategory.id}
+                    title={subcategory.note ? subcategory.note.trim() : ''}
+                    placement='bottom-end'
+                  >
+                    <TreeItem
+                      classes={{
+                        content:
+                          styles.content +
+                          ' ' +
+                          (selectedSubCategory === subcategory.id.toString()
+                            ? styles.selectedContent
+                            : '')
+                      }}
+                      className={styles.treeItem}
+                      nodeId={SUBCATEGORY_ID_PREFIX + subcategory.id.toString()}
+                      key={subcategory.id}
+                      label={subcategory.name}
+                    />
+                  </Tooltip>
+                ))}
+              </TreeItem>
+            </Tooltip>
           );
         })}
       </TreeView>
