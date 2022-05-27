@@ -14,6 +14,8 @@ const dictionary = {
   tasks: 'Задачі',
   stores: 'Склади',
   createTask: 'Створити завдання',
+  createCategory: 'Створити категорію',
+  createSubcategory: 'Створити підкатегорію',
   createStore: 'Створити склад',
   logIn: 'Ввійти',
   logOut: 'Вийти',

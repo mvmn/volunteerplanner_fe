@@ -158,7 +158,7 @@ export const CategoryProductMgmt = () => {
       </div>
 
       <div className={styles.body}>
-        <Categories />
+        <Categories editable={true} />
         <div className={styles.tabsContainer}>
           <ProductsList />
         </div>
