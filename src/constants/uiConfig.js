@@ -6,7 +6,8 @@ import { unixTimeToPrettyDate } from '../helpers/dates';
 
 export const MAX_USER_PER_PAGE = 10;
 export const MAX_STORES_PER_PAGE = 10;
-export const MAX_TASKS_PER_PAGE = 5;
+export const MAX_TASKS_PER_PAGE = 10;
+export const MAX_PRODUCTS_PER_PAGE = 10;
 export const ACCESS_TOKEN = 'accessToken';
 export const REFRESH_TOKEN = 'refreshToken';
 
