@@ -1,10 +1,12 @@
+import CancelIcon from '@mui/icons-material/Cancel';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import SearchIcon from '@mui/icons-material/Search';
 import {
   Box,
-  Button,
   Collapse,
   IconButton,
   Paper,
@@ -26,7 +28,7 @@ import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import { getSubtasksByTaskId, subtaskComplete, subtaskReject } from '../../api/subtasks';
-import { exportTasks, fetchTasks } from '../../api/tasks';
+import { completeTask, exportTasks, fetchTasks, rejectTask, verifyTask } from '../../api/tasks';
 import { Categories } from '../../components/Categories';
 import { CreateTaskButton } from '../../components/CreateTaskButton/CreateTaskButton';
 import { Priority } from '../../components/Priority';
@@ -101,19 +103,14 @@ const SubtasksPane = ({ taskId, statusIndex }) => {
               <TableCell>
                 {statusIndex === VERIFIED_TAB_INDEX && subTask.status === 'IN_PROGRESS' ? (
                   statusUpdateInProgress ? (
-                    <span>Loading...</span>
+                    <HourglassEmptyIcon />
                   ) : (
                     <>
-                      <Button
-                        className={styles.btnGreen}
+                      <CheckCircleIcon
+                        color='success'
                         onClick={() => completeSubTask(subTask.id)}
-                      >
-                        {dictionary.complete}
-                      </Button>
-                      &nbsp;
-                      <Button className={styles.btnRed} onClick={() => rejectSubTask(subTask.id)}>
-                        {dictionary.reject}
-                      </Button>
+                      />
+                      <CancelIcon color='error' onClick={() => rejectSubTask(subTask.id)} />
                     </>
                   )
                 ) : (
@@ -129,10 +126,32 @@ const SubtasksPane = ({ taskId, statusIndex }) => {
 };
 
 const Row = props => {
-  const { row, handleRowClick, tasksTabIndex } = props;
+  const { row, handleRowClick, tasksTabIndex, refetch } = props;
   const [open, setOpen] = useState(false);
+  const [reloading, setReloading] = useState(false);
 
   const deadlineDateFmt = unixTimeToPrettyDate(row.deadlineDate);
+
+  const onVerifyTask = async taskId => {
+    setReloading(true);
+    await verifyTask(taskId);
+    refetch();
+    setReloading(false);
+  };
+
+  const onCompleteTask = async taskId => {
+    setReloading(true);
+    await completeTask(taskId);
+    refetch();
+    setReloading(false);
+  };
+
+  const onRejectTask = async taskId => {
+    setReloading(true);
+    await rejectTask(taskId);
+    refetch();
+    setReloading(false);
+  };
 
   return (
     <>
@@ -142,9 +161,13 @@ const Row = props => {
         onDoubleClick={() => handleRowClick(row.id)}
       >
         <TableCell>
-          <IconButton aria-label='expand row' size='small' onClick={() => setOpen(!open)}>
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </IconButton>
+          {row.subtaskCount > 0 ? (
+            <IconButton aria-label='expand row' size='small' onClick={() => setOpen(!open)}>
+              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            </IconButton>
+          ) : (
+            <></>
+          )}
         </TableCell>
         <TableCell>
           <Priority priority={row.priority} />
@@ -157,6 +180,25 @@ const Row = props => {
         <TableCell>{row.volunteerStore.name}</TableCell>
         <TableCell>{row.customerStore.name}</TableCell>
         <TableCell className={styles.noteCell}>{row.note}</TableCell>
+        <TableCell>
+          {row.status !== 'REJECTED' && row.status !== 'COMPLETED' ? (
+            reloading ? (
+              <HourglassEmptyIcon />
+            ) : (
+              <>
+                <CheckCircleIcon
+                  color='success'
+                  onClick={() =>
+                    row.status === 'NEW' ? onVerifyTask(row.id) : onCompleteTask(row.id)
+                  }
+                />
+                <CancelIcon color='error' onClick={() => onRejectTask(row.id)} />
+              </>
+            )
+          ) : (
+            <></>
+          )}
+        </TableCell>
       </TableRow>
       <TableRow className={open ? styles.opened : ''}>
         <TableCell className={styles.subRow} colSpan={12}>
@@ -239,7 +281,7 @@ const OperatorTasksListView = () => {
     return query;
   };
 
-  const { data, status } = useQuery(
+  const { data, status, refetch } = useQuery(
     [
       'tasks',
       {
@@ -312,9 +354,9 @@ const OperatorTasksListView = () => {
           </div>
         </Box>
         {status === 'loading' ? (
-          <div>Loading...</div>
+          <div>{dictionary.loading}...</div>
         ) : status === 'error' ? (
-          <div>Error</div>
+          <div>{dictionary.error}</div>
         ) : (
           <>
             <TableContainer component={Paper}>
@@ -347,6 +389,7 @@ const OperatorTasksListView = () => {
                     <TableCell className={clsx(styles.fontBold, styles.noteCell)}>
                       {dictionary.note}
                     </TableCell>
+                    <TableCell></TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -356,6 +399,7 @@ const OperatorTasksListView = () => {
                       row={row}
                       handleRowClick={() => navigateSubTaskHandler(row)}
                       tasksTabIndex={taskStatusTabValue}
+                      refetch={refetch}
                     />
                   ))}
                 </TableBody>
@@ -384,7 +428,6 @@ const VolunteerTasksListView = () => {
   const navigateSubTaskHandler = e => history.push(`/create-subtask/${e.row.id}`);
 
   const { selectedCategory, selectedSubCategory } = useContext(CategoriesContext);
-  console.log(selectedCategory, selectedSubCategory);
 
   const [pageSize, setPageSize] = useState(MAX_TASKS_PER_PAGE);
   const [tasksPageNumber, setTasksPageNumber] = useState(0);
@@ -392,11 +435,19 @@ const VolunteerTasksListView = () => {
   const [searchedTaskQuery, setSearchedTaskQuery] = useState('');
 
   const prepareQuery = () => {
+    let categoryPath = null;
+    if (selectedCategory) {
+      categoryPath = '/' + selectedCategory;
+    }
+    if (selectedSubCategory) {
+      categoryPath += '/' + selectedSubCategory;
+    }
     const query = {
       pageSize,
       pageNumber: tasksPageNumber,
       statuses: [TASK_STATUSES.verified],
-      searchText: searchedTaskQuery
+      searchText: searchedTaskQuery,
+      categoryPath
     };
     if (tasksOrder && tasksOrder.length > 0) {
       const tasksOrderSpec = tasksOrder[0];
@@ -409,7 +460,17 @@ const VolunteerTasksListView = () => {
   };
 
   const { data, status } = useQuery(
-    ['volunteertasks', { tasksPageNumber, tasksOrder, searchedTaskQuery, pageSize }],
+    [
+      'volunteertasks',
+      {
+        tasksPageNumber,
+        tasksOrder,
+        searchedTaskQuery,
+        pageSize,
+        selectedCategory,
+        selectedSubCategory
+      }
+    ],
     async () => {
       return await fetchTasks(prepareQuery());
     },
@@ -455,9 +516,9 @@ const VolunteerTasksListView = () => {
         </div>
       </div>
       {status === 'loading' ? (
-        <div>Loading...</div>
+        <div>{dictionary.loading}...</div>
       ) : status === 'error' ? (
-        <div>Error</div>
+        <div>{dictionary.error}</div>
       ) : (
         <DataGrid
           style={{ height: 600 }}

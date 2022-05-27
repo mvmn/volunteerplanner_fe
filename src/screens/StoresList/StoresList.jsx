@@ -131,11 +131,11 @@ export const StoresList = () => {
   let displayNode;
   switch (status) {
     case 'loading': {
-      displayNode = <div>Loading...</div>;
+      displayNode = <div>{dictionary.loading}...</div>;
       break;
     }
     case 'error': {
-      displayNode = <div>Error</div>;
+      displayNode = <div>{dictionary.error}</div>;
       break;
     }
     default: {

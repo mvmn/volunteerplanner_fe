@@ -3,6 +3,8 @@ const dictionary = {
   displayName: 'Ім’я',
   yes: 'Так',
   no: 'Ні',
+  name: 'Назва',
+  categoriesAndProducts: 'Категорії та Продукти',
   subtaskCount: 'Кількість підзадач',
   role: 'Роль',
   transportRequired: 'Потрібен транспорт',
@@ -55,7 +57,7 @@ const dictionary = {
   priority: 'Пріоритет',
   deadlineDate: 'Кінцевий термін',
   dueDate: 'Термін поставки',
-  note: 'Додаткова інформація',
+  note: 'Примітки',
   status: 'Статус',
   new: 'Нова',
   verified: 'Підтверджено',
@@ -124,6 +126,8 @@ const dictionary = {
   createdBy: 'Створив(ла)',
   verifiedBy: 'Підтвердив(ла)',
   approvedBy: 'Прийняв(ла)',
-  rejectedBy: 'Відхилив(ла)'
+  rejectedBy: 'Відхилив(ла)',
+  loading: 'Завантаження',
+  error: 'Помилка'
 };
 export default dictionary;

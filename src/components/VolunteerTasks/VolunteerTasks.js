@@ -201,9 +201,9 @@ export const VolunteerTasks = () => {
             </Tabs>
           </Box>
           {status === 'loading' ? (
-            <div>Loading...</div>
+            <div>{dictionary.loading}...</div>
           ) : status === 'error' ? (
-            <div>Error</div>
+            <div>{dictionary.error}</div>
           ) : (
             <DataGrid
               style={{ height: 600 }}
