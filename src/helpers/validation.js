@@ -35,16 +35,9 @@ const yupPatterns = key => {
     case 'customer':
       return yup.string().required("Замовник обов'язковий");
     case 'collectionAddress':
-      return yup.object().shape({
-        id: yup.number().required("Адрес збору обов'язковий")
-      });
-
-    // return yup.string().required("Адрес збору обов'язковий");
+      return yup.object().required("Адрес збору обов'язковий").nullable(true);
     case 'shippingAddress':
-      return yup.object().shape({
-        id: yup.number().required("Адреса доставки обов'язкова")
-      });
-    // return yup.string().required("Адреса доставки обов'язкова");
+      return yup.object().required("Адрес доставки обов'язковий").nullable(true);
     case 'category':
       return yup.string().required("Категорія обов'язкова");
     case 'subCategory':

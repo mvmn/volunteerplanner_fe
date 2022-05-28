@@ -83,8 +83,8 @@ export const TaskForm = ({ onClose }) => {
                     value={values.collectionAddress}
                     label={dictionary.collectionAddress}
                     onChange={handleChange}
-                    error={Boolean(errors.collectionAddress?.id)}
-                    helperText={errors.collectionAddress?.id}
+                    error={Boolean(errors.collectionAddress)}
+                    helperText={errors.collectionAddress}
                     fullWidth
                   />
                 )}
@@ -111,8 +111,8 @@ export const TaskForm = ({ onClose }) => {
                     value={values.shippingAddress}
                     label={dictionary.shippingAddress}
                     onChange={handleChange}
-                    error={Boolean(errors.shippingAddress?.id)}
-                    helperText={errors.shippingAddress?.id}
+                    error={Boolean(errors.shippingAddress)}
+                    helperText={errors.shippingAddress}
                     fullWidth
                   />
                 )}
