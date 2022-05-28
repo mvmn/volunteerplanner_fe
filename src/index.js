@@ -9,6 +9,8 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 
 import NetworkService from './api/networkService';
 import App from './App';
+import { PhoneConfirmation } from './components/PhoneConfirmation/PhoneConfirmation';
+import { UserVerificationAlert } from './components/UserVerificationAlert/UserVerificationAlert';
 import { ROLES } from './constants/uiConfig';
 import dictionary from './dictionary';
 import { routes } from './navigation/routes';
@@ -18,10 +20,10 @@ import { history, store } from './store';
 
 const ProtectedRoute = ({ role, children }) => {
   const isAuthorized = useSelector(state => state.user.isAuthorized);
-
   const currentRole = useSelector(state => state.user.role);
+  const phoneNumberVerified = useSelector(state => state.user.phoneNumberVerified);
 
-  if (!isAuthorized || (role && currentRole !== role)) {
+  if (!isAuthorized || !phoneNumberVerified || (role && currentRole !== role)) {
     return <Redirect to='/' replace />;
   }
 
@@ -54,6 +56,12 @@ ReactDOM.render(
                       </div>
                     </>
                   );
+                }
+
+                if (!user.phoneNumberVerified) {
+                  return <PhoneConfirmation />;
+                } else if (!user.userVerified) {
+                  return <UserVerificationAlert />;
                 }
 
                 if (ROLES.root === user.role) {
