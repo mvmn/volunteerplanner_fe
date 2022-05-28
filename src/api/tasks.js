@@ -80,3 +80,7 @@ export const rejectTask = async taskId => {
     console.log(e);
   }
 };
+
+export const createTask = async task => {
+  console.log('HANDLE TASK CREATION', task);
+};

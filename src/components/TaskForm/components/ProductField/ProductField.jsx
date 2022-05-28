@@ -1,23 +1,13 @@
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
-import {
-  Autocomplete,
-  FormHelperText,
-  IconButton,
-  MenuItem,
-  Select,
-  Stack,
-  TextField,
-  Typography,
-  styled
-} from '@mui/material';
+import { Autocomplete, IconButton, Stack, TextField, Typography, styled } from '@mui/material';
 import { Box } from '@mui/system';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
+import { searchProducts } from '../../../../api/products';
 import dictionary from '../../../../dictionary/index';
 import { priorityOptions, productMeasureOptions } from '../../config';
-import styles from '../ProductsFieldArray/ProductsFieldArray.module.scss';
 
 const InputWrapper = styled(Box)(({ theme }) => ({
   width: '50%',
@@ -39,7 +29,7 @@ export const initialProductValue = {
 };
 
 export const ProductsField = ({
-  values,
+  product,
   index,
   handleChange,
   errors,
@@ -56,25 +46,30 @@ export const ProductsField = ({
     }
   }, [selectedCategory, subcategories]);
 
+  const [selectedSubCategory, setSelectedSubCategory] = useState();
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const query = {
+      page: 1,
+      pageSize: 100
+    };
+    if (selectedSubCategory?.id || selectedCategory?.id) {
+      query.filter = {
+        type: 'number',
+        field: 'category.id',
+        value: selectedSubCategory?.id || selectedCategory?.id
+      };
+    }
+    searchProducts(query).then(({ items }) => {
+      setProducts(items);
+    });
+  }, [selectedCategory, selectedSubCategory]);
+
   return (
     <Stack direction='row' flexWrap='wrap'>
-      <Typography variant='h4'>Продукт</Typography>
-
       <Box width='100%'>
-        <TextField
-          id={`products.${index}.productName`}
-          name={`products.${index}.productName`}
-          classes={{ root: styles.root }}
-          className={styles.default_inputs}
-          label={dictionary.productName}
-          required
-          type='text'
-          size='small'
-          margin='normal'
-          value={values.products[index].productName}
-          onChange={handleChange}
-          fullWidth
-        />
+        <Typography variant='h5'>Продукт</Typography>
       </Box>
 
       <InputWrapper sx={{ pr: { xs: 0, md: 1 } }}>
@@ -98,7 +93,7 @@ export const ProductsField = ({
               type='text'
               size='small'
               margin='normal'
-              value={values.products[index]?.category?.id}
+              value={product?.category?.id}
               label={dictionary.category}
               onChange={handleChange}
               error={Boolean(errors.category)}
@@ -122,7 +117,7 @@ export const ProductsField = ({
           fullWidth
           onChange={(_, value) => {
             setFieldValue(`products.${index}.subCategory`, value);
-            setSelectedCategory(value);
+            setSelectedSubCategory(value);
           }}
           renderInput={params => (
             <TextField
@@ -130,7 +125,7 @@ export const ProductsField = ({
               type='text'
               size='small'
               margin='normal'
-              value={values.products[index]?.subCategory?.id}
+              value={product?.subCategory?.id}
               label={dictionary.subcategory}
               onChange={handleChange}
               error={Boolean(errors.products?.[index]?.subCategory)}
@@ -141,91 +136,136 @@ export const ProductsField = ({
         />
       </InputWrapper>
 
-      <div className={styles.group}>
-        <div className={styles.field_box}>
-          <FormHelperText>{dictionary.priority}</FormHelperText>
-          <Select
-            id={`products.${index}.priority`}
-            name={`products.${index}.priority`}
-            value={values.products[index].priority}
-            size='small'
-            margin='normal'
-            className={styles.root}
-            onChange={handleChange}
-          >
-            {priorityOptions.map(item => (
-              <MenuItem key={item.id} value={item.label}>
-                {item.label}
-              </MenuItem>
-            ))}
-          </Select>
-        </div>
+      <Box width='100%'>
+        <Autocomplete
+          id={`products.${index}.productName`}
+          name={`products.${index}.productName`}
+          freeSolo
+          disablePortal
+          getOptionLabel={option => option.name}
+          options={products}
+          size='small'
+          margin='normal'
+          fullWidth
+          onChange={(_, value) => {
+            setFieldValue(`products.${index}.productName`, value);
+          }}
+          renderInput={params => (
+            <TextField
+              {...params}
+              type='text'
+              size='small'
+              margin='normal'
+              value={product?.productName?.id}
+              label={dictionary.productName}
+              onChange={handleChange}
+              error={Boolean(errors.products?.[index]?.productName)}
+              helperText={errors.products?.[index]?.productName}
+              fullWidth
+            />
+          )}
+        />
+      </Box>
 
-        <div className={styles.field_box}>
-          <FormHelperText>{dictionary.productMeasure}</FormHelperText>
-          <Select
-            id={`products.${index}.productMeasure`}
-            name={`products.${index}.productMeasure`}
-            value={values.products[index].productMeasure}
-            size='small'
-            margin='normal'
-            className={styles.root}
-            onChange={handleChange}
-          >
-            {productMeasureOptions.map(item => (
-              <MenuItem key={item.id} value={item.label}>
-                {item.label}
-              </MenuItem>
-            ))}
-          </Select>
-        </div>
-      </div>
+      <InputWrapper sx={{ pr: { xs: 0, md: 1 } }}>
+        <Autocomplete
+          id={`products.${index}.priority`}
+          name={`products.${index}.priority`}
+          freeSolo
+          disablePortal
+          getOptionLabel={option => option.label}
+          options={priorityOptions}
+          size='small'
+          margin='normal'
+          fullWidth
+          onChange={handleChange}
+          renderInput={params => (
+            <TextField
+              {...params}
+              type='text'
+              size='small'
+              margin='normal'
+              value={product.priority}
+              label={dictionary.priority}
+              onChange={handleChange}
+              error={Boolean(errors.products?.[index]?.priority)}
+              helperText={errors.products?.[index]?.priority}
+              fullWidth
+            />
+          )}
+        />
+      </InputWrapper>
+      <InputWrapper sx={{ pl: { xs: 0, md: 1 } }}>
+        <Autocomplete
+          id={`products.${index}.productMeasure`}
+          name={`products.${index}.productMeasure`}
+          freeSolo
+          disablePortal
+          getOptionLabel={option => option.label}
+          options={productMeasureOptions}
+          size='small'
+          margin='normal'
+          fullWidth
+          onChange={handleChange}
+          renderInput={params => (
+            <TextField
+              {...params}
+              type='text'
+              size='small'
+              margin='normal'
+              value={product.productMeasure}
+              label={dictionary.productMeasure}
+              onChange={handleChange}
+              error={Boolean(errors.products?.[index]?.productMeasure)}
+              helperText={errors.products?.[index]?.productMeasure}
+              fullWidth
+            />
+          )}
+        />
+      </InputWrapper>
 
-      <div className={styles.group}>
-        <div className={styles.field_box}>
-          <TextField
-            id={`products.${index}.quantity`}
-            name={`products.${index}.quantity`}
-            value={values.products[index].quantity}
-            classes={{ root: styles.root }}
-            className={styles.default_inputs}
-            label={dictionary.quantity}
-            required
-            type='number'
-            size='small'
-            margin='normal'
-            onChange={handleChange}
-          />
-        </div>
-        <div className={styles.field_box}>
-          <TextField
-            id={`products.${index}.date`}
-            name={`products.${index}.date`}
-            value={values.products[index].date}
-            classes={{ root: styles.root }}
-            className={styles.default_inputs}
-            required
-            type='date'
-            size='small'
-            margin='normal'
-            onChange={handleChange}
-          />
-        </div>
-      </div>
-      <div className={styles.actions}>
+      <InputWrapper sx={{ pr: { xs: 0, md: 1 } }}>
+        <TextField
+          id={`products.${index}.quantity`}
+          name={`products.${index}.quantity`}
+          value={product.quantity}
+          label={dictionary.quantity}
+          required
+          type='number'
+          size='small'
+          margin='normal'
+          onChange={handleChange}
+          fullWidth
+        />
+      </InputWrapper>
+      <InputWrapper sx={{ pl: { xs: 0, md: 1 } }}>
+        <TextField
+          id={`products.${index}.date`}
+          name={`products.${index}.date`}
+          value={product.date}
+          required
+          type='date'
+          size='small'
+          margin='normal'
+          onChange={handleChange}
+          fullWidth
+        />
+      </InputWrapper>
+
+      <Box width='100%' sx={{ display: 'flex', justifyContent: 'center' }}>
         <IconButton
-          className={styles.remove}
+          sx={{ color: theme => theme.icons.yellow }}
           onClick={() => arrayHelpers.remove(index)} // remove a product from the list
         >
           <RemoveCircleOutlineIcon />
         </IconButton>
         <IconButton
-          className={styles.add}
+          sx={{ color: theme => theme.icons.denim }}
           onClick={() => arrayHelpers.insert(index, initialProductValue)} // insert an empty string at a position
         >
           <AddCircleOutlineIcon />
         </IconButton>
-      </div>
+      </Box>
     </Stack>
   );
 };

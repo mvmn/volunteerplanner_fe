@@ -28,7 +28,14 @@ import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import { getSubtasksByTaskId, subtaskComplete, subtaskReject } from '../../api/subtasks';
-import { completeTask, exportTasks, fetchTasks, rejectTask, verifyTask } from '../../api/tasks';
+import {
+  completeTask,
+  createTask,
+  exportTasks,
+  fetchTasks,
+  rejectTask,
+  verifyTask
+} from '../../api/tasks';
 import { Categories } from '../../components/Categories';
 import { CreateTaskButton } from '../../components/CreateTaskButton/CreateTaskButton';
 import { Priority } from '../../components/Priority';
@@ -544,11 +551,21 @@ const VolunteerTasksListView = () => {
 export const TasksList = () => {
   const user = useSelector(state => state.user);
 
+  // const queryClient = useQueryClient();
+  const handleTaskCreation = form =>
+    createTask(form)
+      // .then(() => queryClient.invalidateQueries(query))
+      .catch(error => {
+        console.error(error);
+      });
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         <Title text={dictionary.tasks} />
-        {user.role === ROLES.operator && <CreateTaskButton />}
+        {user.role === ROLES.operator && (
+          <CreateTaskButton handleTaskCreation={handleTaskCreation} />
+        )}
       </div>
 
       <div className={styles.body}>

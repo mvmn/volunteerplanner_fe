@@ -5,6 +5,10 @@ const theme = createTheme({
     text: {
       primary: '#82888C'
     }
+  },
+  icons: {
+    denim: '#1976d2',
+    yellow: '#f9cb40'
   }
 });
 

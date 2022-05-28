@@ -22,7 +22,7 @@ export const ProductsFieldArray = ({ values, handleChange, errors, setFieldValue
             values.products.map((product, index) => (
               <ProductsField
                 key={index}
-                values={values}
+                product={product}
                 index={index}
                 handleChange={handleChange}
                 errors={errors}
