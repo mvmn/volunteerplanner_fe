@@ -51,3 +51,12 @@ export const authenticate = async ({ password, phoneNumber, setLoginError }) => 
     console.log(e);
   }
 };
+
+export const signUp = async ({ phoneNumber, ...user }) => {
+  return axios
+    .post(`${ENDPOINT}/api/v1/users`, {
+      ...user,
+      phoneNumber: phoneNumber.replace(/[^0-9]/gi, '')
+    })
+    .then(({ data }) => data);
+};
