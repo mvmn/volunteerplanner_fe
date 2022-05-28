@@ -132,6 +132,11 @@ const dictionary = {
   approvedBy: 'Прийняв(ла)',
   rejectedBy: 'Відхилив(ла)',
   loading: 'Завантаження',
-  error: 'Помилка'
+  error: 'Помилка',
+  sendCode: 'Надіслати код',
+  verificationCode: 'Код підтвердження з SMS',
+  confirmationCodeInfo:
+    'На ваш номер надіслано SMS з кодом. Будь-ласка, введіть отриманий код для підтвердження',
+  invalidVerificationCode: 'Невірний код підтвердження'
 };
 export default dictionary;
