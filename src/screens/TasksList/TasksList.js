@@ -126,7 +126,7 @@ const SubtasksPane = ({ taskId, statusIndex }) => {
 };
 
 const Row = props => {
-  const { row, handleRowClick, tasksTabIndex, refetch } = props;
+  const { row, handleRowClick, tasksTabIndex, refetch, skipSubtaskCount } = props;
   const [open, setOpen] = useState(false);
   const [reloading, setReloading] = useState(false);
 
@@ -159,6 +159,7 @@ const Row = props => {
         className={open ? styles.opened : ''}
         sx={{ '& > *': { borderBottom: 'unset' } }}
         onDoubleClick={() => handleRowClick(row.id)}
+        key={row.id}
       >
         <TableCell>
           {row.subtaskCount > 0 ? (
@@ -169,10 +170,11 @@ const Row = props => {
             <></>
           )}
         </TableCell>
+        <TableCell>{row.id}</TableCell>
         <TableCell>
           <Priority priority={row.priority} />
         </TableCell>
-        <TableCell scope='row'>{row.subtaskCount}</TableCell>
+        {!skipSubtaskCount ? <TableCell scope='row'>{row.subtaskCount}</TableCell> : <></>}
         <TableCell>{row.product.name}</TableCell>
         <TableCell>{`${row.quantity} ${row.productMeasure}`}</TableCell>
         <TableCell>{`${row.quantityLeft} ${row.productMeasure}`}</TableCell>
@@ -305,6 +307,7 @@ const OperatorTasksListView = () => {
   );
 
   const headCells = [
+    { id: 'TASK_ID', label: dictionary.id, sortable: false },
     { id: 'PRIORITY', label: dictionary.priority, sortable: true },
     { id: 'subtaskCount', label: dictionary.subtaskCount },
     { id: 'PRODUCT_NAME', label: dictionary.productName, sortable: true },
@@ -365,6 +368,9 @@ const OperatorTasksListView = () => {
                   <TableRow>
                     <TableCell />
                     {headCells.map(headCell => {
+                      if (taskStatusTabValue === 0 && headCell.id === 'subtaskCount') {
+                        return null;
+                      }
                       if (headCell.sortable) {
                         return (
                           <TableCell key={headCell.id} className={styles.fontBold}>
@@ -400,6 +406,7 @@ const OperatorTasksListView = () => {
                       handleRowClick={() => navigateSubTaskHandler(row)}
                       tasksTabIndex={taskStatusTabValue}
                       refetch={refetch}
+                      skipSubtaskCount={taskStatusTabValue === 0}
                     />
                   ))}
                 </TableBody>

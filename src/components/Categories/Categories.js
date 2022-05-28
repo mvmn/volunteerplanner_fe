@@ -179,7 +179,6 @@ export const Categories = ({ editable }) => {
                 nodeId={category.id.toString()}
                 key={category.id}
                 label={category.name}
-                t
               >
                 {subcategories[category.id]?.map(subcategory => (
                   <Tooltip
