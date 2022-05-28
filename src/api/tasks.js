@@ -80,3 +80,29 @@ export const rejectTask = async taskId => {
     console.log(e);
   }
 };
+
+export const createTask = async taskData => {
+  try {
+    const generalData = {
+      volunteerStoreId: taskData.collectionAddress.id,
+      customerStoreId: taskData.shippingAddress.id,
+      note: taskData.note
+    };
+    const items = taskData.products.map(product => {
+      const { productName, quantity, productMeasure, priority, date } = product;
+      return {
+        ...generalData,
+        productId: productName.id,
+        quantity,
+        productMeasure: productMeasure?.label,
+        priority: priority?.id,
+        deadlineDate: Date.parse(date) / 1000,
+        status: 'NEW'
+      };
+    });
+    const response = await axios.post(`${ENDPOINT}/api/v1/tasks/batch`, { items: items });
+    return response.data;
+  } catch (e) {
+    console.log(e);
+  }
+};
