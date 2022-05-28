@@ -166,15 +166,13 @@ const Row = props => {
             <IconButton aria-label='expand row' size='small' onClick={() => setOpen(!open)}>
               {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
-          ) : (
-            <></>
-          )}
+          ) : null}
         </TableCell>
         <TableCell>{row.id}</TableCell>
         <TableCell>
           <Priority priority={row.priority} />
         </TableCell>
-        {!skipSubtaskCount ? <TableCell scope='row'>{row.subtaskCount}</TableCell> : <></>}
+        {!skipSubtaskCount ? <TableCell scope='row'>{row.subtaskCount}</TableCell> : null}
         <TableCell>{row.product.name}</TableCell>
         <TableCell>{`${row.quantity} ${row.productMeasure}`}</TableCell>
         <TableCell>{`${row.quantityLeft} ${row.productMeasure}`}</TableCell>
