@@ -21,7 +21,7 @@ export const ProductsFieldArray = ({ values, handleChange, errors, setFieldValue
           {values.products && values.products.length > 0 ? (
             values.products.map((product, index) => (
               <ProductsField
-                key={index}
+                key={product.id}
                 product={product}
                 index={index}
                 handleChange={handleChange}

@@ -143,6 +143,11 @@ export const ProductsField = ({
           freeSolo
           disablePortal
           getOptionLabel={option => option.name}
+          renderOption={(props, option) => (
+            <li {...props} key={option.id}>
+              {option.name}
+            </li>
+          )}
           options={products}
           size='small'
           margin='normal'
