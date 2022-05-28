@@ -31,3 +31,12 @@ export const getSubcategories = async () => {
     console.error(e);
   }
 };
+
+export const createCategory = async request => {
+  try {
+    const response = await axios.post(`${ENDPOINT}/api/v1/categories`, request);
+    return response.data;
+  } catch (e) {
+    console.error(e);
+  }
+};

@@ -492,7 +492,7 @@ const VolunteerTasksListView = () => {
   return (
     <div className={styles.tabsContainer}>
       <div className={styles.tabsSearchBox}>
-        <Title text={dictionary.tasks} />
+        <Title text='' />
         <div className={styles.search}>
           <div className={styles.export_button}>
             <button onClick={exportTasksPage}>

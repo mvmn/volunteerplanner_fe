@@ -1,14 +1,19 @@
 import SearchIcon from '@mui/icons-material/Search';
-import { TextField } from '@mui/material';
+import { Button, TextField, TextareaAutosize } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
+import { Formik } from 'formik';
 import { useContext, useState } from 'react';
 import { useQuery } from 'react-query';
+import { useSelector } from 'react-redux';
+import * as yup from 'yup';
 
-import { searchProducts } from '../../api/products';
+import { createProduct, searchProducts } from '../../api/products';
 import { Categories } from '../../components/Categories';
+import { CreateEntityButton } from '../../components/CreateEntityButton';
 import { Title } from '../../components/Title';
 import { MAX_PRODUCTS_PER_PAGE } from '../../constants/uiConfig';
 import dictionary from '../../dictionary';
+import { yupPatterns } from '../../helpers/validation';
 import { CategoriesContext } from '../Main';
 import styles from './CategoryProductMgmt.module.scss';
 
@@ -29,12 +34,11 @@ export const productColumns = [
   }
 ];
 
-const ProductsList = () => {
+const ProductsList = ({ searchQuery, refreshKey }) => {
   const { selectedCategory, selectedSubCategory } = useContext(CategoriesContext);
   const [pageSize, setPageSize] = useState(MAX_PRODUCTS_PER_PAGE);
   const [pageNumber, setPageNumber] = useState(0);
   const [order, setOrder] = useState(0);
-  const [searchQuery, setSearchQuery] = useState('');
 
   const { data, status } = useQuery(
     [
@@ -45,7 +49,8 @@ const ProductsList = () => {
         selectedSubCategory,
         searchQuery,
         order,
-        pageSize
+        pageSize,
+        refreshKey
       }
     ],
     () => {
@@ -108,23 +113,6 @@ const ProductsList = () => {
 
   return (
     <>
-      <div className={styles.search}>
-        <TextField
-          id='search'
-          name='search'
-          value={searchQuery}
-          type='text'
-          classes={{ root: styles.root }}
-          label={dictionary.searchTask}
-          size='small'
-          margin='normal'
-          onChange={e => setSearchQuery(e.target.value)}
-        />
-        <button className={styles.search_action} disabled={searchQuery.length < 1}>
-          <SearchIcon />
-        </button>
-      </div>
-
       {status === 'loading' ? (
         <div>{dictionary.loading}...</div>
       ) : status === 'error' ? (
@@ -150,17 +138,147 @@ const ProductsList = () => {
   );
 };
 
+const initialValues = {
+  name: '',
+  note: ''
+};
+
+const validationSchema = yup.object().shape({
+  name: yupPatterns('notEmptyString')
+});
+
+export const CreateProductForm = ({ onClose, onSave, category, subcategory }) => {
+  const onSubmitHandler = async (values, { setSubmitting }) => {
+    const request = { ...values };
+    request.category = { id: subcategory.id };
+    await createProduct(request);
+    setSubmitting(false);
+    onSave();
+    onClose({ form: values });
+  };
+
+  return (
+    <Formik
+      initialValues={{ ...initialValues }}
+      validationSchema={validationSchema}
+      onSubmit={onSubmitHandler}
+    >
+      {({ values, errors, setFieldValue, handleChange, handleSubmit }) => {
+        return (
+          <form onSubmit={handleSubmit}>
+            <div>
+              {dictionary.category}: {category.name} / {subcategory.name}
+            </div>
+
+            <TextField
+              name='name'
+              value={values.name}
+              label={dictionary.name}
+              type='text'
+              size='small'
+              margin='normal'
+              onChange={handleChange}
+              fullWidth
+              error={Boolean(errors.name)}
+              helperText={errors.name}
+            />
+            <TextareaAutosize
+              id='note'
+              name='note'
+              placeholder={dictionary.note}
+              value={values.note}
+              type='text'
+              size='small'
+              margin='normal'
+              onChange={handleChange}
+              className={styles.noteTextarea}
+            />
+
+            <Button variant='outlined' type='submit' className={styles.button} fullWidth>
+              {dictionary.save}
+            </Button>
+          </form>
+        );
+      }}
+    </Formik>
+  );
+};
+
+export const CreateProductButton = ({ onNewProductCreated }) => {
+  const categories = useSelector(state => state.categories.rootCategories);
+  const subcategories = useSelector(state => state.categories.subcategories);
+  const { selectedCategory, selectedSubCategory } = useContext(CategoriesContext);
+
+  if (!categories || !subcategories) {
+    return <div>{dictionary.loading}</div>;
+  }
+  return (
+    <CreateEntityButton
+      disabled={!selectedSubCategory}
+      title={dictionary.createProduct}
+      renderModalForm={onCloseHandler => (
+        <CreateProductForm
+          category={
+            selectedCategory
+              ? categories
+                  .filter(category => category.id.toString() === selectedCategory)
+                  .reduce((a, b) => a)
+              : null
+          }
+          subcategory={
+            selectedCategory && selectedSubCategory && subcategories[selectedCategory]
+              ? subcategories[selectedCategory]
+                  .filter(category => category.id.toString() === selectedSubCategory)
+                  .reduce((a, b) => a)
+              : null
+          }
+          onClose={onCloseHandler}
+          onSave={onNewProductCreated}
+        />
+      )}
+    />
+  );
+};
+
 export const CategoryProductMgmt = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const onNewProductCreated = () => {
+    setRefreshKey(refreshKey + 1);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <Title text={dictionary.tasks} />
+        <Title text={dictionary.categoriesAndProducts} />
+        <CreateProductButton onNewProductCreated={onNewProductCreated} />
+        <div className={styles.tabsContainer}>
+          <div className={styles.tabsSearchBox}>
+            <div className={styles.search}>
+              <TextField
+                id='search'
+                name='search'
+                value={searchQuery}
+                type='text'
+                classes={{ root: styles.root }}
+                label={dictionary.searchProducts}
+                size='small'
+                margin='normal'
+                onChange={e => setSearchQuery(e.target.value)}
+              />
+              <button className={styles.search_action} disabled={searchQuery.length < 1}>
+                <SearchIcon />
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className={styles.body}>
-        <Categories />
+        <Categories editable={true} />
         <div className={styles.tabsContainer}>
-          <ProductsList />
+          <ProductsList searchQuery={searchQuery} refreshKey={refreshKey} />
         </div>
       </div>
     </div>
