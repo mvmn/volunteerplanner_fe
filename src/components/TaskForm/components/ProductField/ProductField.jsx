@@ -139,7 +139,7 @@ export const ProductsField = ({
       <Box width='100%'>
         <Autocomplete
           id={`products.${index}.productName`}
-          name={`products.${index}.productName`}
+          name='productName'
           freeSolo
           disablePortal
           getOptionLabel={option => option.name}
@@ -183,7 +183,9 @@ export const ProductsField = ({
           size='small'
           margin='normal'
           fullWidth
-          onChange={handleChange}
+          onChange={(_, value) => {
+            setFieldValue(`products.${index}.priority`, value);
+          }}
           renderInput={params => (
             <TextField
               {...params}
@@ -211,7 +213,9 @@ export const ProductsField = ({
           size='small'
           margin='normal'
           fullWidth
-          onChange={handleChange}
+          onChange={(_, value) => {
+            setFieldValue(`products.${index}.productMeasure`, value);
+          }}
           renderInput={params => (
             <TextField
               {...params}

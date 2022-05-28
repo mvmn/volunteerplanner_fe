@@ -39,9 +39,9 @@ export const TaskForm = ({ onClose }) => {
   };
 
   const validationSchema = yup.object().shape({
-    // customer: yupPatterns('customer'),
     collectionAddress: yupPatterns('collectionAddress'),
     shippingAddress: yupPatterns('shippingAddress'),
+    products: yupPatterns('products'),
     note: yupPatterns('note')
   });
 

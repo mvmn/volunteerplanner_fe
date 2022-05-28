@@ -12,9 +12,10 @@ export const customerOptions = [
 ];
 
 export const priorityOptions = [
-  { label: dictionary.high, id: 0 },
-  { label: dictionary.medium, id: 1 },
-  { label: dictionary.low, id: 3 }
+  { label: dictionary.critical, id: 'CRITICAL' },
+  { label: dictionary.high, id: 'HIGH' },
+  { label: dictionary.medium, id: 'NORMAL' },
+  { label: dictionary.low, id: 'LOW' }
 ];
 
 export const primaryCategory = [
