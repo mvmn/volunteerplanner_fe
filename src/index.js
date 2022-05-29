@@ -23,10 +23,9 @@ import { history, store } from './store';
 const environment = process.env.NODE_ENV;
 
 // NOTE: we don't need to track an enormous amount of errors happening during development
-if (environment !== 'development') {
+if (environment !== 'development' && process.env.SENTRY_DSN) {
   Sentry.init({
-    // NOTE: could be extracted into some env variable
-    dsn: 'https://4179648c56ea478791f1e3a2634577c3@o1266842.ingest.sentry.io/6452294',
+    dsn: process.env.SENTRY_DSN,
     integrations: [new BrowserTracing()],
     environment,
     tracesSampleRate: 1.0
