@@ -1,6 +1,8 @@
 import { createTheme } from '@mui/material/styles';
+import { ukUA } from '@mui/x-data-grid';
 
 const theme = createTheme({
+  ukUA,
   palette: {
     text: {
       primary: '#82888C'
