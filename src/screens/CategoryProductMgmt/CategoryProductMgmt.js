@@ -229,7 +229,7 @@ export const CreateProductButton = ({ onNewProductCreated }) => {
             selectedCategory && selectedSubCategory && subcategories[selectedCategory]
               ? subcategories[selectedCategory]
                   .filter(category => category.id.toString() === selectedSubCategory)
-                  .reduce((a, b) => a)
+                  .reduce((a, b) => a, null)
               : null
           }
           onClose={onCloseHandler}
