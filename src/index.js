@@ -1,5 +1,7 @@
 import './index.css';
 
+import * as Sentry from '@sentry/react';
+import { BrowserTracing } from '@sentry/tracing';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider, useSelector } from 'react-redux';
@@ -17,6 +19,19 @@ import { routes } from './navigation/routes';
 import { TasksList } from './screens/TasksList';
 import { UserList } from './screens/UserList';
 import { history, store } from './store';
+
+const environment = process.env.NODE_ENV;
+
+// NOTE: we don't need to track an enormous amount of errors happening during development
+if (environment !== 'development') {
+  Sentry.init({
+    // NOTE: could be extracted into some env variable
+    dsn: 'https://4179648c56ea478791f1e3a2634577c3@o1266842.ingest.sentry.io/6452294',
+    integrations: [new BrowserTracing()],
+    environment,
+    tracesSampleRate: 1.0
+  });
+}
 
 const ProtectedRoute = ({ role, children }) => {
   const isAuthorized = useSelector(state => state.user.isAuthorized);
