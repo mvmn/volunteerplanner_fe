@@ -286,15 +286,14 @@ export const CategoryProductMgmt = () => {
                 name='search'
                 value={searchQuery}
                 type='text'
-                classes={{ root: styles.root }}
                 label={dictionary.searchProducts}
                 size='small'
                 margin='normal'
                 onChange={e => setSearchQuery(e.target.value)}
+                InputProps={{
+                  endAdornment: <SearchIcon />
+                }}
               />
-              <button className={styles.search_action} disabled={searchQuery.length < 1}>
-                <SearchIcon />
-              </button>
             </div>
           </div>
         </div>
