@@ -6,6 +6,7 @@ export const SET_VERIFIED = 'SET_VERIFIED';
 export const SET_NEW = 'SET_NEW';
 
 export const TASKS_SORT_FIELD_MAPPINGS = {
+  id: 'ID',
   quantityLeft: 'QUANTITY_LEFT',
   productId: 'PRODUCT_NAME',
   priority: 'PRIORITY',
