@@ -26,6 +26,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import createPersistedState from 'use-persisted-state';
 
 import { getSubtasksByTaskId, subtaskComplete, subtaskReject } from '../../api/subtasks';
 import {
@@ -50,6 +51,8 @@ import { CategoriesContext } from '../Main';
 import styles from './TasksList.module.scss';
 
 export const TabsContext = createContext();
+
+const usePageSizeState = createPersistedState('tasksListPageSize');
 
 const VERIFIED_TAB_INDEX = 1;
 
@@ -221,7 +224,7 @@ const Row = props => {
 const OperatorTasksListView = () => {
   const history = useHistory();
 
-  const [pageSize, setPageSize] = useState(MAX_TASKS_PER_PAGE);
+  const [pageSize, setPageSize] = usePageSizeState(MAX_TASKS_PER_PAGE);
   const [taskStatusTabValue, setTaskStatusTabValue] = useState(1);
   const [searchedTaskQuery, setSearchedTaskQuery] = useState('');
 
@@ -441,7 +444,7 @@ const VolunteerTasksListView = () => {
 
   const { selectedCategory, selectedSubCategory } = useContext(CategoriesContext);
 
-  const [pageSize, setPageSize] = useState(MAX_TASKS_PER_PAGE);
+  const [pageSize, setPageSize] = usePageSizeState(MAX_TASKS_PER_PAGE);
   const [tasksPageNumber, setTasksPageNumber] = useState(0);
   const [tasksOrder, setTasksOrder] = useState(0);
   const [searchedTaskQuery, setSearchedTaskQuery] = useState('');

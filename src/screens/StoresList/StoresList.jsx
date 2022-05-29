@@ -4,6 +4,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import clsx from 'clsx';
 import { useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
+import createPersistedState from 'use-persisted-state';
 
 import { createStore, fetchStores } from '../../api/stores';
 import { CreateEntityButton } from '../../components/CreateEntityButton';
@@ -13,6 +14,8 @@ import { STORES_SORT_FIELD_MAPPINGS } from '../../constants/stores';
 import { MAX_STORES_PER_PAGE } from '../../constants/uiConfig';
 import dictionary from '../../dictionary';
 import styles from './StoresList.module.scss';
+
+const usePageSizeState = createPersistedState('storesListPageSize');
 
 export const StoreConfidentiality = ({ confidential }) => {
   const color = confidential ? 'yellow' : 'green';
@@ -62,7 +65,7 @@ export const storesColumns = [
 ];
 
 export const StoresList = () => {
-  const [pageSize, setPageSize] = useState(MAX_STORES_PER_PAGE);
+  const [pageSize, setPageSize] = usePageSizeState(MAX_STORES_PER_PAGE);
   const [pageNumber, setPageNumber] = useState(0);
   const [order, setOrder] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');

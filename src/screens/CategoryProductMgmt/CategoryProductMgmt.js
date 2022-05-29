@@ -5,6 +5,7 @@ import { Formik } from 'formik';
 import { useContext, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
+import createPersistedState from 'use-persisted-state';
 import * as yup from 'yup';
 
 import { createProduct, searchProducts } from '../../api/products';
@@ -16,6 +17,8 @@ import dictionary from '../../dictionary';
 import { yupPatterns } from '../../helpers/validation';
 import { CategoriesContext } from '../Main';
 import styles from './CategoryProductMgmt.module.scss';
+
+const usePageSizeState = createPersistedState('prodMgmtProductListPageSize');
 
 export const productColumns = [
   { field: 'name', headerName: dictionary.name, flex: 2 },
@@ -36,7 +39,7 @@ export const productColumns = [
 
 const ProductsList = ({ searchQuery, refreshKey }) => {
   const { selectedCategory, selectedSubCategory } = useContext(CategoriesContext);
-  const [pageSize, setPageSize] = useState(MAX_PRODUCTS_PER_PAGE);
+  const [pageSize, setPageSize] = usePageSizeState(MAX_PRODUCTS_PER_PAGE);
   const [pageNumber, setPageNumber] = useState(0);
   const [order, setOrder] = useState(0);
 
