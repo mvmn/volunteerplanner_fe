@@ -16,7 +16,10 @@ const yupPatterns = key => {
         .min(4, 'Занадто короткий!')
         .max(30, 'Занадто довгий');
     case 'name':
-      return yup.string().min(3, 'Name must be not empty').required('Name is required');
+      return yup
+        .string()
+        .min(3, 'Назва повинна містити щонайменше 3 символи')
+        .required('Необхідно вказати назву');
     case 'signInPass':
       return yup.string().required("Пароль є обов'язковим").min(6, 'Пароль занадто короткий');
     case 'signUpPass':
@@ -50,6 +53,10 @@ const yupPatterns = key => {
       );
     case 'productName':
       return yup.object().required("Ім'я продукту обов'язкове").nullable(true);
+    case 'productCategory':
+      return yup.object().required("Категорія обов'язкова").nullable(true);
+    case 'productSubcategory':
+      return yup.object().required("Підкатегорія обов'язкова").nullable(true);
     case 'quantity':
       return yup.number().required("Кількість обов'язкова").min(1, 'Додайте хоча б одну одиницю');
     case 'priority':

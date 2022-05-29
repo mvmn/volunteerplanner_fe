@@ -3,7 +3,7 @@ import { Button, TextField, TextareaAutosize } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { Formik } from 'formik';
 import { useContext, useState } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { useSelector } from 'react-redux';
 import createPersistedState from 'use-persisted-state';
 import * as yup from 'yup';
@@ -11,10 +11,12 @@ import * as yup from 'yup';
 import { createProduct, searchProducts } from '../../api/products';
 import { Categories } from '../../components/Categories';
 import { CreateEntityButton } from '../../components/CreateEntityButton';
+import { ProductEditModal } from '../../components/ProductEditModal';
 import { Title } from '../../components/Title';
 import { MAX_PRODUCTS_PER_PAGE } from '../../constants/uiConfig';
 import dictionary from '../../dictionary';
 import { yupPatterns } from '../../helpers/validation';
+import { useModalVisibleHook } from '../../hooks/useModalVisibleHooks';
 import { CategoriesContext } from '../Main';
 import styles from './CategoryProductMgmt.module.scss';
 
@@ -42,20 +44,24 @@ const ProductsList = ({ searchQuery, refreshKey }) => {
   const [pageSize, setPageSize] = usePageSizeState(MAX_PRODUCTS_PER_PAGE);
   const [pageNumber, setPageNumber] = useState(0);
   const [order, setOrder] = useState(0);
+  const { isModalVisible, onCloseHandler, onOpenHandler } = useModalVisibleHook();
+  const [selectedProduct, setSelectedProduct] = useState();
+
+  const query = [
+    'products',
+    {
+      pageNumber,
+      selectedCategory,
+      selectedSubCategory,
+      searchQuery,
+      order,
+      pageSize,
+      refreshKey
+    }
+  ];
 
   const { data, status } = useQuery(
-    [
-      'products',
-      {
-        pageNumber,
-        selectedCategory,
-        selectedSubCategory,
-        searchQuery,
-        order,
-        pageSize,
-        refreshKey
-      }
-    ],
+    query,
     () => {
       return searchProducts(prepareQuery());
     },
@@ -64,6 +70,22 @@ const ProductsList = ({ searchQuery, refreshKey }) => {
       refetchOnWindowFocus: false
     }
   );
+  const queryClient = useQueryClient();
+
+  const handleProductClick = event => {
+    setSelectedProduct(event.row);
+    onOpenHandler();
+  };
+
+  const handleModalClose = () => {
+    onCloseHandler();
+    setSelectedProduct();
+  };
+
+  const handleProductUpdate = () => {
+    queryClient.invalidateQueries(query);
+    onCloseHandler();
+  };
 
   const changePageSize = pageSize => {
     setPageSize(pageSize);
@@ -127,6 +149,7 @@ const ProductsList = ({ searchQuery, refreshKey }) => {
           rowCount={data.totalCount}
           paginationMode='server'
           onPageChange={page => setPageNumber(page)}
+          onRowClick={event => handleProductClick(event)}
           sortingMode='server'
           onSortModelChange={setOrder}
           sortModel={order ? order : []}
@@ -135,6 +158,13 @@ const ProductsList = ({ searchQuery, refreshKey }) => {
           pageSize={pageSize}
         />
       )}
+
+      <ProductEditModal
+        isOpen={isModalVisible}
+        onClose={handleModalClose}
+        onSave={handleProductUpdate}
+        product={selectedProduct}
+      />
     </>
   );
 };
