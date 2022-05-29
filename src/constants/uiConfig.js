@@ -59,6 +59,7 @@ export const SUBTASK_STATUS_NAME = {
 };
 
 export const tasksColumns = [
+  { field: 'id', headerName: dictionary.id, flex: 1, sortable: true },
   { field: 'subtaskCount', headerName: dictionary.subtaskCount, flex: 1, sortable: false },
   {
     field: 'productId',
@@ -96,12 +97,6 @@ export const tasksColumns = [
     flex: 1,
     sortable: false,
     renderCell: ({ row }) => row.volunteerStore.name
-  },
-  {
-    field: 'status',
-    headerName: dictionary.status,
-    renderCell: ({ row }) => <Status status={row.status} />,
-    flex: 1
   },
   { field: 'note', headerName: dictionary.note, flex: 1, sortable: false }
 ];

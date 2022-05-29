@@ -8,6 +8,8 @@ import { unixTimeToPrettyDate } from '../../../../helpers/dates';
 import { storeDisplay } from '../../../../helpers/store';
 
 const ROW_TO_DISPLAY = [
+  'id',
+  'status',
   'product',
   'quantity',
   'deadlineDate',
@@ -59,7 +61,7 @@ export const TaskInfo = ({ task }) => {
               title = task.status === 'REJECTED' ? dictionary.rejectedBy : dictionary.approvedBy;
               render = task.status === 'COMPLETED' || task.status === 'REJECTED';
             } else if (key === 'status') {
-              value = dictionary[task.status.toLowerCase()];
+              component = <Status status={task.status} />;
             }
 
             return {
@@ -78,21 +80,13 @@ export const TaskInfo = ({ task }) => {
     <TableContainer component={Paper}>
       <Table style={{ borderBottom: 'none' }}>
         <TableBody>
-          <TableRow key='status'>
-            <TableCell width='33%'>{dictionary.status}:</TableCell>
-            <TableCell>
-              <Status status={task.status} />
-            </TableCell>
-          </TableRow>
           {rows.map(({ key, title, value, render, component }) => {
             return render ? (
               <TableRow key={key}>
                 <TableCell width='33%'>{title}:</TableCell>
                 <TableCell>{component ?? value}</TableCell>
               </TableRow>
-            ) : (
-              <></>
-            );
+            ) : null;
           })}
         </TableBody>
       </Table>
