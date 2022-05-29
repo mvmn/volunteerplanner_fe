@@ -75,6 +75,7 @@ const ProductsList = ({ searchQuery, refreshKey }) => {
       pageSize,
       page: pageNumber + 1
     };
+
     const filters = [];
     if (searchQuery && searchQuery.trim().length > 0) {
       filters.push({
@@ -83,20 +84,16 @@ const ProductsList = ({ searchQuery, refreshKey }) => {
         value: searchQuery.trim()
       });
     }
-    var categoryPath = null;
-    if (selectedCategory) {
-      categoryPath = '/' + selectedCategory;
-    }
-    if (selectedSubCategory) {
-      categoryPath += '/' + selectedSubCategory;
-    }
+
+    const categoryPath = [selectedCategory, selectedSubCategory].filter(Boolean).join('/');
     if (categoryPath) {
       filters.push({
         type: 'text',
         field: 'categoryPath',
-        value: categoryPath
+        value: `/${categoryPath}`
       });
     }
+
     if (filters.length > 0) {
       if (filters.length === 1) {
         request.filter = filters[0];
@@ -111,6 +108,7 @@ const ProductsList = ({ searchQuery, refreshKey }) => {
     if (order.length > 0) {
       request.sort = { field: order[0].field, order: order[0].sort };
     }
+
     return request;
   };
 
@@ -170,7 +168,7 @@ export const CreateProductForm = ({ onClose, onSave, category, subcategory }) =>
         return (
           <form onSubmit={handleSubmit}>
             <div>
-              {dictionary.category}: {category.name} / {subcategory.name}
+              {dictionary.category}: {category?.name} / {subcategory?.name}
             </div>
 
             <TextField
@@ -215,6 +213,7 @@ export const CreateProductButton = ({ onNewProductCreated }) => {
   if (!categories || !subcategories) {
     return <div>{dictionary.loading}</div>;
   }
+
   return (
     <CreateEntityButton
       disabled={!selectedSubCategory}
@@ -222,18 +221,11 @@ export const CreateProductButton = ({ onNewProductCreated }) => {
       renderModalForm={onCloseHandler => (
         <CreateProductForm
           category={
-            selectedCategory
-              ? categories
-                  .filter(category => category.id.toString() === selectedCategory)
-                  .reduce((a, b) => a)
-              : null
+            selectedCategory && categories.find(({ id }) => id.toString() === selectedCategory)
           }
           subcategory={
-            selectedCategory && selectedSubCategory && subcategories[selectedCategory]
-              ? subcategories[selectedCategory]
-                  .filter(category => category.id.toString() === selectedSubCategory)
-                  .reduce((a, b) => a, null)
-              : null
+            selectedSubCategory &&
+            subcategories[selectedCategory]?.find(({ id }) => id.toString() === selectedSubCategory)
           }
           onClose={onCloseHandler}
           onSave={onNewProductCreated}
