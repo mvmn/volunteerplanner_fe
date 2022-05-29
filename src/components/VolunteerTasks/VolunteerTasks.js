@@ -3,6 +3,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useCallback, useContext, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useHistory } from 'react-router';
+import createPersistedState from 'use-persisted-state';
 
 import { getUsersSubtasks } from '../../api/subtasks';
 import { getTasksByIds } from '../../api/tasks';
@@ -16,6 +17,8 @@ import { Priority } from '../Priority';
 import { Status } from '../Status';
 import { Title } from '../Title';
 import styles from './VolunteerTasks.module.scss';
+
+const usePageSizeState = createPersistedState('subtasksListPageSize');
 
 export const tasksColumns = [
   {
@@ -90,7 +93,7 @@ export const tasksColumns = [
 ];
 
 export const VolunteerTasks = () => {
-  const [pageSize, setPageSize] = useState(MAX_TASKS_PER_PAGE);
+  const [pageSize, setPageSize] = usePageSizeState(MAX_TASKS_PER_PAGE);
   const [pageNumber, setPageNumber] = useState(0);
   const [sortOrder, setSortOrder] = useState(0);
   const [subtaskStatus, setSubtaskStatus] = useState(0);

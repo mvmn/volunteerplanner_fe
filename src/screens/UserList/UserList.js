@@ -3,6 +3,7 @@ import { TextField } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import createPersistedState from 'use-persisted-state';
 
 import { getUsers } from '../../actions/users';
 import { LockedStatus } from '../../components/LockedStatus';
@@ -13,6 +14,8 @@ import { MAX_USER_PER_PAGE } from '../../constants/uiConfig';
 import dictionary from '../../dictionary';
 import { useModalVisibleHook } from '../../hooks/useModalVisibleHook';
 import styles from './UserList.module.scss';
+
+const usePageSizeState = createPersistedState('usersListPageSize');
 
 export const usersColumns = [
   { field: 'phoneNumber', headerName: dictionary.phoneNumber, flex: 2 },
@@ -56,7 +59,7 @@ export const UserList = () => {
   const totalCount = useSelector(state => state.users.totalCount);
   const { isModalVisible, onCloseHandler, onOpenHandler } = useModalVisibleHook();
 
-  const [pageSize, setPageSize] = useState(MAX_USER_PER_PAGE);
+  const [pageSize, setPageSize] = usePageSizeState(MAX_USER_PER_PAGE);
   const [selectedUser, setSelectedUser] = useState();
   const [searchedUserQuery, setSearchedUserQuery] = useState('');
 
