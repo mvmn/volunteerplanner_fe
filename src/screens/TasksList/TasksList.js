@@ -305,7 +305,7 @@ const OperatorTasksListView = () => {
   );
 
   const headCells = [
-    { id: 'TASK_ID', label: dictionary.id, sortable: false },
+    { id: 'ID', label: dictionary.id, sortable: true },
     { id: 'PRIORITY', label: dictionary.priority, sortable: true },
     { id: 'subtaskCount', label: dictionary.subtaskCount },
     { id: 'PRODUCT_NAME', label: dictionary.productName, sortable: true },
