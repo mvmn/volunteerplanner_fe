@@ -18,3 +18,13 @@ export const createProduct = async query => {
     console.error(e);
   }
 };
+
+export const updateProduct = async product => {
+  try {
+    const response = await axios.put(`${ENDPOINT}/api/v1/products/${product.id}`, product);
+
+    return response.data;
+  } catch (e) {
+    console.error(e);
+  }
+};
