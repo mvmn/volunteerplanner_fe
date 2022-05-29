@@ -1,3 +1,4 @@
+import { ukUA as coreUkUA } from '@mui/material/locale';
 import { createTheme } from '@mui/material/styles';
 import { ukUA } from '@mui/x-data-grid';
 
@@ -13,7 +14,8 @@ const theme = createTheme(
       yellow: '#f9cb40'
     }
   },
-  ukUA
+  ukUA,
+  coreUkUA
 );
 
 export default theme;
