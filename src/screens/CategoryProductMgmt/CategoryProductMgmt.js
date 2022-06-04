@@ -15,6 +15,7 @@ import { ProductEditModal } from '../../components/ProductEditModal';
 import { Title } from '../../components/Title';
 import { MAX_PRODUCTS_PER_PAGE } from '../../constants/uiConfig';
 import dictionary from '../../dictionary';
+import useDebounce from '../../helpers/debounce';
 import { yupPatterns } from '../../helpers/validation';
 import { useModalVisibleHook } from '../../hooks/useModalVisibleHooks';
 import { CategoriesContext } from '../Main';
@@ -47,13 +48,15 @@ const ProductsList = ({ searchQuery, refreshKey }) => {
   const { isModalVisible, onCloseHandler, onOpenHandler } = useModalVisibleHook();
   const [selectedProduct, setSelectedProduct] = useState();
 
+  const searchQueryDebounced = useDebounce(searchQuery, 500);
+
   const query = [
     'products',
     {
       pageNumber,
       selectedCategory,
       selectedSubCategory,
-      searchQuery,
+      searchQueryDebounced,
       order,
       pageSize,
       refreshKey
