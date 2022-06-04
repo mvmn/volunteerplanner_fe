@@ -121,6 +121,7 @@ export const StoresList = () => {
       refetchOnWindowFocus: false
     }
   );
+
   const queryClient = useQueryClient();
   const handleStoreCreation = form =>
     createStore(form)

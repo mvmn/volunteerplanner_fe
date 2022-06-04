@@ -1,17 +1,18 @@
 import SearchIcon from '@mui/icons-material/Search';
 import { TextField } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
+import { useQuery } from 'react-query';
 import createPersistedState from 'use-persisted-state';
 
-import { getUsers } from '../../actions/users';
+import { getUsers } from '../../api/users';
 import { LockedStatus } from '../../components/LockedStatus';
 import { Status } from '../../components/Status';
 import { Title } from '../../components/Title';
 import { UserModal } from '../../components/UserModal/UserModal';
 import { MAX_USER_PER_PAGE } from '../../constants/uiConfig';
 import dictionary from '../../dictionary';
+import useDebounce from '../../helpers/debounce';
 import { useModalVisibleHook } from '../../hooks/useModalVisibleHook';
 import styles from './UserList.module.scss';
 
@@ -46,92 +47,95 @@ export const usersColumns = [
   }
 ];
 
-const getUsersRequestInitialState = {
-  pageSize: MAX_USER_PER_PAGE,
-  page: 1,
-  filter: null
-};
-
 export const UserList = () => {
-  const [getUsersRequest, setGetUsersRequest] = useState(getUsersRequestInitialState);
-  const users = useSelector(state => state.users.all);
-  const currentPageNumber = useSelector(state => state.users.page);
-  const totalCount = useSelector(state => state.users.totalCount);
   const { isModalVisible, onCloseHandler, onOpenHandler } = useModalVisibleHook();
-
-  const [pageSize, setPageSize] = usePageSizeState(MAX_USER_PER_PAGE);
-  const [selectedUser, setSelectedUser] = useState();
-  const [searchedUserQuery, setSearchedUserQuery] = useState('');
-
-  const updateSearchText = searchText => {
-    setSearchedUserQuery(searchText);
-    if (searchText && searchText.trim().length > 0) {
-      setGetUsersRequest({
-        ...getUsersRequest,
-        filter: {
-          type: 'operator',
-          operator: 'or',
-          operands: [
-            {
-              type: 'text',
-              field: 'displayname',
-              value: searchText
-            },
-            {
-              type: 'text',
-              field: 'phone',
-              value: searchText
-            }
-          ]
-        }
-      });
-    } else {
-      setGetUsersRequest({
-        ...getUsersRequest,
-        filter: null
-      });
-    }
-  };
-
-  const pageSizeChange = pageSize => {
-    setPageSize(pageSize);
-    setGetUsersRequest({
-      ...getUsersRequest,
-      page: 1,
-      pageSize
-    });
-  };
 
   const handleRowDoubleClick = e => {
     setSelectedUser(e.row?.id);
     onOpenHandler();
   };
 
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getUsers({ getUsersRequest }));
-  }, [dispatch, getUsersRequest]);
+  const [selectedUser, setSelectedUser] = useState();
 
-  const setPageNumber = page => {
-    setGetUsersRequest({
-      ...getUsersRequest,
-      page: page + 1
-    });
-  };
+  const [pageSize, setPageSize] = usePageSizeState(MAX_USER_PER_PAGE);
+  const [pageNumber, setPageNumber] = useState(0);
+  const [sortModel, setSortModel] = useState();
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const handleSortModelChange = param => {
-    if (param.length > 0) {
-      setGetUsersRequest({
-        ...getUsersRequest,
-        sort: { field: param[0].field, order: param[0].sort }
-      });
-    } else {
-      setGetUsersRequest({
-        ...getUsersRequest,
-        sort: null
-      });
+  const searchQueryDebounced = useDebounce(searchQuery, 500);
+
+  const buildUsersQuery = () => {
+    const query = { pageSize, page: pageNumber + 1 };
+
+    if (searchQuery && searchQuery.trim().length > 0) {
+      query.filter = {
+        type: 'operator',
+        operator: 'or',
+        operands: [
+          {
+            type: 'text',
+            field: 'displayname',
+            value: searchQuery.trim()
+          },
+          {
+            type: 'text',
+            field: 'phone',
+            value: searchQuery.trim()
+          }
+        ]
+      };
     }
+
+    if (sortModel && sortModel.length > 0) {
+      query.sort = { field: sortModel[0].field, order: sortModel[0].sort };
+    }
+
+    return query;
   };
+
+  const query = ['users', { pageNumber, searchQueryDebounced, sortModel, pageSize }];
+  const { data, status } = useQuery(
+    query,
+    async () => {
+      return await getUsers(buildUsersQuery());
+    },
+    {
+      cacheTime: 0,
+      refetchOnWindowFocus: false
+    }
+  );
+
+  let displayNode;
+  switch (status) {
+    case 'loading': {
+      displayNode = <div>{dictionary.loading}...</div>;
+      break;
+    }
+    case 'error': {
+      displayNode = <div>{dictionary.error}</div>;
+      break;
+    }
+    default: {
+      displayNode = (
+        <DataGrid
+          className={styles.dataGrid}
+          style={{ height: 600 }}
+          onRowDoubleClick={e => handleRowDoubleClick(e)}
+          rows={data.items}
+          page={data.page - 1}
+          rowCount={data.totalCount}
+          columns={usersColumns}
+          paginationMode='server'
+          onPageChange={setPageNumber}
+          sortingMode='server'
+          onSortModelChange={setSortModel}
+          pageSize={pageSize}
+          rowsPerPageOptions={[5, 10, 25, 50]}
+          onPageSizeChange={setPageSize}
+        />
+      );
+    }
+  }
 
   return (
     <div className={styles.container}>
@@ -141,37 +145,22 @@ export const UserList = () => {
           <TextField
             id='search'
             name='search'
-            value={searchedUserQuery}
+            value={searchQuery}
             type='text'
             classes={{ root: styles.root }}
             label={dictionary.searchUsers}
             size='small'
             margin='normal'
-            onChange={e => updateSearchText(e.target.value)}
+            onChange={e => setSearchQuery(e.target.value)}
           />
-          <button className={styles.search_action} disabled={searchedUserQuery.length < 1}>
+          <button className={styles.search_action} disabled={searchQuery.length < 1}>
             <SearchIcon />
           </button>
         </div>
       </div>
       <UserModal isModalVisible={isModalVisible} onClose={onCloseHandler} userId={selectedUser} />
 
-      <DataGrid
-        className={styles.dataGrid}
-        style={{ height: 600 }}
-        onRowDoubleClick={e => handleRowDoubleClick(e)}
-        rows={users}
-        columns={usersColumns}
-        rowCount={totalCount}
-        paginationMode='server'
-        page={currentPageNumber - 1}
-        onPageChange={setPageNumber}
-        sortingMode='server'
-        onSortModelChange={handleSortModelChange}
-        pageSize={pageSize}
-        rowsPerPageOptions={[5, 10, 25, 50]}
-        onPageSizeChange={pageSizeChange}
-      />
+      {displayNode}
     </div>
   );
 };
