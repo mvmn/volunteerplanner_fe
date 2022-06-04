@@ -47,6 +47,7 @@ import { TASKS_SORT_FIELD_MAPPINGS } from '../../constants/tasks';
 import { MAX_TASKS_PER_PAGE, ROLES, TASK_STATUSES, tasksColumns } from '../../constants/uiConfig';
 import dictionary from '../../dictionary';
 import { unixTimeToPrettyDate } from '../../helpers/dates';
+import useDebounce from '../../helpers/debounce';
 import { CategoriesContext } from '../Main';
 import styles from './TasksList.module.scss';
 
@@ -291,6 +292,8 @@ const OperatorTasksListView = () => {
     return query;
   };
 
+  const searchedTaskQueryDebounced = useDebounce(searchedTaskQuery, 500);
+
   const { data, status, refetch } = useQuery(
     [
       'tasks',
@@ -299,7 +302,7 @@ const OperatorTasksListView = () => {
         tasksPageNumber,
         selectedCategory,
         selectedSubCategory,
-        searchedTaskQuery,
+        searchedTaskQueryDebounced,
         order,
         orderBy,
         pageSize
@@ -449,6 +452,8 @@ const VolunteerTasksListView = () => {
   const [tasksOrder, setTasksOrder] = useState(0);
   const [searchedTaskQuery, setSearchedTaskQuery] = useState('');
 
+  const searchedTaskQueryDebounced = useDebounce(searchedTaskQuery, 500);
+
   const prepareQuery = () => {
     let categoryPath = null;
     if (selectedCategory) {
@@ -480,7 +485,7 @@ const VolunteerTasksListView = () => {
       {
         tasksPageNumber,
         tasksOrder,
-        searchedTaskQuery,
+        searchedTaskQueryDebounced,
         pageSize,
         selectedCategory,
         selectedSubCategory
