@@ -13,6 +13,7 @@ import { Title } from '../../components/Title';
 import { STORES_SORT_FIELD_MAPPINGS } from '../../constants/stores';
 import { MAX_STORES_PER_PAGE } from '../../constants/uiConfig';
 import dictionary from '../../dictionary';
+import useDebounce from '../../helpers/debounce';
 import styles from './StoresList.module.scss';
 
 const usePageSizeState = createPersistedState('storesListPageSize');
@@ -70,7 +71,9 @@ export const StoresList = () => {
   const [order, setOrder] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const query = ['stores', { pageNumber, searchQuery, order, pageSize }];
+  const searchQueryDebounced = useDebounce(searchQuery, 500);
+
+  const query = ['stores', { pageNumber, searchQueryDebounced, order, pageSize }];
   const { data, status } = useQuery(
     query,
     async () => {
