@@ -1,7 +1,7 @@
 import { ENDPOINT } from '../env-variables';
 import axios from './axios';
 
-export const getAll = async ({ getUsersRequest }) => {
+export const getUsers = async getUsersRequest => {
   const body = getUsersRequest;
 
   try {
