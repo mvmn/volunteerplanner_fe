@@ -1,23 +1,5 @@
 @import '../../styles/colors.scss';
 
-.treeView {
-  min-width: 250px;
-  height: auto;
-  color: $theme-text-color;
-
-  .treeItem {
-    margin: 1rem;
-  }
-
-  .content {
-    padding: 0.5rem;
-  }
-
-  .selectedContent {
-    background-color: rgb(228, 232, 255);
-  }
-}
-
 .noteTextarea {
   min-height: 20%;
   width: 100%

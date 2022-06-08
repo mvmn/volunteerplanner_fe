@@ -40,3 +40,17 @@ export const createCategory = async request => {
     console.error(e);
   }
 };
+
+export const updateCategory = async category => {
+  try {
+    const { name, note } = category;
+
+    const response = await axios.put(`${ENDPOINT}/api/v1/categories/${category.id}`, {
+      name,
+      note
+    });
+    return response.data;
+  } catch (e) {
+    console.error(e);
+  }
+};
