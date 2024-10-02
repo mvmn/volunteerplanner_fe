@@ -1,3 +1,7 @@
+## Backend
+
+See https://github.com/mvmn/volunteerplanner_be
+
 ## Start
 
 - Clone repo
